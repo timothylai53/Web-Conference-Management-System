@@ -8,6 +8,17 @@
 1. Mention your group name for Assignment-1 and Assignment-2
 1. Other related info (if any)
 
+| Name            | Matric Number |  Role  | Phone Number | Image Link | Previous Group |
+| --------------- | :-----------: | :----: | -----------: |:----------:|:--------------:|
+|                 |               |        |              |            |                |
+|                 |               |        |              |            |                |
+|                 |               |        |              |            |                |
+|                 |               |        |              |            |                |
+| Fayadh Muhammad |     297032    | Member |   0143287087 |            |    Biscuit     |
+|                 |               |        |              |            |                |
+|                 |               |        |              |            |                |
+|                 |               |        |              |            |                |
+
 ## Title of your application (a unique title)
 ## Abstract (in 300 words)
    1. Background
