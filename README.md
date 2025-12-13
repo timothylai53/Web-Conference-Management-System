@@ -65,26 +65,45 @@
 ## Result/Output (Screenshot of the output)
 
 ## References (Not less than 20)
-1. Angular Team. (n.d.). Angular Documentation. Retrieved December 10, 2025, from https://angular.io/docs
-2. Pivotal Software. (n.d.). Spring Boot Reference Guide. Retrieved December 10, 2025, from https://spring.io/projects/spring-boot
-3. Oracle Corporation. (n.d.). MySQL Documentation. Retrieved December 10, 2025, from https://dev.mysql.com/doc/
-4. Docker, Inc. (n.d.). Docker Documentation. Retrieved December 10, 2025, from https://docs.docker.com/
-5. Amazon Web Services, Inc. (n.d.). AWS Documentation. Retrieved December 10, 2025, from https://docs.aws.amazon.com/
-6. Google LLC. (n.d.). Google Cloud Documentation. Retrieved December 10, 2025, from https://docs.cloud.google.com/
-7. BezKoder. (n.d.). Spring Boot + Angular 13 + MySQL example: Build a CRUD App. Retrieved from https://www.bezkoder.com/spring-boot-angular-13-mysql/
-8. BezKoder. (n.d.). Angular 17 + Spring Boot + MySQL: CRUD example. Retrieved from https://www.bezkoder.com/spring-boot-angular-17-mysql/
-9. JavaChinna. (n.d.). Dockerize Angular with NGINX and Spring Boot with MySQL using Docker Compose. Retrieved from https://www.javachinna.com/angular-nginx-spring-boot-mysql-docker-compose/
-10. Dev.to. (2025, November 5). Dockerize & Deploy Spring Boot + Angular + MySQL. Retrieved from https://dev.to/smoothcode/dockerize-deploy-spring-boot-angular-mysql-full-guide-24fg
-11. AWS Blog. (2016, November 9). Deploying a Spring Boot Application on AWS using AWS Elastic Beanstalk. Retrieved from https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/
-12. Medium. (2019). Set up a complete basic ecosystem with Angular, Spring Boot, Docker, GCP, Git, and Jenkins. Retrieved from https://medium.com/%40ansgar.nell/set-up-a-complete-basic-ecosystem-with-angular-spring-boot-docker-google-cloud-git-and-jenkins-b2e062e684e8
-13. Medium. (2024). Springboot & Angular full stack application deployment with Docker, AWS EC2, and Jenkins. Retrieved from https://rabieouallaf.medium.com/springboot-angular-full-stack-application-deployment-with-docker-aws-ec2-amazon-rds-github-3404420d61e0
-14. Spring.io. (n.d.). Accessing Data with MySQL (Spring Guide). Retrieved from https://spring.io/guides/gs/accessing-data-mysql/
-15. Spring.io. (n.d.). Spring Boot with Docker Guide. Retrieved from https://spring.io/guides/gs/spring-boot-docker
-16. GitHub. (n.d.). Spring Boot + Angular + MySQL CRUD and Docker Demo. Retrieved from https://github.com/vscalcione/springboot-angular12-mysql-docker-crud-application-demo
-17. GitHub. (n.d.). Spring Boot & Angular Full Stack Microservices + MySQL + AWS Example. Retrieved from https://github.com/developersCradle/spring-springboot-angular-microservices-mysql-java-persistence-hibernate-aws
-18. Stack Overflow. (n.d.). How to upload Java/Spring Boot + MySQL + Angular project to AWS. Retrieved from https://stackoverflow.com/questions/58390569/how-to-upload-my-java-spring-boot-mysql-angular-project-to-aws
-19. Docker Forums. (2024). Spring Boot app can’t connect to MySQL database in Docker. Retrieved from https://forums.docker.com/t/spring-boot-app-cant-connect-to-mysql-database-in-docker/143007
-20. LinkedIn. (2025). Deploying Angular, Java Spring Boot, MySQL with Docker Compose. Retrieved from https://www.linkedin.com/posts/manoj-kumar-selvaraj-b2089722a_github-manoj-kumar-selvarajdevopsjavaapp-activity-7323743697668386816-usnS
+Amazon Web Services, Inc. (n.d.). AWS documentation. https://docs.aws.amazon.com/
+
+Angular Team. (n.d.). Angular documentation. https://angular.io/docs
+
+AWS Blog. (2016, November 9). Deploying a Spring Boot application on AWS using AWS Elastic Beanstalk. https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/
+
+BezKoder. (n.d.). Angular 17 + Spring Boot + MySQL: CRUD example. https://www.bezkoder.com/spring-boot-angular-17-mysql/
+
+BezKoder. (n.d.). Spring Boot + Angular 13 + MySQL example: Build a CRUD app. https://www.bezkoder.com/spring-boot-angular-13-mysql/
+
+Dev.to. (2025, November 5). Dockerize & deploy Spring Boot + Angular + MySQL. https://dev.to/smoothcode/dockerize-deploy-spring-boot-angular-mysql-full-guide-24fg
+
+Docker, Inc. (n.d.). Docker documentation. https://docs.docker.com/
+
+Docker Forums. (2024). Spring Boot app can’t connect to MySQL database in Docker. https://forums.docker.com/t/spring-boot-app-cant-connect-to-mysql-database-in-docker/143007
+
+GitHub. (n.d.). Spring Boot & Angular full stack microservices + MySQL + AWS example. https://github.com/developersCradle/spring-springboot-angular-microservices-mysql-java-persistence-hibernate-aws
+
+GitHub. (n.d.). Spring Boot + Angular + MySQL CRUD and Docker demo. https://github.com/vscalcione/springboot-angular12-mysql-docker-crud-application-demo
+
+Google LLC. (n.d.). Google Cloud documentation. https://docs.cloud.google.com/
+
+JavaChinna. (n.d.). Dockerize Angular with NGINX and Spring Boot with MySQL using Docker Compose. https://www.javachinna.com/angular-nginx-spring-boot-mysql-docker-compose/
+
+LinkedIn. (2025). Deploying Angular, Java Spring Boot, MySQL with Docker Compose. https://www.linkedin.com/posts/manoj-kumar-selvaraj-b2089722a_github-manoj-kumar-selvarajdevopsjavaapp-activity-7323743697668386816-usnS
+
+Medium. (2019). Set up a complete basic ecosystem with Angular, Spring Boot, Docker, GCP, Git, and Jenkins. https://medium.com/@ansgar.nell/set-up-a-complete-basic-ecosystem-with-angular-spring-boot-docker-google-cloud-git-and-jenkins-b2e062e684e8
+
+Medium. (2024). Spring Boot & Angular full stack application deployment with Docker, AWS EC2, and Jenkins. https://rabieouallaf.medium.com/springboot-angular-full-stack-application-deployment-with-docker-aws-ec2-amazon-rds-github-3404420d61e0
+
+Oracle Corporation. (n.d.). MySQL documentation. https://dev.mysql.com/doc/
+
+Pivotal Software. (n.d.). Spring Boot reference guide. https://spring.io/projects/spring-boot
+
+Spring.io. (n.d.). Accessing data with MySQL. https://spring.io/guides/gs/accessing-data-mysql/
+
+Spring.io. (n.d.). Spring Boot with Docker. https://spring.io/guides/gs/spring-boot-docker/
+
+Stack Overflow. (n.d.). How to upload Java/Spring Boot + MySQL + Angular project to AWS. https://stackoverflow.com/questions/58390569/how-to-upload-my-java-spring-boot-mysql-angular-project-to-aws
 
 ## Link for the YouTube Presentation
 
