@@ -1,0 +1,56 @@
+<header class="app-header">
+  <div class="logo-area">
+    <a routerLink="/" class="brand-link">
+      <div class="brand-icon-wrapper">
+        <img src="/assets/logo.png" alt="ScholarSync Logo" class="logo-img">
+      </div>
+      <span class="brand-text">Scholar<span class="text-gradient">Sync</span></span>
+    </a>
+  </div>
+
+  <nav class="main-nav">
+    <a routerLink="/conference" routerLinkActive="active" class="nav-item">
+      <span>Conferences</span>
+    </a>
+    <a routerLink="/scheduling-program" routerLinkActive="active" class="nav-item">
+      <span>Schedule</span>
+    </a>
+    <a routerLink="/paper-submission" routerLinkActive="active" class="nav-item">
+      <span>Submission</span>
+    </a>
+    <a routerLink="/registration-payment" routerLinkActive="active" class="nav-item">
+      <span>Registration</span>
+    </a>
+    <a routerLink="/review-execution" routerLinkActive="active" class="nav-item">
+      <span>Reviews</span>
+    </a>
+  </nav>
+
+  <div class="user-area">
+
+    <a routerLink="/admin-dashboard" routerLinkActive="active-admin" class="admin-pill">
+      <span class="dot"></span> Admin Panel
+    </a>
+
+    <div class="divider"></div>
+
+    <ng-container *ngIf="isLoggedIn; else loginTemplate">
+      <div class="user-profile-trigger">
+        <div class="avatar-circle">U</div>
+        <div class="user-info">
+          <span class="user-name">Welcome, User</span>
+          <span class="user-role">Chair Member</span>
+        </div>
+        <button (click)="logout()" class="btn-logout" title="Logout">
+          <span class="icon-logout">➜</span>
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #loginTemplate>
+      <a routerLink="/auth" class="btn-login">
+        Sign In
+      </a>
+    </ng-template>
+  </div>
+</header>
