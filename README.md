@@ -20,6 +20,8 @@
 | <img src="https://github.com/user-attachments/assets/6b063b37-8a92-4987-b879-157bc2f03a51" width="120" height="170"> | LOH JIA PING | 297839   | 01169503383        | g2 |
 
 ## Title of your application (a unique title)
+ScholarSync
+
 ## Abstract (in 300 words)
    1. Background
       
