@@ -58,7 +58,7 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2025 ConfEase System. All rights reserved.</p>
+        <p>&copy; 2025 ScholarSync System. All rights reserved.</p>
         <div class="meta-links">
           <span>System Status: <span class="status-ok">● Operational</span></span>
         </div>
