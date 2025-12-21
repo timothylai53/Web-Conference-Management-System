@@ -21,7 +21,7 @@
 
 ## Title of your application (a unique title)
 
-<h2> ScholarSync </h2>
+ScholarSync
 
 ## Abstract (in 300 words)
    1. Background
