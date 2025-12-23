@@ -1,0 +1,113 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Session Management</h1>
+      <p class="page-subtitle">Create and manage conference sessions</p>
+    </div>
+    <button routerLink="/scheduling-program" class="btn btn-secondary">
+      <span class="icon">←</span> Back to Schedule
+    </button>
+  </div>
+
+  <!-- Create Session Form -->
+  <div class="card form-card">
+    <h2 class="section-title">{{ session.session_id ? 'Edit Session' : 'Create New Session' }}</h2>
+    
+    <form (ngSubmit)="saveSession()" class="session-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Session Title *</label>
+          <input
+            type="text"
+            [(ngModel)]="session.title"
+            name="title"
+            class="form-control"
+            placeholder="Enter session title"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Room *</label>
+          <select [(ngModel)]="session.room_id" name="room_id" class="form-control" required>
+            <option value="">Select a room</option>
+            <option *ngFor="let r of rooms" [value]="r.room_id">
+              {{ r.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Start Time *</label>
+          <input
+            type="datetime-local"
+            [(ngModel)]="session.start_time"
+            name="start_time"
+            class="form-control"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>End Time *</label>
+          <input
+            type="datetime-local"
+            [(ngModel)]="session.end_time"
+            name="end_time"
+            class="form-control"
+            required
+          >
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        <span class="icon">{{ session.session_id ? '✓' : '+' }}</span> {{ session.session_id ? 'Update Session' : 'Create Session' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Sessions List -->
+  <div class="card">
+    <h2 class="section-title">Existing Sessions</h2>
+    
+    <div *ngIf="sessions.length === 0" class="empty-state">
+      <div class="empty-icon">📅</div>
+      <h3>No sessions created yet</h3>
+      <p>Create your first session using the form above</p>
+    </div>
+
+    <table *ngIf="sessions.length > 0" class="data-table">
+      <thead>
+        <tr>
+          <th>Session Title</th>
+          <th>Room</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th style="text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of sessions">
+          <td class="font-bold text-navy">{{ s.title }}</td>
+          <td class="text-secondary">{{ getRoomName(s.room_id) }}</td>
+          <td>{{ formatDateTime(s.start_time) }}</td>
+          <td>{{ formatDateTime(s.end_time) }}</td>
+          <td class="actions-cell">
+            <div class="action-buttons-wrapper">
+              <button (click)="editSession(s)" class="action-btn edit" title="Edit Session">
+                ✎
+              </button>
+              <button (click)="deleteSession(s.session_id)" class="action-btn delete" title="Delete Session">
+                &times;
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

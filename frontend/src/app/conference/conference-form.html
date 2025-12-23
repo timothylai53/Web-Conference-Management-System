@@ -1,0 +1,172 @@
+<div class="page-container form-mode">
+
+  <div class="form-header">
+    <button (click)="cancel()" class="back-link">&larr; Back to List</button>
+    <h1>{{ isEditMode ? 'Edit Conference' : 'New Conference' }}</h1>
+  </div>
+
+  <div class="card form-card">
+
+    @if (errorMessage) {
+      <div class="alert alert-error" style="margin-bottom: 20px; color: red;">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form (ngSubmit)="confForm.form.valid && onSubmit()" #confForm="ngForm" novalidate>
+
+      <section class="form-section">
+        <h3 class="section-title">Event Details</h3>
+
+        <div class="form-grid">
+          <div class="form-group col-span-2">
+            <label>Conference Title <span class="required">*</span></label>
+            <input type="text"
+                   [(ngModel)]="conference.title"
+                   name="title"
+                   required
+                   placeholder="e.g. International Conference on Smart Computing"
+                   class="form-control"
+                   #title="ngModel">
+
+            @if (title.invalid && (title.dirty || title.touched || confForm.submitted)) {
+              <div class="validation-error">
+                Title is required.
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Acronym <span class="required">*</span></label>
+            <input type="text"
+                   [(ngModel)]="conference.acronym"
+                   name="acronym"
+                   required
+                   placeholder="e.g. ICSC 2025"
+                   class="form-control"
+                   #acronym="ngModel">
+
+            @if (acronym.invalid && (acronym.dirty || acronym.touched || confForm.submitted)) {
+              <div class="validation-error">
+                Acronym is required.
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" [(ngModel)]="conference.location" name="location" placeholder="City, Country" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group mt-3">
+          <label>Description</label>
+          <textarea [(ngModel)]="conference.description" name="description" rows="3" class="form-control" placeholder="Brief overview of the event..."></textarea>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h3 class="section-title">Schedule & Status</h3>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Start Date <span class="required">*</span></label>
+            <input type="date"
+                   [(ngModel)]="conference.start_date"
+                   name="start_date"
+                   required
+                   class="form-control"
+                   #startDate="ngModel">
+
+            @if (startDate.invalid && (startDate.dirty || startDate.touched || confForm.submitted)) {
+              <div class="validation-error">
+                Start Date is required.
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>End Date <span class="required">*</span></label>
+            <input type="date"
+                   [(ngModel)]="conference.end_date"
+                   name="end_date"
+                   required
+                   class="form-control"
+                   #endDate="ngModel">
+
+            @if (endDate.invalid && (endDate.dirty || endDate.touched || confForm.submitted)) {
+              <div class="validation-error">
+                End Date is required.
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Current Status</label>
+            <select [(ngModel)]="conference.status" name="status" class="form-control">
+              <option value="upcoming">Upcoming</option>
+              <option value="ongoing">Ongoing</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Website URL</label>
+            <input type="url" [(ngModel)]="conference.website_url" name="website_url" placeholder="https://" class="form-control">
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h3 class="section-title text-alert">Critical Deadlines</h3>
+        <p class="section-hint">These dates control the workflow for authors and reviewers.</p>
+
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+
+          <div class="form-group">
+            <label>Paper Submission Deadline</label>
+            <input type="date" [(ngModel)]="conference.submission_deadline" name="submission_deadline" class="form-control border-alert">
+          </div>
+
+          <div class="form-group">
+            <label>Late Submission Deadline</label>
+            <input type="date" [(ngModel)]="conference.late_submission_deadline" name="late_submission_deadline" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Review Deadline</label>
+            <small class="text-secondary" style="display:block; margin-bottom:5px;">When reviewers must finish.</small>
+            <input type="date" [(ngModel)]="conference.review_deadline" name="review_deadline" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Rebuttal Deadline</label>
+            <small class="text-secondary" style="display:block; margin-bottom:5px;">End of author response period.</small>
+            <input type="date" [(ngModel)]="conference.rebuttal_deadline" name="rebuttal_deadline" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Camera Ready Deadline</label>
+            <small class="text-secondary" style="display:block; margin-bottom:5px;">Final paper due.</small>
+            <input type="date" [(ngModel)]="conference.camera_ready_deadline" name="camera_ready_deadline" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Registration Deadline</label>
+            <small class="text-secondary" style="display:block; margin-bottom:5px;">Authors must register by.</small>
+            <input type="date" [(ngModel)]="conference.registration_deadline" name="registration_deadline" class="form-control">
+          </div>
+
+        </div>
+      </section>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary">
+          {{ isEditMode ? 'Save Changes' : 'Create Event' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

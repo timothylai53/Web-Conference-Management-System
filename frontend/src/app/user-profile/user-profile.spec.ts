@@ -1,20 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { UserProfileComponent } from './user-profile';
 
-import { UserProfile } from './user-profile';
-
-describe('UserProfile', () => {
-  let component: UserProfile;
-  let fixture: ComponentFixture<UserProfile>;
+describe('UserProfileComponent', () => {
+  let component: UserProfileComponent;
+  let fixture: ComponentFixture<UserProfileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserProfile]
+      declarations: [ UserProfileComponent ],
+      imports: [ HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule ]
     })
-    .compileComponents();
+      .compileComponents();
+  });
 
-    fixture = TestBed.createComponent(UserProfile);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(UserProfileComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

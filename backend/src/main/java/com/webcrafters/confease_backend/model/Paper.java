@@ -11,6 +11,7 @@ public class Paper {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paper_id;
     private Long track_id;
+    private Long conference_id;
     private String title;
     @Column(columnDefinition = "TEXT")
     private String abstractText;
@@ -29,6 +30,9 @@ public class Paper {
 
     public Long getTrack_id() { return track_id; }
     public void setTrack_id(Long track_id) { this.track_id = track_id; }
+
+    public Long getConference_id() { return conference_id; }
+    public void setConference_id(Long conference_id) { this.conference_id = conference_id; }
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }

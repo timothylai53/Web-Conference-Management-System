@@ -1,20 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing'; // Needed for Service
+import { ConferenceComponent } from './conference'; // Updated import name
 
-import { Conference } from './conference';
-
-describe('Conference', () => {
-  let component: Conference;
-  let fixture: ComponentFixture<Conference>;
+describe('ConferenceComponent', () => {
+  let component: ConferenceComponent;
+  let fixture: ComponentFixture<ConferenceComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Conference]
+      imports: [
+        ConferenceComponent,
+        HttpClientTestingModule // Mock the backend connection for tests
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(Conference);
+    fixture = TestBed.createComponent(ConferenceComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

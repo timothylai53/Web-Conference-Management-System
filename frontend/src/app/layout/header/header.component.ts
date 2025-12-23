@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,13 +10,41 @@ import { RouterModule } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
-  // Temporary switch to test the UI.
-  // Set this to 'true' to see what it looks like when logged in.
+export class HeaderComponent implements OnInit {
   isLoggedIn = false;
+  isAdmin = false;
+  isReviewer = false;
+  isChair = false;
+  userRole = 'User';
+  userName = '';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    // Subscribe to auth changes
+    this.authService.currentUser$.subscribe(user => {
+      this.isLoggedIn = !!user;
+      if (user) {
+        this.userName = `${user.first_name} ${user.last_name}`;
+        this.userRole = user.role || 'User';
+        this.isAdmin = user.role === 'Admin';
+        this.isReviewer = user.role === 'Reviewer';
+        this.isChair = user.role === 'Chair';
+      } else {
+        this.userName = '';
+        this.userRole = 'User';
+        this.isAdmin = false;
+        this.isReviewer = false;
+        this.isChair = false;
+      }
+    });
+  }
 
   logout() {
-    this.isLoggedIn = false;
-    // Add real logout logic here later (Member 1's job)
+    this.authService.logout();
+    this.router.navigate(['/auth']);
   }
 }

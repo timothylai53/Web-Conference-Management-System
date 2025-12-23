@@ -1,7 +1,11 @@
 package com.webcrafters.confease_backend.controller;
 
 import com.webcrafters.confease_backend.model.Review;
+import com.webcrafters.confease_backend.model.ReviewAssignment;
+import com.webcrafters.confease_backend.model.Paper;
 import com.webcrafters.confease_backend.repository.ReviewRepository;
+import com.webcrafters.confease_backend.repository.ReviewAssignmentRepository;
+import com.webcrafters.confease_backend.repository.PaperRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +16,17 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reviews")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ReviewController {
 
     @Autowired
     private ReviewRepository reviewRepository;
+    
+    @Autowired
+    private ReviewAssignmentRepository reviewAssignmentRepository;
+    
+    @Autowired
+    private PaperRepository paperRepository;
 
     // Get all reviews
     @GetMapping
@@ -39,6 +50,35 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<Review> createReview(@RequestBody Review review) {
         Review savedReview = reviewRepository.save(review);
+        
+        // Update the assignment status to "Completed"
+        Long paperId = null;
+        if (savedReview.getAssignment_id() != null) {
+            Optional<ReviewAssignment> assignmentOpt = reviewAssignmentRepository.findById(savedReview.getAssignment_id());
+            if (assignmentOpt.isPresent()) {
+                ReviewAssignment assignment = assignmentOpt.get();
+                assignment.setStatus("Completed");
+                reviewAssignmentRepository.save(assignment);
+                paperId = assignment.getPaper_id();
+            }
+        }
+        
+        // Check if all reviews for this paper are completed and update paper status
+        if (paperId != null) {
+            List<ReviewAssignment> paperAssignments = reviewAssignmentRepository.findByPaperId(paperId);
+            boolean allCompleted = paperAssignments.stream()
+                .allMatch(a -> "Completed".equals(a.getStatus()));
+            
+            if (allCompleted && !paperAssignments.isEmpty()) {
+                Optional<Paper> paperOpt = paperRepository.findById(paperId);
+                if (paperOpt.isPresent()) {
+                    Paper paper = paperOpt.get();
+                    paper.setStatus("Reviewed");
+                    paperRepository.save(paper);
+                }
+            }
+        }
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(savedReview);
     }
 

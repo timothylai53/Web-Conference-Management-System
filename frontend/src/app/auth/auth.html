@@ -1,1 +1,122 @@
-<p>auth works!</p>
+<div class="auth-viewport">
+  <div class="toast-notification" [class.active]="showError">
+    <div class="toast-body">
+      <i class="bi bi-exclamation-circle-fill"></i>
+      <span>{{ errorMessage }}</span>
+    </div>
+  </div>
+
+  <div class="auth-card-container">
+    <header class="brand-header">
+      <h1 class="brand-logo">ScholarSync</h1>
+      <p class="brand-tagline">Professional Conference Management System</p>
+    </header>
+
+    <div class="auth-card-surface">
+
+      <div *ngIf="!isRegister" class="view-animate">
+        <h2 class="form-title">Welcome Back</h2>
+
+        <form (ngSubmit)="onLogin()">
+          <div class="input-block">
+            <label>Email Address</label>
+            <div class="input-control">
+              <input type="email" name="email" [(ngModel)]="loginObj.email" placeholder="name@example.com" required>
+              <i class="bi bi-envelope icon-start"></i>
+            </div>
+          </div>
+
+          <div class="input-block">
+            <label>Password</label>
+            <div class="input-control">
+              <input type="password" name="password" [(ngModel)]="loginObj.password" placeholder="Enter your password" required>
+              <i class="bi bi-shield-lock icon-start"></i>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary-lg">Sign In</button>
+        </form>
+
+        <div class="auth-switch">
+          <span>New to ScholarSync?</span>
+          <button type="button" (click)="isRegister = true">Create an account</button>
+        </div>
+      </div>
+
+      <div *ngIf="isRegister" class="view-animate">
+        <div class="text-center mb-4">
+          <h2 class="form-title mb-1">Create Account</h2>
+          <p class="text-muted small">Join us to manage your conferences</p>
+        </div>
+
+        <form (ngSubmit)="onRegister()">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="reg-input-block">
+                <label class="small-label">First Name</label>
+                <div class="input-control">
+                  <input type="text" name="fName" [(ngModel)]="registerObj.firstName" placeholder="John" required>
+                  <i class="bi bi-person icon-start"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="reg-input-block">
+                <label class="small-label">Last Name</label>
+                <div class="input-control">
+                  <input type="text" name="lName" [(ngModel)]="registerObj.lastName" placeholder="Doe" required>
+                  <i class="bi bi-person icon-start"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="reg-input-block mb-3">
+            <label class="small-label">Email Address</label>
+            <div class="input-control">
+              <input type="email" name="regEmail" [(ngModel)]="registerObj.email" placeholder="john.doe@example.com" required>
+              <i class="bi bi-envelope icon-start"></i>
+            </div>
+          </div>
+
+          <div class="reg-input-block mb-3">
+            <label class="small-label">Password</label>
+            <div class="input-control">
+              <input type="password" name="regPass" [(ngModel)]="registerObj.password" placeholder="Min. 8 characters" required>
+              <i class="bi bi-shield-lock icon-start"></i>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="reg-input-block">
+                <label class="small-label">Affiliation</label>
+                <div class="input-control">
+                  <input type="text" name="aff" [(ngModel)]="registerObj.affiliation" placeholder="University/Org">
+                  <i class="bi bi-building icon-start"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="reg-input-block">
+                <label class="small-label">Country</label>
+                <div class="input-control">
+                  <input type="text" name="cnt" [(ngModel)]="registerObj.country" placeholder="Malaysia">
+                  <i class="bi bi-globe-asia-australia icon-start"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary-lg">Create Account</button>
+
+          <div class="auth-switch">
+            <span>Already have an account?</span>
+            <button type="button" (click)="isRegister = false">Sign In</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

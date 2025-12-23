@@ -2,44 +2,77 @@
   <div class="logo-area">
     <a routerLink="/" class="brand-link">
       <div class="brand-icon-wrapper">
-        <img src="/assets/logo.png" alt="ScholarSync Logo" class="logo-img">
+        <img src="assets/logo.png" alt="ScholarSync Logo" class="logo-img">
       </div>
       <span class="brand-text">Scholar<span class="text-gradient">Sync</span></span>
     </a>
   </div>
 
-  <nav class="main-nav">
-    <a routerLink="/conference" routerLinkActive="active" class="nav-item">
-      <span>Conferences</span>
-    </a>
-    <a routerLink="/scheduling-program" routerLinkActive="active" class="nav-item">
-      <span>Schedule</span>
-    </a>
-    <a routerLink="/paper-submission" routerLinkActive="active" class="nav-item">
-      <span>Submission</span>
-    </a>
-    <a routerLink="/registration-payment" routerLinkActive="active" class="nav-item">
-      <span>Registration</span>
-    </a>
-    <a routerLink="/review-execution" routerLinkActive="active" class="nav-item">
-      <span>Reviews</span>
-    </a>
+  <nav class="main-nav" *ngIf="isLoggedIn">
+    <!-- Admin sees all navigation items -->
+    <ng-container *ngIf="isAdmin">
+      <a routerLink="/conference" routerLinkActive="active" class="nav-item">
+        <span>Conferences</span>
+      </a>
+      <a routerLink="/scheduling-program" routerLinkActive="active" class="nav-item">
+        <span>Schedule</span>
+      </a>
+      <a routerLink="/paper-submission" routerLinkActive="active" class="nav-item">
+        <span>Submission</span>
+      </a>
+      <a routerLink="/registration-payment" routerLinkActive="active" class="nav-item">
+        <span>Registration</span>
+      </a>
+      <a routerLink="/review-execution" routerLinkActive="active" class="nav-item">
+        <span>Reviews</span>
+      </a>
+    </ng-container>
+
+    <!-- Reviewers only see Reviews -->
+    <ng-container *ngIf="isReviewer">
+      <a routerLink="/review-execution" routerLinkActive="active" class="nav-item">
+        <span>Reviews</span>
+      </a>
+    </ng-container>
+
+    <!-- Chairs only see Conference and Schedule -->
+    <ng-container *ngIf="isChair">
+      <a routerLink="/conference" routerLinkActive="active" class="nav-item">
+        <span>Conferences</span>
+      </a>
+      <a routerLink="/scheduling-program" routerLinkActive="active" class="nav-item">
+        <span>Schedule</span>
+      </a>
+      <a routerLink="/review-setup" routerLinkActive="active" class="nav-item">
+        <span>Review Setup</span>
+      </a>
+    </ng-container>
+
+    <!-- Regular users (authors) only see Submission and Registration -->
+    <ng-container *ngIf="!isAdmin && !isReviewer && !isChair">
+      <a routerLink="/paper-submission" routerLinkActive="active" class="nav-item">
+        <span>Submission</span>
+      </a>
+      <a routerLink="/registration-payment" routerLinkActive="active" class="nav-item">
+        <span>Registration</span>
+      </a>
+    </ng-container>
   </nav>
 
   <div class="user-area">
 
-    <a routerLink="/admin-dashboard" routerLinkActive="active-admin" class="admin-pill">
+    <a *ngIf="isAdmin" routerLink="/admin-dashboard" routerLinkActive="active-admin" class="admin-pill">
       <span class="dot"></span> Admin Panel
     </a>
 
-    <div class="divider"></div>
+    <div *ngIf="isLoggedIn" class="divider"></div>
 
     <ng-container *ngIf="isLoggedIn; else loginTemplate">
       <div class="user-profile-trigger">
-        <div class="avatar-circle">U</div>
+        <div class="avatar-circle">{{ userName.charAt(0) || 'U' }}</div>
         <div class="user-info">
-          <span class="user-name">Welcome, User</span>
-          <span class="user-role">Chair Member</span>
+          <span class="user-name">{{ userName || 'User' }}</span>
+          <span class="user-role">{{ userRole }}</span>
         </div>
         <button (click)="logout()" class="btn-logout" title="Logout">
           <span class="icon-logout">➜</span>

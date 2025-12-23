@@ -1,1 +1,204 @@
-<p>conference works!</p>
+<div class="page-container">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Conferences</h1>
+      <p class="page-subtitle">Manage your upcoming and past events</p>
+    </div>
+    <a routerLink="/conference/form" class="btn btn-primary">
+      <span class="icon">+</span> Create Conference
+    </a>
+  </div>
+
+  <div class="card">
+    <table class="data-table">
+      <thead>
+      <tr>
+        <th style="width: 8%;">Acronym</th>
+        <th style="width: 22%;">Conference Name</th>
+        <th style="width: 15%;">Location</th>
+        <th style="width: 18%;">Dates</th>
+        <th style="width: 10%;">Status</th>
+        <th style="width: 12%; text-align: center;">Tracks</th>
+        <th style="width: 15%; text-align: right;">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let conf of conferences">
+
+        <td class="font-bold text-navy">{{ conf.acronym }}</td>
+
+        <td>
+          <div class="conf-title clickable-title" (click)="viewDetails(conf)" title="Click to view full details">
+            {{ conf.title }}
+          </div>
+          <a *ngIf="conf.website_url" [href]="conf.website_url" target="_blank" class="link-subtle">
+            Visit Website &nearr;
+          </a>
+        </td>
+
+        <td class="text-secondary">{{ conf.location }}</td>
+
+        <td>
+          <div class="date-range">
+            <span>{{ conf.start_date | date:'mediumDate' }}</span>
+            <span class="arrow" *ngIf="conf.end_date">&rarr;</span>
+            <span *ngIf="conf.end_date">{{ conf.end_date | date:'mediumDate' }}</span>
+          </div>
+        </td>
+
+        <td>
+            <span class="status-badge" [ngClass]="{
+              'status-upcoming': conf.status === 'upcoming',
+              'status-ongoing': conf.status === 'ongoing',
+              'status-completed': conf.status === 'completed'
+            }">
+              {{ conf.status | titlecase }}
+            </span>
+        </td>
+
+        <td style="text-align: center;">
+          <button
+            [routerLink]="['/tracks']"
+            [queryParams]="{ conference_id: conf.conference_id }"
+            class="btn-track-badge"
+            title="Manage Tracks">
+            <span class="icon-folder">📂</span> View Tracks
+          </button>
+        </td>
+
+        <td class="actions-cell">
+          <div class="action-buttons-wrapper">
+            <a [routerLink]="['/conference/form', conf.conference_id]" class="action-btn edit" title="Edit Details">
+              ✎
+            </a>
+            <button (click)="deleteConference(conf.conference_id!)" class="action-btn delete" title="Delete Conference">
+              &times;
+            </button>
+          </div>
+        </td>
+
+      </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="conferences.length === 0" class="empty-state">
+      <div class="empty-icon">📅</div>
+      <h3>No conferences found</h3>
+      <p>Get started by creating your first conference event.</p>
+      <button routerLink="/conference/new" class="btn btn-secondary mt-3">Create New</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="selectedConference" (click)="closeDetails()">
+
+  <div class="modal-content" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+          <span class="status-badge status-{{ selectedConference.status }}">
+            {{ selectedConference.status | uppercase }}
+          </span>
+        </div>
+        <h2 style="margin: 0; color: #0f172a;">
+          {{ selectedConference.title }} ({{ selectedConference.acronym }})
+        </h2>
+      </div>
+      <button class="btn-close" (click)="closeDetails()" title="Close">&times;</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+        <div>
+          <label style="color: #666; font-size: 0.9rem; font-weight: 600; display: block; margin-bottom: 4px;">Location</label>
+          <div>{{ selectedConference.location }}</div>
+        </div>
+        <div>
+          <label style="color: #666; font-size: 0.9rem; font-weight: 600; display: block; margin-bottom: 4px;">Event Dates</label>
+          <div>
+            {{ selectedConference.start_date | date:'mediumDate' }}
+            <span *ngIf="selectedConference.end_date"> - {{ selectedConference.end_date | date:'mediumDate' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <label style="color: #666; font-size: 0.9rem; font-weight: 600; display: block; margin-bottom: 4px;">Description</label>
+        <div style="background: #f8fafc; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0; line-height: 1.5;">
+          {{ selectedConference.description || 'No description provided.' }}
+        </div>
+      </div>
+
+      <div style="margin-bottom: 25px;" *ngIf="selectedConference.website_url">
+        <label style="color: #666; font-size: 0.9rem; font-weight: 600; display: block; margin-bottom: 4px;">Website</label>
+        <a [href]="selectedConference.website_url" target="_blank" style="color: #2563eb; text-decoration: underline;">
+          {{ selectedConference.website_url }}
+        </a>
+      </div>
+
+      <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+        <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+          ⏳ Critical Deadlines
+        </h3>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+
+          <div>
+            <label style="color: #666; font-size: 0.85rem; display: block;">Paper Submission</label>
+            <div style="font-weight: bold; color: #d32f2f;">
+              {{ selectedConference.submission_deadline ? (selectedConference.submission_deadline | date:'mediumDate') : 'Not Set' }}
+            </div>
+          </div>
+
+          <div>
+            <label style="color: #666; font-size: 0.85rem; display: block;">Late Submission</label>
+            <div style="font-weight: bold; color: #c62828;">
+              {{ selectedConference.late_submission_deadline ? (selectedConference.late_submission_deadline | date:'mediumDate') : 'Not Set' }}
+            </div>
+          </div>
+
+          <div>
+            <label style="color: #666; font-size: 0.85rem; display: block;">Review Deadline</label>
+            <div style="font-weight: bold;">
+              {{ selectedConference.review_deadline ? (selectedConference.review_deadline | date:'mediumDate') : 'Not Set' }}
+            </div>
+          </div>
+
+          <div>
+            <label style="color: #666; font-size: 0.85rem; display: block;">Rebuttal Deadline</label>
+            <div style="font-weight: bold;">
+              {{ selectedConference.rebuttal_deadline ? (selectedConference.rebuttal_deadline | date:'mediumDate') : 'Not Set' }}
+            </div>
+          </div>
+
+          <div>
+            <label style="color: #666; font-size: 0.85rem; display: block;">Camera Ready Due</label>
+            <div style="font-weight: bold;">
+              {{ selectedConference.camera_ready_deadline ? (selectedConference.camera_ready_deadline | date:'mediumDate') : 'Not Set' }}
+            </div>
+          </div>
+
+          <div>
+            <label style="color: #666; font-size: 0.85rem; display: block;">Registration Deadline</label>
+            <div style="font-weight: bold; color: #2e7d32;">
+              {{ selectedConference.registration_deadline ? (selectedConference.registration_deadline | date:'mediumDate') : 'Not Set' }}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn btn-ghost" (click)="closeDetails()">Close</button>
+        <button [routerLink]="['/conference/edit', selectedConference.conference_id]" class="btn btn-primary">
+          Edit Details
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

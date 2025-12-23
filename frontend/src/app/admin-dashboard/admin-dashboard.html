@@ -1,1 +1,202 @@
-<p>admin-dashboard works!</p>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Conference</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="admin-dashboard.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-900 text-white">
+
+<!-- HEADER -->
+<header class="bg-gray-800 p-4">
+
+  <div class="flex justify-between items-center max-w-screen-xl mx-auto">
+      <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="layout max-w-screen-xl mx-auto p-6">
+
+  <!-- PAGE HEADER -->
+  <section class="page-header mb-8">
+    <h1 class="text-4xl font-bold text-gray-100">Dashboard Overview</h1>
+    <p class="text-lg text-gray-400 mt-2">Monitor and manage your conference system</p>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="stat-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+      <div class="flex justify-between items-center">
+        <span class="text-gray-400 text-sm uppercase">Total Users</span>
+        <i class="stat-icon text-blue-500 text-xl" data-lucide="users"></i>
+      </div>
+      <div class="stat-value text-3xl font-semibold mt-2">1,248</div>
+      <div class="stat-change text-green-500 text-sm mt-1">+12% this month</div>
+    </div>
+
+    <div class="stat-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+      <div class="flex justify-between items-center">
+        <span class="text-gray-400 text-sm uppercase">Total Papers</span>
+        <i class="stat-icon text-blue-500 text-xl" data-lucide="file-text"></i>
+      </div>
+      <div class="stat-value text-3xl font-semibold mt-7">3,547</div> <!-- Increased margin-top -->
+      <div class="stat-change text-green-500 text-sm mt-5">+8% this month</div> <!-- Increased margin-top -->
+    </div>
+
+
+    <div class="stat-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+      <div class="flex justify-between items-center">
+        <span class="text-gray-400 text-sm uppercase">Pending Reviews</span>
+        <i class="stat-icon text-blue-500 text-xl" data-lucide="clock"></i>
+      </div>
+      <div class="stat-value text-3xl font-semibold mt-2">127</div>
+      <div class="stat-change text-red-500 text-sm mt-1">-5% this week</div>
+    </div>
+
+    <div class="stat-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+      <div class="flex justify-between items-center">
+        <span class="text-gray-400 text-sm uppercase">Active Conferences</span>
+        <i class="stat-icon text-blue-500 text-xl" data-lucide="target"></i>
+      </div>
+      <div class="stat-value text-3xl font-semibold mt-2">15</div>
+      <div class="stat-change text-green-500 text-sm mt-1">+3 new</div>
+    </div>
+  </section>
+
+  <!-- NOTIFICATIONS -->
+  <section class="section mb-8">
+    <div class="section-header flex justify-between items-center mb-4">
+      <h2 class="section-title text-2xl font-semibold">Notifications</h2>
+      <span class=""></span>
+    </div>
+
+    <div class="notification-list space-y-4">
+      <div *ngFor="let notification of notifications" class="notification p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition">
+        <i [attr.data-lucide]="notification.icon" class="text-blue-500"></i>
+        <div>
+          <strong>{{ notification.title }}</strong>
+          <span class="block text-sm text-gray-400">{{ notification.time }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder banner below the notifications -->
+    <div class="empty-notifications-banner p-6 bg-gray-800 text-center text-gray-400 rounded-lg shadow-lg mt-6">
+      <p class="text-xl font-semibold">Notifications will appear here once available.</p>
+    </div>
+  </section>
+
+
+  <!-- ACTIVITY TABLE -->
+  <section class="section mb-8">
+    <h2 class="section-title text-2xl font-semibold mb-4">Activity Logs</h2>
+
+    <div class="table-container overflow-x-auto">
+      <table class="min-w-full bg-gray-800 text-sm rounded-lg">
+        <thead>
+        <tr>
+          <th class="py-3 px-4 text-left text-gray-400 uppercase">User</th>
+          <th class="py-3 px-4 text-left text-gray-400 uppercase">Action</th>
+          <th class="py-3 px-4 text-left text-gray-400 uppercase">Details</th>
+          <th class="py-3 px-4 text-left text-gray-400 uppercase">Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let log of activityLogs" class="hover:bg-gray-700">
+          <td class="py-3 px-4">{{ log.user }}</td>
+          <td class="py-3 px-4">{{ log.action }}</td>
+          <td class="py-3 px-4">{{ log.details }}</td>
+          <td class="py-3 px-4">{{ log.time }}</td>
+        </tr>
+        <!-- 3 Row Kosong di Bawah Setiap Column (Statis) -->
+        <tr class="hover:bg-gray-700">
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+
+        </tr>
+        <tr class="hover:bg-gray-700">
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+        </tr>
+        <tr class="hover:bg-gray-700">
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <!-- EMAIL LOG TABLE -->
+  <section class="section mb-8">
+    <h2 class="section-title text-2xl font-semibold mb-4">Email Logs</h2>
+
+    <div class="table-container overflow-x-auto">
+      <table class="min-w-full bg-gray-800 text-sm rounded-lg">
+        <thead>
+        <tr>
+          <th class="py-3 px-4 text-left text-gray-400 uppercase">Recipient Email</th>
+          <th class="py-3 px-4 text-left text-gray-400 uppercase">Subject</th>
+          <th class="py-3 px-4 text-left text-gray-400 uppercase">Status</th>
+          <th class="py-3 px-4 text-left text-gray-400 uppercase">Delivered At</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Dynamic Data (Email Logs) -->
+        <tr *ngFor="let email of emailLogs" class="hover:bg-gray-700">
+          <td class="py-3 px-4">{{ email.recipient_email }}</td>
+          <td class="py-3 px-4">{{ email.subject }}</td>
+          <td class="py-3 px-4">
+            <span [class.text-red-500]="email.status === 'Failed'" [class.text-green-500]="email.status === 'Sent'">
+              {{ email.status }}
+            </span>
+          </td>
+          <td class="py-3 px-4">{{ email.delivered_at }}</td>
+        </tr>
+
+        <!-- Empty Rows (Statis) -->
+        <tr class="hover:bg-gray-700">
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+        </tr>
+        <tr class="hover:bg-gray-700">
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+        </tr>
+        <tr class="hover:bg-gray-700">
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+          <td class="py-3 px-4"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+
+
+<script>
+  lucide.createIcons();
+</script>
+</body>
+</html>

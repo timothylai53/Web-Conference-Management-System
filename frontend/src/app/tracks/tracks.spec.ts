@@ -1,20 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router'; // Import this
+import { of } from 'rxjs'; // Import this
 
-import { Tracks } from './tracks';
+// 1. Correct the Import Name
+import { TracksComponent } from './tracks';
+import { HttpClientTestingModule } from '@angular/common/http/testing'; // You usually need this for Services
 
-describe('Tracks', () => {
-  let component: Tracks;
-  let fixture: ComponentFixture<Tracks>;
+describe('TracksComponent', () => { // 2. Rename Describe
+  let component: TracksComponent; // 3. Correct Type
+  let fixture: ComponentFixture<TracksComponent>; // 4. Correct Type
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Tracks]
+      // 5. Use the correct Component Class
+      imports: [TracksComponent, HttpClientTestingModule],
+      providers: [
+        // Mock ActivatedRoute if your component uses it
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { paramMap: { get: () => null } } }
+        }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(Tracks);
+    fixture = TestBed.createComponent(TracksComponent); // 6. Create correct component
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

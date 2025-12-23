@@ -1,0 +1,52 @@
+.review-execution-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.review-execution-container h1 {
+  color: #64b5f6;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.review-execution-container p {
+  color: #ccc;
+  margin-bottom: 2rem;
+}
+
+.navigation-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.nav-card {
+  background: #1e1e2e;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.nav-card:hover {
+  background: #252535;
+  border-color: #64b5f6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.2);
+}
+
+.nav-card h3 {
+  color: #64b5f6;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.nav-card p {
+  color: #aaa;
+  margin: 0;
+  font-size: 0.95rem;
+}

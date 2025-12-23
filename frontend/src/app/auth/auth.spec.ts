@@ -1,20 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AuthComponent } from './auth';
 
-import { Auth } from './auth';
-
-describe('Auth', () => {
-  let component: Auth;
-  let fixture: ComponentFixture<Auth>;
+describe('AuthComponent', () => {
+  let component: AuthComponent;
+  let fixture: ComponentFixture<AuthComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Auth]
+      declarations: [ AuthComponent ],
+      imports: [ HttpClientTestingModule, ReactiveFormsModule ]
     })
-    .compileComponents();
+      .compileComponents();
+  });
 
-    fixture = TestBed.createComponent(Auth);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AuthComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

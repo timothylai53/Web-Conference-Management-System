@@ -1,0 +1,86 @@
+<div class="page-container form-mode">
+  <div class="form-header">
+    <button (click)="cancel()" class="back-link">&larr; Back to List</button>
+    <h1>{{ isEditMode ? 'Edit Track' : 'Create New Track' }}</h1>
+  </div>
+
+  <div class="card form-card">
+
+    @if (errorMessage) {
+      <div class="alert-error">{{ errorMessage }}</div>
+    }
+
+    <form (ngSubmit)="trackForm.form.valid && onSubmit()" #trackForm="ngForm" novalidate>
+
+      <div class="form-group">
+        <label>Belongs to Conference <span class="required">*</span></label>
+
+        <select [(ngModel)]="track.conference_id"
+                name="conference_id"
+                required
+                class="form-control"
+                #conferenceId="ngModel">
+          <option [ngValue]="null" disabled selected>-- Select Conference --</option>
+
+          @for (c of conferences; track c.conference_id) {
+            <option [value]="c.conference_id">
+              {{ c.title }} ({{ c.acronym }})
+            </option>
+          }
+        </select>
+
+        @if (conferenceId.invalid && (conferenceId.dirty || conferenceId.touched || trackForm.submitted)) {
+          <div class="validation-error">
+            Please select a conference.
+          </div>
+        }
+
+        @if (!conferenceId.invalid || (!conferenceId.dirty && !conferenceId.touched && !trackForm.submitted)) {
+          <small class="text-secondary">
+            Which event is this track for?
+          </small>
+        }
+      </div>
+
+      <br>
+
+      <div class="form-group">
+        <label>Track Name <span class="required">*</span></label>
+
+        <input type="text"
+               [(ngModel)]="track.name"
+               name="name"
+               required
+               placeholder="e.g. Artificial Intelligence & Robotics"
+               class="form-control"
+               #trackName="ngModel">
+
+        @if (trackName.invalid && (trackName.dirty || trackName.touched || trackForm.submitted)) {
+          <div class="validation-error">
+            Track name is required.
+          </div>
+        }
+      </div>
+
+      <br>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="track.description"
+                  name="description"
+                  rows="4"
+                  placeholder="Describe the topics covered in this track..."
+                  class="form-control"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" (click)="cancel()">Cancel</button>
+
+        <button type="submit" class="btn btn-primary">
+          {{ isEditMode ? 'Save Changes' : 'Create Track' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

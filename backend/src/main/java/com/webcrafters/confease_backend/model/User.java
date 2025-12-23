@@ -17,6 +17,7 @@ public class User {
     private String affiliation;
     private String country;
     private String category;
+    private String role;
     private String orcid;
     private String profile_picture;
     private Boolean is_email_verified;
@@ -47,6 +48,9 @@ public class User {
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
     public String getOrcid() { return orcid; }
     public void setOrcid(String orcid) { this.orcid = orcid; }

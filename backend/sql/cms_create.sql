@@ -98,6 +98,7 @@ CREATE TABLE track (
 CREATE TABLE paper (
                        paper_id BIGINT PRIMARY KEY AUTO_INCREMENT,
                        track_id BIGINT,
+                       conference_id BIGINT,
                        title VARCHAR(255) NOT NULL,
                        abstract TEXT,
                        submission_file VARCHAR(255),                        -- Uploaded file name/path
@@ -109,6 +110,7 @@ CREATE TABLE paper (
                        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                        FOREIGN KEY (track_id) REFERENCES track(track_id),
+                       FOREIGN KEY (conference_id) REFERENCES conference(conference_id),
                        FOREIGN KEY (submitted_by) REFERENCES user(user_id)
 ) ENGINE=InnoDB;
 
@@ -280,10 +282,12 @@ CREATE TABLE session (
                          event_id BIGINT,
                          title VARCHAR(255),
                          chair_id BIGINT,
+                         room_id BIGINT,
                          start_time DATETIME,
                          end_time DATETIME,
                          FOREIGN KEY (event_id) REFERENCES event(event_id),
-                         FOREIGN KEY (chair_id) REFERENCES user(user_id)
+                         FOREIGN KEY (chair_id) REFERENCES user(user_id),
+                         FOREIGN KEY (room_id) REFERENCES room(room_id)
 ) ENGINE=InnoDB;
 
 -- ==========================================================

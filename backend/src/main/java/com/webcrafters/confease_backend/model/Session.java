@@ -13,6 +13,7 @@ public class Session {
     private Long event_id;
     private String title;
     private Long chair_id;
+    private Long room_id;
     private Timestamp start_time;
     private Timestamp end_time;
 
@@ -28,6 +29,9 @@ public class Session {
 
     public Long getChair_id() { return chair_id; }
     public void setChair_id(Long chair_id) { this.chair_id = chair_id; }
+
+    public Long getRoom_id() { return room_id; }
+    public void setRoom_id(Long room_id) { this.room_id = room_id; }
 
     public Timestamp getStart_time() { return start_time; }
     public void setStart_time(Timestamp start_time) { this.start_time = start_time; }

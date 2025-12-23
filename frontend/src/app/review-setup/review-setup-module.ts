@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { ReviewSetupRoutingModule } from './review-setup-routing-module';
-
+import { ReviewSetupComponent } from './review-setup.component';
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
-    ReviewSetupRoutingModule
+    FormsModule,
+    HttpClientModule,
+    ReviewSetupRoutingModule,
+    ReviewSetupComponent
   ]
 })
-export class ReviewSetupModule { }
+export class ReviewSetupModule {}
