@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { AuthService, User } from '../../services/auth.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -25,7 +26,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     // Subscribe to auth changes
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe((user: User | null) => {
       this.isLoggedIn = !!user;
       if (user) {
         this.userName = `${user.first_name} ${user.last_name}`;
@@ -46,5 +47,33 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/auth']);
+  }
+
+  navigateHome() {
+    // Navigate to appropriate home page based on role
+    if (this.isAdmin) {
+      this.router.navigate(['/conference']);
+    } else if (this.isReviewer) {
+      this.router.navigate(['/review-execution']);
+    } else if (this.isChair) {
+      this.router.navigate(['/conference']);
+    } else {
+      // Author or default
+      this.router.navigate(['/paper-submission']);
+    }
+  }
+
+  getHomeRoute(): string {
+    // Navigate to appropriate home page based on role
+    if (this.isAdmin) {
+      return '/conference';
+    } else if (this.isReviewer) {
+      return '/review-execution';
+    } else if (this.isChair) {
+      return '/conference';
+    } else {
+      // Author or default
+      return '/paper-submission';
+    }
   }
 }

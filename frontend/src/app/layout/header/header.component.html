@@ -1,11 +1,19 @@
 <header class="app-header">
   <div class="logo-area">
-    <a routerLink="/" class="brand-link">
+    <!-- Only clickable when logged in -->
+    <a *ngIf="isLoggedIn" (click)="navigateHome()" class="brand-link" style="cursor: pointer;">
       <div class="brand-icon-wrapper">
         <img src="assets/logo.png" alt="ScholarSync Logo" class="logo-img">
       </div>
       <span class="brand-text">Scholar<span class="text-gradient">Sync</span></span>
     </a>
+    <!-- Not clickable when logged out -->
+    <div *ngIf="!isLoggedIn" class="brand-link" style="cursor: default;">
+      <div class="brand-icon-wrapper">
+        <img src="assets/logo.png" alt="ScholarSync Logo" class="logo-img">
+      </div>
+      <span class="brand-text">Scholar<span class="text-gradient">Sync</span></span>
+    </div>
   </div>
 
   <nav class="main-nav" *ngIf="isLoggedIn">
@@ -69,11 +77,13 @@
 
     <ng-container *ngIf="isLoggedIn; else loginTemplate">
       <div class="user-profile-trigger">
-        <div class="avatar-circle">{{ userName.charAt(0) || 'U' }}</div>
-        <div class="user-info">
-          <span class="user-name">{{ userName || 'User' }}</span>
-          <span class="user-role">{{ userRole }}</span>
-        </div>
+        <a routerLink="/user-profile" class="user-profile-link">
+          <div class="avatar-circle">{{ userName.charAt(0) || 'U' }}</div>
+          <div class="user-info">
+            <span class="user-name">{{ userName || 'User' }}</span>
+            <span class="user-role">{{ userRole }}</span>
+          </div>
+        </a>
         <button (click)="logout()" class="btn-logout" title="Logout">
           <span class="icon-logout">➜</span>
         </button>

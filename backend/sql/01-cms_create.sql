@@ -274,7 +274,18 @@ CREATE TABLE event (
 ) ENGINE=InnoDB;
 
 -- ==========================================================
--- 18. SESSION TABLE
+-- 18. ROOM TABLE
+-- Manages conference rooms and capacities
+-- ==========================================================
+CREATE TABLE room (
+                      room_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                      name VARCHAR(100),
+                      capacity INT,
+                      location VARCHAR(255)
+) ENGINE=InnoDB;
+
+-- ==========================================================
+-- 19. SESSION TABLE
 -- Defines smaller sessions within events (e.g., paper presentations)
 -- ==========================================================
 CREATE TABLE session (
@@ -288,17 +299,6 @@ CREATE TABLE session (
                          FOREIGN KEY (event_id) REFERENCES event(event_id),
                          FOREIGN KEY (chair_id) REFERENCES user(user_id),
                          FOREIGN KEY (room_id) REFERENCES room(room_id)
-) ENGINE=InnoDB;
-
--- ==========================================================
--- 19. ROOM TABLE
--- Manages conference rooms and capacities
--- ==========================================================
-CREATE TABLE room (
-                      room_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                      name VARCHAR(100),
-                      capacity INT,
-                      location VARCHAR(255)
 ) ENGINE=InnoDB;
 
 -- ==========================================================

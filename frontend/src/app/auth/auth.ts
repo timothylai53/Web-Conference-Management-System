@@ -55,17 +55,26 @@ export class AuthComponent {
     this.showError = false;
     this.http.post('http://localhost:8080/api/auth/login', this.loginObj).subscribe({
       next: (res: any) => {
-        // 登录成功，调用 AuthService 保存状态
-        this.authService.loginSuccess(res);
-        // Redirect based on role
-        if (res.role === 'Admin') {
-          this.router.navigate(['/conference']);
-        } else if (res.role === 'Reviewer') {
-          this.router.navigate(['/review-execution']);
-        } else if (res.role === 'Chair') {
-          this.router.navigate(['/conference']);
+        // Backend returns { user: { ...userData } }
+        if (res && res.user) {
+          // 登录成功，调用 AuthService 保存状态
+          this.authService.loginSuccess(res.user);
+          
+          // Redirect based on role
+          const userRole = res.user.role;
+          if (userRole === 'Admin') {
+            this.router.navigate(['/conference']);
+          } else if (userRole === 'Reviewer') {
+            this.router.navigate(['/review-execution']);
+          } else if (userRole === 'Chair') {
+            this.router.navigate(['/conference']);
+          } else {
+            // Author or default
+            this.router.navigate(['/paper-submission']);
+          }
         } else {
-          this.router.navigate(['/paper-submission']);
+          this.errorMessage = 'Invalid response from server';
+          this.triggerError();
         }
       },
       error: (err) => {
@@ -99,12 +108,12 @@ export class AuthComponent {
       password_hash: this.registerObj.password, // 注意：后端通过 password_hash 接收
       affiliation: this.registerObj.affiliation,
       country: this.registerObj.country,
-      role: 'User',
+      category: 'student',
       is_email_verified: false
     };
 
-    // 2. 发送请求到 /users
-    this.http.post('http://localhost:8080/api/users', dbUser).subscribe({
+    // 2. 发送请求到 /api/auth/register (has duplicate email checking)
+    this.http.post('http://localhost:8080/api/auth/register', dbUser).subscribe({
       next: (res: any) => {
         alert('Registration Successful! Please Sign In.');
 

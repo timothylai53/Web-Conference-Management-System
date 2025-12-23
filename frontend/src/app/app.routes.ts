@@ -1,11 +1,10 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  // Default redirect to auth/login
+  // Default route - redirect based on login status
   { 
     path: '', 
-    redirectTo: '/auth', 
-    pathMatch: 'full' 
+    loadComponent: () => import('./home-redirect.component').then(m => m.HomeRedirectComponent)
   },
   
   // Conference Management
