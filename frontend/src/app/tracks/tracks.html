@@ -3,7 +3,8 @@
   <div class="page-header">
     <div>
       <h1 class="page-title">Tracks Management</h1>
-      <p class="page-subtitle">Organize submission categories for your events</p>
+      <p class="page-subtitle" *ngIf="authService.getCurrentUser()">Organize submission categories for your events</p>
+      <p class="page-subtitle" *ngIf="!authService.getCurrentUser()">View submission categories for conferences</p>
     </div>
 
     <div class="header-actions" style="display: flex; gap: 10px; align-items: center;">
@@ -21,7 +22,7 @@
 
       </select>
 
-      <a routerLink="/tracks/form" class="btn btn-primary">
+      <a *ngIf="authService.getCurrentUser()" routerLink="/tracks/form" class="btn btn-primary">
         <span class="icon">+</span> Create Track
       </a>
     </div>
@@ -52,7 +53,7 @@
         <td class="text-secondary">{{ track.description }}</td>
 
         <td class="actions-cell">
-          <div class="action-buttons-wrapper">
+          <div class="action-buttons-wrapper" *ngIf="authService.getCurrentUser()">
             <a [routerLink]="['/tracks/form', track.track_id]" class="action-btn edit" title="Edit">
               ✎
             </a>
@@ -60,6 +61,9 @@
               &times;
             </button>
           </div>
+          <span *ngIf="!authService.getCurrentUser()" class="text-secondary" style="font-size: 0.85rem;">
+            Login to manage
+          </span>
         </td>
       </tr>
       </tbody>

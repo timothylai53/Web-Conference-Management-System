@@ -258,7 +258,8 @@
   color: #92400e;
 }
 
-.status-accepted {
+.status-accepted,
+.status-reviewed {
   background: var(--success-light);
   color: var(--success-dark, #065f46);
 }

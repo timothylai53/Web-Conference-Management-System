@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
+import { acceptedPaperGuard } from './guards/accepted-paper.guard';
 
 export const routes: Routes = [
-  // Default route - redirect based on login status
+  // Default route - Landing page
   { 
     path: '', 
-    loadComponent: () => import('./home-redirect.component').then(m => m.HomeRedirectComponent)
+    loadComponent: () => import('./landing/landing.component').then(m => m.LandingComponent)
   },
   
   // Conference Management
@@ -41,10 +42,11 @@ export const routes: Routes = [
     loadComponent: () => import('./paper-submission/paper-submission').then(m => m.PaperSubmission)
   },
   
-  // Registration & Payment
+  // Registration & Payment - Protected by acceptedPaperGuard
   { 
     path: 'registration-payment', 
-    loadComponent: () => import('./registration-payment/registration-payment.component').then(m => m.RegistrationPaymentComponent)
+    loadComponent: () => import('./registration-payment/registration-payment.component').then(m => m.RegistrationPaymentComponent),
+    canActivate: [acceptedPaperGuard]
   },
   
   // Review Setup
@@ -108,6 +110,12 @@ export const routes: Routes = [
   { 
     path: 'admin-dashboard/form', 
     loadComponent: () => import('./admin-dashboard/admin-form').then(m => m.AdminFormComponent)
+  },
+  
+  // Reviewer Registration
+  { 
+    path: 'reviewer-registration', 
+    loadComponent: () => import('./reviewer-registration/reviewer-registration.component').then(m => m.ReviewerRegistrationComponent)
   },
   
   // Wildcard route - 404

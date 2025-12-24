@@ -46,21 +46,12 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/']);
   }
 
   navigateHome() {
-    // Navigate to appropriate home page based on role
-    if (this.isAdmin) {
-      this.router.navigate(['/conference']);
-    } else if (this.isReviewer) {
-      this.router.navigate(['/review-execution']);
-    } else if (this.isChair) {
-      this.router.navigate(['/conference']);
-    } else {
-      // Author or default
-      this.router.navigate(['/paper-submission']);
-    }
+    // Always navigate to landing page when clicking logo
+    this.router.navigate(['/']);
   }
 
   getHomeRoute(): string {

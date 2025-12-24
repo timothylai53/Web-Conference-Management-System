@@ -84,6 +84,10 @@ export class PaperSubmissionService {
     return this.http.get<Paper[]>(`${this.baseUrl}/papers`);
   }
 
+  getPapersByUserId(userId: number): Observable<Paper[]> {
+    return this.http.get<Paper[]>(`${this.baseUrl}/papers/user/${userId}`);
+  }
+
   getPaperById(id: number): Observable<Paper> {
     return this.http.get<Paper>(`${this.baseUrl}/papers/${id}`);
   }

@@ -355,13 +355,15 @@
 .status-under-review::before,
 .status-reviewing::before { background: var(--warning-amber); }
 
-.status-accepted {
+.status-accepted,
+.status-reviewed {
   background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
   color: #065f46;
   border-color: rgba(16, 185, 129, 0.2);
 }
 
-.status-accepted::before { background: #10b981; }
+.status-accepted::before,
+.status-reviewed::before { background: #10b981; }
 
 .status-rejected {
   background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);

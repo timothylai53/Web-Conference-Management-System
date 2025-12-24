@@ -3,9 +3,10 @@
   <div class="page-header">
     <div>
       <h1 class="page-title">Conferences</h1>
-      <p class="page-subtitle">Manage your upcoming and past events</p>
+      <p class="page-subtitle" *ngIf="authService.getCurrentUser()">Manage your upcoming and past events</p>
+      <p class="page-subtitle" *ngIf="!authService.getCurrentUser()">Browse upcoming and past academic events</p>
     </div>
-    <a routerLink="/conference/form" class="btn btn-primary">
+    <a *ngIf="authService.getCurrentUser()" routerLink="/conference/form" class="btn btn-primary">
       <span class="icon">+</span> Create Conference
     </a>
   </div>
@@ -69,7 +70,7 @@
         </td>
 
         <td class="actions-cell">
-          <div class="action-buttons-wrapper">
+          <div class="action-buttons-wrapper" *ngIf="authService.getCurrentUser()">
             <a [routerLink]="['/conference/form', conf.conference_id]" class="action-btn edit" title="Edit Details">
               ✎
             </a>
@@ -77,6 +78,9 @@
               &times;
             </button>
           </div>
+          <span *ngIf="!authService.getCurrentUser()" class="text-secondary" style="font-size: 0.85rem;">
+            Login to manage
+          </span>
         </td>
 
       </tr>

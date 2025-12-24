@@ -71,6 +71,76 @@
     </div>
   </section>
 
+  <!-- PENDING REVIEWER APPLICATIONS -->
+  <section class="section mb-8" *ngIf="pendingApplications.length > 0">
+    <div class="section-header flex justify-between items-center mb-4">
+      <h2 class="section-title text-2xl font-semibold">Pending Reviewer Applications</h2>
+      <span class="badge bg-yellow-600 text-white px-3 py-1 rounded-full">
+        {{ pendingApplications.length }} Pending
+      </span>
+    </div>
+
+    <div class="overflow-x-auto bg-gray-800 rounded-lg shadow-lg">
+      <table class="min-w-full divide-y divide-gray-700">
+        <thead class="bg-gray-900">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Name</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Email</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Expertise</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Affiliation</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Country</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Max Papers</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Bio</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Submitted</th>
+            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-300 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-gray-800 divide-y divide-gray-700">
+          <tr *ngFor="let app of pendingApplications" class="hover:bg-gray-750 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-semibold text-white">{{ app.first_name }} {{ app.last_name }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-cyan-400">{{ app.email }}</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-300">{{ app.expertise_area }}</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-300">{{ app.affiliation || 'N/A' }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">{{ app.country || 'N/A' }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+              <div class="text-sm text-gray-300">{{ app.max_papers }}</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-300 max-w-xs truncate" [title]="app.bio">{{ app.bio || 'N/A' }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-400">{{ app.submitted_at | date:'short' }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+              <div class="flex gap-3 justify-center">
+                <button 
+                  (click)="approveApplication(app.application_id)" 
+                  style="background-color: #16a34a; color: white; padding: 8px 20px; border-radius: 6px; font-weight: 600; border: none; cursor: pointer; min-width: 100px;">
+                  Approve
+                </button>
+                <button 
+                  (click)="rejectApplication(app.application_id)" 
+                  style="background-color: #dc2626; color: white; padding: 8px 20px; border-radius: 6px; font-weight: 600; border: none; cursor: pointer; min-width: 100px;">
+                  Reject
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <!-- NOTIFICATIONS -->
   <section class="section mb-8">
     <div class="section-header flex justify-between items-center mb-4">

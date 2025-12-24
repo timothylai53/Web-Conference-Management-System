@@ -177,9 +177,23 @@ export class PaperSubmission implements OnInit {
     this.loading = true;
     this.errorMessage = '';
     
-    this.paperService.getAllPapers().subscribe({
+    // Get current user from localStorage
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) {
+      console.warn('No user logged in');
+      this.loading = false;
+      this.submittedPapers = [];
+      return;
+    }
+
+    const user = JSON.parse(currentUser);
+    const userId = user.user_id;
+    console.log('[loadPapers] Loading papers for user ID:', userId);
+    
+    // Load only papers submitted by the current user
+    this.paperService.getPapersByUserId(userId).subscribe({
       next: (papers) => {
-        console.log('Papers loaded:', papers.length);
+        console.log('Papers loaded for user:', papers.length);
         console.log('Raw papers data:', papers);
         console.log('Available tracks:', this.tracks);
         
@@ -386,6 +400,16 @@ export class PaperSubmission implements OnInit {
     this.loading = true;
     this.errorMessage = '';
     
+    // Get current user ID
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) {
+      alert('You must be logged in to submit a paper');
+      this.loading = false;
+      return;
+    }
+    const user = JSON.parse(currentUser);
+    const userId = user.user_id;
+    
     try {
       // Step 1: Upload file to server
       let uploadedFilename = '';
@@ -404,7 +428,7 @@ export class PaperSubmission implements OnInit {
         file_type: this.fileInfo.file_type,
         version: this.fileInfo.version,
         status: 'Submitted',
-        submitted_by: 1, // Replace with actual user ID from auth service
+        submitted_by: userId, // Use actual logged-in user ID
         submitted_at: new Date(),
         last_updated: new Date()
       };

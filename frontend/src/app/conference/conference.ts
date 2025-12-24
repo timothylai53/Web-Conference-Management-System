@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ConferenceService } from './conference.service';
 import { Conference } from './conference.model';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-conference',
@@ -20,7 +21,8 @@ export class ConferenceComponent implements OnInit {
 
   constructor(
     private conferenceService: ConferenceService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {

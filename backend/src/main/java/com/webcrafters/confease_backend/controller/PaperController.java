@@ -78,4 +78,21 @@ public class PaperController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // Get papers by user ID (author's own papers)
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Paper>> getPapersByUserId(@PathVariable Long userId) {
+        List<Paper> papers = paperRepository.findBySubmittedBy(userId);
+        return ResponseEntity.ok(papers);
+    }
+
+    // Check if user has any accepted papers
+    @GetMapping("/user/{userId}/has-accepted")
+    public ResponseEntity<Boolean> userHasAcceptedPaper(@PathVariable Long userId) {
+        List<Paper> papers = paperRepository.findBySubmittedBy(userId);
+        boolean hasAccepted = papers.stream()
+                .anyMatch(paper -> "accepted".equalsIgnoreCase(paper.getStatus()) 
+                                || "reviewed".equalsIgnoreCase(paper.getStatus()));
+        return ResponseEntity.ok(hasAccepted);
+    }
 }

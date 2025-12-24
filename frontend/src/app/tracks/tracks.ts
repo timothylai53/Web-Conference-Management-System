@@ -6,6 +6,7 @@ import { TrackService } from './track.service';
 import { Track } from './track.model';
 import { ConferenceService } from '../conference/conference.service';
 import { Conference } from '../conference/conference.model';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-tracks',
@@ -31,7 +32,8 @@ export class TracksComponent implements OnInit {
     private conferenceService: ConferenceService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {
