@@ -5,7 +5,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root12345
       MYSQL_DATABASE: cmsdb
-      # Only define MYSQL_USER/MYSQL_PASSWORD if you want a separate user
+      # Optional: Separate user credentials
       MYSQL_USER: appuser
       MYSQL_PASSWORD: apppassword
     ports:
@@ -18,11 +18,12 @@ services:
       start_period: 20s
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./sql:/docker-entrypoint-initdb.d
+      # Note: Path updated to ./backend/sql because docker-compose is now in the root directory
+      - ./backend/sql:/docker-entrypoint-initdb.d
 
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     container_name: assignment-2-webcrafters-backend-1
     ports:
@@ -35,9 +36,20 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./uploads:/uploads
+      # Note: Path updated to ./backend/uploads for consistent root-level referencing
+      - ./backend/uploads:/uploads
     command: >
       java -jar /app.jar
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: assignment-2-webcrafters-frontend-1
+    ports:
+      - "4200:80"  # Access via browser at http://localhost:4200
+    depends_on:
+      - backend
 
 volumes:
   mysql_data:
