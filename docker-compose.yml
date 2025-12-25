@@ -22,6 +22,7 @@ services:
       - ./backend/sql:/docker-entrypoint-initdb.d
 
   backend:
+    image: sinrou0410/confease-backend:v1.0
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -42,6 +43,7 @@ services:
       java -jar /app.jar
 
   frontend:
+    image: sinrou0410/confease-frontend:v1.0
     build:
       context: ./frontend
       dockerfile: Dockerfile
