@@ -24,7 +24,7 @@ FROM nginx:alpine
 # Copy the compiled build artifacts from the build stage to Nginx's default HTML directory
 # ⚠️ Note: For Angular 17+, the default path is usually 'dist/frontend/browser'.
 # If your project name is different, please update the path according to your actual 'dist' subfolder name.
-COPY --from=build /app/dist/frontend /usr/share/nginx/html
+COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
 
 # Expose port 80 (standard HTTP port)
 EXPOSE 80
