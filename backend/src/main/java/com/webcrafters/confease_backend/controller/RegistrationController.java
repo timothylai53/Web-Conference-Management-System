@@ -36,6 +36,13 @@ public class RegistrationController {
         }
     }
 
+    // Get registrations by user ID
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Registration>> getRegistrationsByUserId(@PathVariable Long userId) {
+        List<Registration> registrations = registrationRepository.findByUser_id(userId);
+        return ResponseEntity.ok(registrations);
+    }
+
     // Create a new registration
     @PostMapping
     public ResponseEntity<Registration> createRegistration(@RequestBody Registration registration) {
@@ -49,12 +56,22 @@ public class RegistrationController {
         Optional<Registration> optionalRegistration = registrationRepository.findById(id);
         if (optionalRegistration.isPresent()) {
             Registration registration = optionalRegistration.get();
-            // Update fields
-            registration.setUser_id(registrationDetails.getUser_id());
-            registration.setConference_id(registrationDetails.getConference_id());
-            registration.setRegistration_type(registrationDetails.getRegistration_type());
-            registration.setEarly_bird(registrationDetails.getEarly_bird());
-            registration.setPayment_status(registrationDetails.getPayment_status());
+            // Update only non-null fields to allow partial updates
+            if (registrationDetails.getUser_id() != null) {
+                registration.setUser_id(registrationDetails.getUser_id());
+            }
+            if (registrationDetails.getConference_id() != null) {
+                registration.setConference_id(registrationDetails.getConference_id());
+            }
+            if (registrationDetails.getRegistration_type() != null) {
+                registration.setRegistration_type(registrationDetails.getRegistration_type());
+            }
+            if (registrationDetails.getEarly_bird() != null) {
+                registration.setEarly_bird(registrationDetails.getEarly_bird());
+            }
+            if (registrationDetails.getPayment_status() != null) {
+                registration.setPayment_status(registrationDetails.getPayment_status());
+            }
             // Note: registered_at is typically not updated, as it's a timestamp for when the registration was made
 
             Registration updatedRegistration = registrationRepository.save(registration);

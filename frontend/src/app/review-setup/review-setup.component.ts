@@ -102,8 +102,12 @@ export class ReviewSetupComponent implements OnInit {
   }
 
   isAlreadyAssigned(paperId: number, reviewerId: number): boolean {
+    // Only check for active (Pending or In Progress) assignments
+    // Allow reassignment if previous assignment was Completed (paper was reviewed and potentially rejected/resubmitted)
     return this.assignments.some(
-      a => a.paper_id === paperId && a.reviewer_id === reviewerId
+      a => a.paper_id === paperId && 
+           a.reviewer_id === reviewerId && 
+           (a.status === 'Pending' || a.status === 'In Progress')
     );
   }
 
@@ -171,10 +175,11 @@ export class ReviewSetupComponent implements OnInit {
       return;
     }
 
-    // Check if already assigned
+    // Check if already assigned (only active assignments)
     const existingAssignment = this.assignments.find(
       a => a.paper_id === this.selectedPaper.paper_id && 
-           a.reviewer_id === this.selectedReviewer.reviewer_id
+           a.reviewer_id === this.selectedReviewer.reviewer_id &&
+           (a.status === 'Pending' || a.status === 'In Progress')
     );
 
     if (existingAssignment) {

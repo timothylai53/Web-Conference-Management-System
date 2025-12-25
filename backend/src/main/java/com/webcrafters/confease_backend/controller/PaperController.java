@@ -95,4 +95,38 @@ public class PaperController {
                                 || "reviewed".equalsIgnoreCase(paper.getStatus()));
         return ResponseEntity.ok(hasAccepted);
     }
+
+    // Amend and resubmit a rejected paper
+    @PostMapping("/{id}/amend")
+    public ResponseEntity<Paper> amendPaper(@PathVariable Long id, @RequestBody Paper amendedPaper) {
+        Optional<Paper> optionalPaper = paperRepository.findById(id);
+        if (optionalPaper.isPresent()) {
+            Paper paper = optionalPaper.get();
+            
+            // Check if paper is rejected
+            if (!"Rejected".equalsIgnoreCase(paper.getStatus())) {
+                return ResponseEntity.badRequest().build();
+            }
+            
+            // Update paper with amended content
+            paper.setTitle(amendedPaper.getTitle());
+            paper.setAbstractText(amendedPaper.getAbstractText());
+            paper.setTrack_id(amendedPaper.getTrack_id());
+            paper.setSubmission_file(amendedPaper.getSubmission_file());
+            paper.setFile_type(amendedPaper.getFile_type());
+            
+            // Increment version
+            paper.setVersion(paper.getVersion() != null ? paper.getVersion() + 1 : 2);
+            
+            // Reset status to Submitted for re-review
+            paper.setStatus("Submitted");
+            
+            // Update last_updated timestamp (handled automatically by database)
+            
+            Paper updatedPaper = paperRepository.save(paper);
+            return ResponseEntity.ok(updatedPaper);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

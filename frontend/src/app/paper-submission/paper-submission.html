@@ -93,6 +93,10 @@
                       *ngIf="paper.status === 'Accepted'" matTooltip="Upload Camera-Ready">
                 <mat-icon>upload</mat-icon>
               </button>
+              <button mat-icon-button class="action-btn amend" (click)="showAmendWizard(paper)" 
+                      *ngIf="paper.status === 'Rejected'" matTooltip="Amend & Resubmit">
+                <mat-icon>edit</mat-icon>
+              </button>
             </div>
           </td>
         </ng-container>
@@ -125,7 +129,7 @@
                 <mat-icon>arrow_back</mat-icon>
                 Back to Dashboard
               </button>
-              <h2>Submit New Paper</h2>
+              <h2>{{ isAmendment ? 'Amend & Resubmit Paper' : 'Submit New Paper' }}</h2>
             </div>
           </mat-card-title>
         </mat-card-header>
@@ -345,7 +349,7 @@
                   <button class="btn btn-secondary" matStepperPrevious>Previous</button>
                   <button class="btn btn-primary" (click)="submitPaper()" [disabled]="loading">
                     <span class="icon">✓</span>
-                    {{ loading ? 'Submitting...' : 'Submit Paper' }}
+                    {{ loading ? (isAmendment ? 'Resubmitting...' : 'Submitting...') : (isAmendment ? 'Resubmit Paper' : 'Submit Paper') }}
                   </button>
                 </div>
               </div>

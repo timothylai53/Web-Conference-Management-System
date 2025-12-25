@@ -2,6 +2,7 @@ package com.webcrafters.confease_backend.controller;
 
 import com.webcrafters.confease_backend.model.Author;
 import com.webcrafters.confease_backend.service.AuthorService;
+import com.webcrafters.confease_backend.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,9 @@ public class AuthorController {
     @Autowired
     private AuthorService service;
 
+    @Autowired
+    private AuthorRepository authorRepository;
+
     @GetMapping
     public List<Author> getAll() {
         return service.getAll();
@@ -23,6 +27,11 @@ public class AuthorController {
     @GetMapping("/{id}")
     public Author getById(@PathVariable Long id) {
         return service.getById(id);
+    }
+
+    @GetMapping("/paper/{paperId}")
+    public List<Author> getByPaperId(@PathVariable Long paperId) {
+        return authorRepository.findByPaperId(paperId);
     }
 
     @PostMapping

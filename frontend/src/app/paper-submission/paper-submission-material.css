@@ -548,6 +548,16 @@
   background: var(--alert-light);
 }
 
+.action-btn.amend {
+  color: #f59e0b;
+}
+
+.action-btn.amend:hover {
+  border-color: #f59e0b;
+  color: #f59e0b;
+  background: #fef3c7;
+}
+
 /* --- 8. Forms --- */
 .form-card {
   padding: 48px;

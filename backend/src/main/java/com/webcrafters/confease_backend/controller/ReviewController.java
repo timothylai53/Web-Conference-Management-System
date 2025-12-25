@@ -73,7 +73,32 @@ public class ReviewController {
                 Optional<Paper> paperOpt = paperRepository.findById(paperId);
                 if (paperOpt.isPresent()) {
                     Paper paper = paperOpt.get();
-                    paper.setStatus("Reviewed");
+                    
+                    // Get all reviews for this paper to determine final status
+                    List<Review> paperReviews = reviewRepository.findByAssignmentIdIn(
+                        paperAssignments.stream()
+                            .map(ReviewAssignment::getAssignment_id)
+                            .collect(java.util.stream.Collectors.toList())
+                    );
+                    
+                    // Count accepted vs rejected recommendations
+                    long acceptedCount = paperReviews.stream()
+                        .filter(r -> "Accepted".equalsIgnoreCase(r.getRecommendation()))
+                        .count();
+                    long rejectedCount = paperReviews.stream()
+                        .filter(r -> "Rejected".equalsIgnoreCase(r.getRecommendation()))
+                        .count();
+                    
+                    // Set paper status based on majority decision
+                    if (acceptedCount > rejectedCount) {
+                        paper.setStatus("Accepted");
+                    } else if (rejectedCount > acceptedCount) {
+                        paper.setStatus("Rejected");
+                    } else {
+                        // Tie - default to Reviewed for program chair decision
+                        paper.setStatus("Reviewed");
+                    }
+                    
                     paperRepository.save(paper);
                 }
             }

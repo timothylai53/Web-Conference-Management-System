@@ -104,6 +104,16 @@ export class PaperSubmissionService {
     return this.http.delete<void>(`${this.baseUrl}/papers/${id}`);
   }
 
+  // Amend and resubmit a rejected paper
+  amendPaper(id: number, paper: Paper): Observable<Paper> {
+    return this.http.post<Paper>(`${this.baseUrl}/papers/${id}/amend`, paper);
+  }
+
+  // Get authors by paper ID
+  getAuthorsByPaperId(paperId: number): Observable<Author[]> {
+    return this.http.get<Author[]>(`${this.baseUrl}/author/paper/${paperId}`);
+  }
+
   // File Upload APIs
   uploadFile(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseUrl}/files/upload`, formData);
