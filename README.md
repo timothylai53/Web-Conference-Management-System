@@ -161,6 +161,12 @@ ScholarSync
 | Delete Room        | `/api/rooms/{id}` | DELETE     | http://localhost:8080/api/rooms/{id}| Delete a room by ID            |
 
 ## Result/Output (Screenshot of the output)
+| No | Screenshot | Description |
+|----|------------|-------------|
+| 1  | <img width="700" src="https://github.com/user-attachments/assets/48b5a242-1aef-4c96-bbf9-288d5c23961b" /> |  Auth-user-profile(sign in)        |
+| 2  | <img width="700" src="https://github.com/user-attachments/assets/a9113ba6-f58f-472f-8ea5-01bb8e97ec9b" /> |  Auth-user-profile(create account) |
+| 3  | <img width="700" src="https://github.com/user-attachments/assets/28c0f7f0-bde3-4d84-b088-66890dcd4720"/>  |  Auth-user-profile(profile)        |
+
 
 ## References (Not less than 20)
 Amazon Web Services, Inc. (n.d.). AWS documentation. https://docs.aws.amazon.com/
