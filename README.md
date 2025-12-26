@@ -65,7 +65,7 @@ ScholarSync
 
 ## List of all the endpoints
 
-## User API Endpoint
+## 1. User
 
 | Operation       | Endpoint        | HTTP Method | URL                                           | Description            |
 |-----------------|-----------------|------------|-----------------------------------------------|------------------------|
