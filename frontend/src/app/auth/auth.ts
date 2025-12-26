@@ -118,7 +118,7 @@ export class AuthComponent {
       is_email_verified: false
     };
 
-    this.http.post('http://localhost:8080/api/auth/register', dbUser)
+    this.http.post('http://host.docker.internal:8080/api/auth/register', dbUser)
       .subscribe({
         next: () => {
           alert('Registration Successful! Please Sign In.');
