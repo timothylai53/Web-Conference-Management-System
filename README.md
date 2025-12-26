@@ -166,6 +166,12 @@ ScholarSync
 | 1  | <img width="700" src="https://github.com/user-attachments/assets/48b5a242-1aef-4c96-bbf9-288d5c23961b" /> |  Auth-user-profile(sign in)        |
 | 2  | <img width="700" src="https://github.com/user-attachments/assets/a9113ba6-f58f-472f-8ea5-01bb8e97ec9b" /> |  Auth-user-profile(create account) |
 | 3  | <img width="700" src="https://github.com/user-attachments/assets/28c0f7f0-bde3-4d84-b088-66890dcd4720"/>  |  Auth-user-profile(profile)        |
+| 4  | <img width="700" src="https://github.com/user-attachments/assets/e3a77eab-591f-4cd6-8b67-11032e599357" /> | Conference(Main Page)              |
+| 5  | <img width="700" src="https://github.com/user-attachments/assets/321ad54d-a8fb-442a-ab2a-357c6b91730b"/>  |  Conference(Main Page)             |
+| 6  | <img width="700" src="https://github.com/user-attachments/assets/54fb42ce-4321-4cbf-b7ee-2c102a203974"/>  |  Conference Details                |
+| 7  | <img width="700" src="https://github.com/user-attachments/assets/6d570411-f734-4abe-b975-02f3c9c753ad" /> |  Conference(Main Page)             |
+| 8  | <img width="700" src="https://github.com/user-attachments/assets/b32a2bc8-89e1-4b1f-bd3a-f6079d256886"/>  |  Conference(Main Page)             |
+
 
 
 ## References (Not less than 20)
