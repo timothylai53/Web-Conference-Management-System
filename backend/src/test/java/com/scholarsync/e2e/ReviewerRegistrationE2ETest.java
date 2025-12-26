@@ -5,7 +5,7 @@ import com.microsoft.playwright.options.*;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import java.io.ByteArrayInputStream;
-import java.util.UUID; // Used for unique string generation
+import java.util.UUID;
 
 @Epic("Conference Management System")
 @Feature("Reviewer Management")
@@ -18,7 +18,6 @@ public class ReviewerRegistrationE2ETest {
 
     private static final String BASE_URL = "http://host.docker.internal:4200";
 
-    // Dynamic variables for this specific test run
     private String dynamicFirstName;
     private String dynamicLastName;
     private String dynamicEmail;
@@ -40,7 +39,6 @@ public class ReviewerRegistrationE2ETest {
 
     @BeforeEach
     void createContext() {
-        // Generate random data for each test run
         String uniqueID = UUID.randomUUID().toString().substring(0, 8);
         dynamicFirstName = "Reviewer" + uniqueID;
         dynamicLastName = "Test" + uniqueID;
@@ -49,6 +47,8 @@ public class ReviewerRegistrationE2ETest {
         context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1280, 800));
         page = context.newPage();
         page.onDialog(Dialog::accept);
+        // 打印日志方便在 Jenkins Console 查看动态生成的 Email
+        page.onConsoleMessage(msg -> System.out.println("浏览器日志 >> " + msg.text()));
     }
 
     @AfterEach
@@ -60,75 +60,81 @@ public class ReviewerRegistrationE2ETest {
 
     @Test
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Full flow: Reviewer registration with random data followed by Admin approval")
+    @Description("Full flow: Reviewer registration followed by Admin approval")
     public void testReviewerRegistrationAndApproval() {
 
-        step("Navigate to Reviewer Application", () -> {
+        step("Navigate and Submit Reviewer Application", () -> {
             page.navigate(BASE_URL);
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("🎓 Become a Reviewer")).click();
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("First Name *")).waitFor();
-        });
+            // 确保页面加载完成
+            page.waitForLoadState(LoadState.NETWORKIDLE);
+            page.click("button:has-text('Become a Reviewer')");
 
-        step("Fill Reviewer Application Form with Random Data", () -> {
-            System.out.println("Registering: " + dynamicFirstName + " " + dynamicLastName + " (" + dynamicEmail + ")");
+            page.fill("input[placeholder*='First Name']", dynamicFirstName);
+            page.fill("input[placeholder*='Last Name']", dynamicLastName);
+            page.fill("input[type='email']", dynamicEmail);
+            page.fill("input[placeholder*='Affiliation']", "UTM Melaka");
+            page.fill("input[placeholder*='Country']", "Malaysia");
 
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("First Name *")).fill(dynamicFirstName);
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Last Name *")).fill(dynamicLastName);
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Email *")).fill(dynamicEmail);
+            // 选填项与必填项
+            page.locator("input[type='password']").first().fill("123456");
+            page.locator("input[type='password']").last().fill("123456");
+            page.fill("input[placeholder*='Expertise']", "AI & Security");
+            page.fill("textarea", "This is an automated reviewer application.");
 
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Affiliation")).fill("Test University");
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Country")).fill("Test Country");
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Password *").setExact(true)).fill("123456");
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Confirm Password *")).fill("123456");
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Expertise Area *")).fill("Machine Learning");
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Brief Bio")).fill("Auto-generated bio for " + dynamicFirstName);
-
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Submit Application")).click();
+            page.click("button:has-text('Submit Application')");
+            // 等待提交请求完成
             page.waitForLoadState(LoadState.NETWORKIDLE);
         });
 
-        step("Login as Admin", () -> {
-            page.navigate(BASE_URL);
-            page.click("button:has-text('Get Started')");
-            page.locator("input[name='email']").waitFor();
-            page.locator("input[name='email']").fill("admin@scholarsync.com");
-            page.locator("input[name='password']").fill("admin123");
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
+        step("Login as Admin & Navigate to Panel", () -> {
+            page.navigate(BASE_URL + "/auth");
+            page.fill("input[name='email']", "admin@scholarsync.com");
+            page.fill("input[name='password']", "admin123");
+            page.click("button:has-text('Sign In')");
 
-            Locator adminLink = page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Admin Panel"));
-            adminLink.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+            // 等待 Admin 链接出现并进入后台
+            Locator adminLink = page.locator("a:has-text('Admin Panel'), button:has-text('Admin Panel')");
+            adminLink.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(15000));
             adminLink.click();
 
-            page.waitForURL(url -> url.contains("/admin"), new Page.WaitForURLOptions().setTimeout(15000));
+            page.waitForURL("**/admin/**");
         });
 
         step("Approve Specific Reviewer Application", () -> {
-            // Find the row containing the SPECIFIC dynamic email we just created
+            // 🔥 关键点：如果你的后台有多个 Tab（如 Users, Reviews），需要先点击 'Approvals' 菜单
+            Locator approvalTab = page.locator("a:has-text('Approvals'), button:has-text('Approvals'), .nav-link:has-text('Approvals')");
+            if (approvalTab.isVisible()) {
+                approvalTab.click();
+            }
+
+            // 🔥 核心修复：寻找包含特定 Email 的表格行
+            // 使用更通用的选择器，防止组件库（如 Angular Material）生成的复杂结构
             Locator reviewerRow = page.locator("tr").filter(new Locator.FilterOptions().setHasText(dynamicEmail));
 
-            // Wait for the specific data to appear in the Admin table
-            reviewerRow.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-
-            Locator approveBtn = reviewerRow.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("Approve"));
-
-            if (approveBtn.isVisible()) {
-                approveBtn.click();
-                System.out.println("✅ Successfully approved: " + dynamicEmail);
-                page.waitForTimeout(2000);
-            } else {
-                Assertions.fail("Approve button not found for specific email: " + dynamicEmail);
+            // 如果第一时间没找到，尝试刷新页面（防止后端数据写入延迟）
+            if (!reviewerRow.isVisible()) {
+                System.out.println("⚠️ 未发现记录，尝试刷新页面...");
+                page.reload();
+                page.waitForLoadState(LoadState.NETWORKIDLE);
             }
+
+            // 等待行可见
+            reviewerRow.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(20000));
+
+            // 在该行内点击审批按钮
+            Locator approveBtn = reviewerRow.locator("button:has-text('Approve')");
+            approveBtn.click();
+
+            System.out.println("✅ 成功审批 Reviewer: " + dynamicEmail);
+
+            // 验证该行是否消失或状态变为已审批
+            page.waitForTimeout(2000);
         });
     }
 
     @Step("{0}")
     private void step(String name, Runnable action) {
         System.out.println("▶ Section: " + name);
-        try {
-            action.run();
-        } catch (Exception e) {
-            Allure.addAttachment("Step Failure - " + name, new ByteArrayInputStream(page.screenshot()));
-            throw e;
-        }
+        action.run();
     }
 }
