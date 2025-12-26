@@ -26,7 +26,7 @@ public class ScholarSyncE2ETest {
     // ===================== SETUP =====================
 
     @BeforeAll
-    static void beforeAll() {
+    static void setupBrowser() {
         ensurePdfExists();
 
         playwright = Playwright.create();
@@ -38,22 +38,22 @@ public class ScholarSyncE2ETest {
     }
 
     @AfterAll
-    static void afterAll() {
+    static void closeBrowser() {
         if (playwright != null) playwright.close();
     }
 
     @BeforeEach
-    void beforeEach() {
+    void createContext() {
         context = browser.newContext(
                 new Browser.NewContextOptions()
                         .setViewportSize(1280, 800)
         );
         page = context.newPage();
 
-        // Auto accept alerts
-        page.onDialog(dialog -> dialog.accept());
+        // Auto accept alert dialogs
+        page.onDialog(Dialog::accept);
 
-        // Log browser errors (VERY IMPORTANT)
+        // Log browser errors (CRITICAL for debugging)
         page.onConsoleMessage(msg -> {
             if ("error".equals(msg.type())) {
                 System.out.println("❌ Browser error: " + msg.text());
@@ -62,7 +62,7 @@ public class ScholarSyncE2ETest {
     }
 
     @AfterEach
-    void afterEach(TestInfo info) {
+    void tearDown(TestInfo info) {
         byte[] screenshot = page.screenshot(
                 new Page.ScreenshotOptions().setFullPage(true)
         );
@@ -86,7 +86,7 @@ public class ScholarSyncE2ETest {
         step("Open Homepage", () -> {
             page.navigate(BASE_URL);
             page.waitForLoadState();
-            page.click("button.btn-primary:has-text('Get Started')");
+            page.locator("button.btn-primary:has-text('Get Started')").click();
         });
 
         step("Register User", () -> {
@@ -105,7 +105,7 @@ public class ScholarSyncE2ETest {
 
             page.click("button.btn-primary-lg:has-text('Create Account')");
 
-            // wait for register view to disappear
+            // wait until register view disappears
             page.locator("input[name='regEmail']").waitFor(
                     new Locator.WaitForOptions()
                             .setState(WaitForSelectorState.HIDDEN)
@@ -120,27 +120,18 @@ public class ScholarSyncE2ETest {
             page.click("button.btn-primary-lg:has-text('Sign In')");
         });
 
-        step("Open Submission Wizard", () -> {
+        step("Open Paper Submission", () -> {
             page.waitForURL("**/paper-submission",
                     new Page.WaitForURLOptions().setTimeout(30000));
 
             page.click("button.btn-primary:has-text('Submit New Paper')");
         });
 
-        step("Select Conference (CORRECT WAY)", () -> {
-
-            // 🔥 WAIT FOR BACKEND API (NOT DOM)
-            page.waitForResponse(
-                    response ->
-                            response.url().contains("/api/conferences")
-                                    && response.status() == 200,
-                    new Page.WaitForResponseOptions().setTimeout(20000)
-            );
-
+        step("Select Conference (STABLE)", () -> {
             Locator select = page.locator("select[name='conference_id']");
             select.waitFor();
 
-            // wait until REAL options exist (ignore placeholder)
+            // 🔥 WAIT UNTIL REAL OPTIONS EXIST (ignore hidden placeholder)
             page.waitForCondition(() -> {
                 int count = page.locator(
                         "select[name='conference_id'] option[value]:not([value=''])"
@@ -151,7 +142,7 @@ public class ScholarSyncE2ETest {
             int optionCount = page.locator(
                     "select[name='conference_id'] option[value]:not([value=''])"
             ).count();
-            System.out.println("🟢 Conferences loaded: " + optionCount);
+            System.out.println("🟢 Conference options loaded: " + optionCount);
 
             // select first real conference
             select.selectOption(new SelectOption().setIndex(1));
@@ -187,10 +178,13 @@ public class ScholarSyncE2ETest {
 
             File pdf = new File(PDF_PATH);
             if (!pdf.exists()) {
-                Files.writeString(pdf.toPath(), "Dummy PDF for E2E testing");
+                Files.writeString(
+                        pdf.toPath(),
+                        "Dummy PDF for Playwright E2E testing"
+                );
             }
         } catch (IOException e) {
-            throw new RuntimeException("PDF setup failed", e);
+            throw new RuntimeException("Failed to create PDF", e);
         }
     }
 }
