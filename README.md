@@ -83,7 +83,7 @@ ScholarSync
 | Update Author              | PUT        | /author/{id}      | http://localhost:8080/author/{id}    | Update an existing author                     |
 | Delete Author              | DELETE     | /author/{id}      | http://localhost:8080/author/{id}    | Delete an author by ID                        |
 
-## User
+### User
 | Operation       | HTTP Method | Endpoint     | URL                                | Description            |
 |-----------------|------------|-------------|------------------------------------|------------------------|
 | Create User     | POST       | /users      | http://localhost:8080/users        | Add a new user         |
@@ -91,7 +91,8 @@ ScholarSync
 | Get User by ID  | GET        | /users/{id} | http://localhost:8080/users/{id}   | Retrieve a user by ID  |
 | Update User     | PUT        | /users/{id} | http://localhost:8080/users/{id}   | Update a user          |
 | Delete User     | DELETE     | /users/{id} | http://localhost:8080/users/{id}   | Delete a user          |
-## User Roles
+
+### User Roles
 | Operation           | HTTP Method | Endpoint           | URL                                    | Description                    |
 |--------------------|------------|------------------|----------------------------------------|--------------------------------|
 | Create User Role    | POST       | /user-roles      | http://localhost:8080/user-roles       | Add a new user role            |
@@ -99,7 +100,8 @@ ScholarSync
 | Get User Role by ID | GET        | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Retrieve a user role by ID     |
 | Update User Role    | PUT        | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Update an existing user role   |
 | Delete User Role    | DELETE     | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Delete a user role by ID       |
-##  Conference
+
+###  Conference
 | Operation            | HTTP Method | Endpoint           | URL                                 | Description                            |
 |---------------------|------------|------------------|------------------------------------|----------------------------------------|
 | Create Conference    | POST       | /conferences     | http://localhost:8080/conferences   | Add a new conference                   |
@@ -147,7 +149,7 @@ ScholarSync
 | Update Session    | PUT        | /sessions/{id} | http://localhost:8080/sessions/{id}| Update a session            |
 | Delete Session    | DELETE     | /sessions/{id} | http://localhost:8080/sessions/{id}| Delete a session            |
 
-## Discussion
+### Discussion
 | Operation           | HTTP Method | Endpoint         | URL                              | Description                   |
 |--------------------|------------|----------------|---------------------------------|-------------------------------|
 | Create Discussion   | POST       | /discussion    | http://localhost:8080/discussion | Add a new discussion          |
@@ -156,7 +158,7 @@ ScholarSync
 | Update Discussion   | PUT        | /discussion/{id}| http://localhost:8080/discussion/{id} | Update an existing discussion |
 | Delete Discussion   | DELETE     | /discussion/{id}| http://localhost:8080/discussion/{id} | Delete a discussion by ID     |
 
-## Room
+### Room
 | Operation       | HTTP Method | Endpoint     | URL                                | Description                    |
 |-----------------|------------|-------------|------------------------------------|--------------------------------|
 | Create Room     | POST       | /rooms      | http://localhost:8080/rooms        | Add a new room                 |
@@ -255,7 +257,7 @@ ScholarSync
 | Delete Registration           | DELETE     | /registrations/{id}  | http://localhost:8080/registrations/{id}       | Delete a registration by ID          |
 
 
-## Reviews
+### Reviews
 
 | Operation       | HTTP Method | Endpoint     | URL                                | Description                                                                 |
 |-----------------|------------|-------------|------------------------------------|-----------------------------------------------------------------------------|
