@@ -180,9 +180,8 @@ ScholarSync
 | 15 | <img width="700" src="https://github.com/user-attachments/assets/4945ffa5-2c7d-45ae-8427-79232b6bd1b7" /> |  Conference(Create New Conference) |
 | 16 | <img width="700" src="https://github.com/user-attachments/assets/4d28e09e-c277-441b-812e-c7154aeb2a16"/>  |  Conference(Create New Conference) |
 | 17 | <img width="700" src="https://github.com/user-attachments/assets/b4346544-2d4f-4e76-9e69-6fdf427d1ea6"/>  |  Conference(Create New Conference) |
-
-
-
+| 18 | <img width="700" src="https://github.com/user-attachments/assets/e727092e-7ed8-489b-be86-8d38ba9e38ad"/>  |  Registration                      |
+| 19 | <img width="700" src="https://github.com/user-attachments/assets/a35ede1a-2624-45ac-8fdc-ad19b2ff688a"/>  |  Registration (Payment)            |
 
 ## References (Not less than 20)
 Amazon Web Services, Inc. (n.d.). AWS documentation. https://docs.aws.amazon.com/
