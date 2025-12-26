@@ -72,7 +72,7 @@ ScholarSync
 | Login           | POST       | /auth/login    | http://localhost:8080/auth/login  | Authenticate a user and return user info (without password) |
 | Register        | POST       | /auth/register | http://localhost:8080/auth/register | Register a new user and assign default "Author" role         |
 
-### Authors
+### Author
 
 | Operation                  | HTTP Method | Endpoint            | URL                                   | Description                                  |
 |----------------------------|------------|-------------------|--------------------------------------|----------------------------------------------|
