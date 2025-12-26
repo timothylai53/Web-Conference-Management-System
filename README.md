@@ -174,9 +174,14 @@ ScholarSync
 | 9  | <img width="700" src="https://github.com/user-attachments/assets/ff693ebc-208a-48b2-909f-e66e5b286e38" /> |  Conference(Explore events)        |
 | 10 | <img width="700" src="https://github.com/user-attachments/assets/c74ccaff-dc71-46b0-9709-a17f75633a78"/>  |  Conference(View Tracks)           |
 | 11 | <img width="700" src="https://github.com/user-attachments/assets/69d40dc5-3e3b-46fb-b30b-884ee63a48b7"/>  |  Conference (Create New Tracks)    |
-| 12 | <img width="700" src="https://github.com/user-attachments/assets/4945ffa5-2c7d-45ae-8427-79232b6bd1b7" /> |  Conference(Create New Conference) |
-| 13 | <img width="700" src="https://github.com/user-attachments/assets/4d28e09e-c277-441b-812e-c7154aeb2a16"/>  |  Conference(Create New Conference) |
-| 14 | <img width="700" src="https://github.com/user-attachments/assets/b4346544-2d4f-4e76-9e69-6fdf427d1ea6"/>  |  Conference(Create New Conference) |
+| 12 | <img width="700"  src="https://github.com/user-attachments/assets/3613877f-e0dd-4e45-8422-e50a73c974a7"/> |  Conference(Edit Conference)       |
+| 13 | <img width="700" src="https://github.com/user-attachments/assets/4b53c386-3ff6-4bb3-bc79-7a351e954883"/>  |  Conference(Edit Conference)       |
+| 14 | <img width="700" src="https://github.com/user-attachments/assets/a6605d87-d96f-43b9-8425-b16a30b2e6c0" /> |  Conference(Edit Conference)       |
+| 15 | <img width="700" src="https://github.com/user-attachments/assets/4945ffa5-2c7d-45ae-8427-79232b6bd1b7" /> |  Conference(Create New Conference) |
+| 16 | <img width="700" src="https://github.com/user-attachments/assets/4d28e09e-c277-441b-812e-c7154aeb2a16"/>  |  Conference(Create New Conference) |
+| 17 | <img width="700" src="https://github.com/user-attachments/assets/b4346544-2d4f-4e76-9e69-6fdf427d1ea6"/>  |  Conference(Create New Conference) |
+
+
 
 
 ## References (Not less than 20)
