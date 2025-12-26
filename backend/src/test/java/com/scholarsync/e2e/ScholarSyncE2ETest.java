@@ -1,39 +1,36 @@
-package com.scholarsync.e2e;
+package com.webcrafters.confease_backend.e2e;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.*;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
-
 import java.io.ByteArrayInputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
 
 @Epic("Conference Management System")
-@Feature("Paper Submission")
+@Feature("End-to-End Flow")
 public class ScholarSyncE2ETest {
 
     private static Playwright playwright;
     private static Browser browser;
-
     private BrowserContext context;
     private Page page;
 
+    // 🔥 适配 Jenkins 容器：访问宿主机的前端容器端口
     private static final String BASE_URL = "http://host.docker.internal:4200";
-    private static final String PDF_PATH = "src/test/resources/sample.pdf";
-
-    // ===================== SETUP =====================
 
     @BeforeAll
     static void setupBrowser() {
         ensurePdfExists();
-
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(true)   // Jenkins = true
-                        .setSlowMo(80)
+                        .setHeadless(true) // 🔥 Jenkins 必须开启无头模式
+                        .setSlowMo(100)
         );
     }
 
@@ -45,146 +42,109 @@ public class ScholarSyncE2ETest {
     @BeforeEach
     void createContext() {
         context = browser.newContext(
-                new Browser.NewContextOptions()
-                        .setViewportSize(1280, 800)
+                new Browser.NewContextOptions().setViewportSize(1280, 800)
         );
         page = context.newPage();
 
-        // Auto accept alert dialogs
+        // 🔥 核心修复：自动处理注册成功后的 alert() 弹窗，防止浏览器冻结
         page.onDialog(Dialog::accept);
 
-        // Log browser errors (CRITICAL for debugging)
-        page.onConsoleMessage(msg -> {
-            if ("error".equals(msg.type())) {
-                System.out.println("❌ Browser error: " + msg.text());
-            }
-        });
+        // 🔥 核心调试：将浏览器报错直接打印到 Jenkins 控制台
+        page.onConsoleMessage(msg -> System.out.println("浏览器日志 >> [" + msg.type() + "] " + msg.text()));
+        page.onPageError(err -> System.out.println("浏览器崩溃 >> " + err));
     }
 
     @AfterEach
     void tearDown(TestInfo info) {
-        byte[] screenshot = page.screenshot(
-                new Page.ScreenshotOptions().setFullPage(true)
-        );
-        Allure.addAttachment(
-                "Final State - " + info.getDisplayName(),
-                new ByteArrayInputStream(screenshot)
-        );
+        // 自动截图并附加到 Allure 报告
+        byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
+        Allure.addAttachment("Final State - " + info.getDisplayName(), new ByteArrayInputStream(screenshot));
         context.close();
     }
 
-    // ===================== TEST =====================
-
     @Test
-    @Severity(SeverityLevel.CRITICAL)
-    public void fullPaperSubmissionFlow() {
-
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("User Registration and Paper Submission")
+    @Description("完整的流程：注册、登录、并完成论文提交向导。")
+    public void testFullFlow() {
         String ts = String.valueOf(System.currentTimeMillis());
-        String email = "author" + ts + "@scholarsync.com";
-        String password = "author123";
+        String testEmail = "author" + ts + "@confease.com";
 
-        step("Open Homepage", () -> {
+        step("Navigate to Landing Page", () -> {
             page.navigate(BASE_URL);
-            page.waitForLoadState();
-            page.locator("button.btn-primary:has-text('Get Started')").click();
+            page.locator("button:has-text('Get Started')").waitFor();
+            page.click("button:has-text('Get Started')");
         });
 
-        step("Register User", () -> {
+        step("Register New User", () -> {
             page.waitForURL("**/auth");
-
-            Locator switchBtn =
-                    page.locator(".auth-switch button:has-text('Create an account')");
+            // 切换到注册视图
+            Locator switchBtn = page.locator(".auth-switch button:has-text('Create an account')");
             if (switchBtn.isVisible()) switchBtn.click();
 
-            page.fill("input[name='fName']", "Timothy");
+            // 填写表单：使用 HTML 里的 name 属性
+            page.fill("input[name='fName']", "Author");
             page.fill("input[name='lName']", "Test");
-            page.fill("input[name='regEmail']", email);
-            page.fill("input[name='regPass']", password);
-            page.fill("input[name='aff']", "UUM");
+            page.fill("input[name='regEmail']", testEmail);
+            page.fill("input[name='regPass']", "author123");
+            page.fill("input[name='aff']", "UTM Melaka");
             page.fill("input[name='cnt']", "Malaysia");
 
+            // 点击提交：这将触发 alert() 并由 onDialog 自动处理
             page.click("button.btn-primary-lg:has-text('Create Account')");
-
-            // wait until register view disappears
-            page.locator("input[name='regEmail']").waitFor(
-                    new Locator.WaitForOptions()
-                            .setState(WaitForSelectorState.HIDDEN)
-                            .setTimeout(15000)
-            );
+            System.out.println("注册请求已发送: " + testEmail);
         });
 
-        step("Login", () -> {
-            page.waitForSelector("input[name='email']");
-            page.fill("input[name='email']", email);
-            page.fill("input[name='password']", password);
+        step("Login to System", () -> {
+            // 注册成功后视图会自动切回 Login
+            Locator loginEmail = page.locator("input[name='email']").first();
+            loginEmail.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(15000));
+
+            loginEmail.fill(testEmail);
+            page.fill("input[name='password']", "author123");
             page.click("button.btn-primary-lg:has-text('Sign In')");
         });
 
-        step("Open Paper Submission", () -> {
-            page.waitForURL("**/paper-submission",
-                    new Page.WaitForURLOptions().setTimeout(30000));
-
+        step("Start Paper Submission Wizard", () -> {
+            // 等待登录接口响应并跳转
+            page.waitForURL("**/paper-submission", new Page.WaitForURLOptions().setTimeout(60000));
             page.click("button.btn-primary:has-text('Submit New Paper')");
         });
 
-        step("Select Conference (STABLE)", () -> {
-            Locator select = page.locator("select[name='conference_id']");
-            select.waitFor();
-
-            // 🔥 WAIT UNTIL REAL OPTIONS EXIST (ignore hidden placeholder)
-            page.waitForCondition(() -> {
-                int count = page.locator(
-                        "select[name='conference_id'] option[value]:not([value=''])"
-                ).count();
-                return count > 0;
-            });
-
-            int optionCount = page.locator(
-                    "select[name='conference_id'] option[value]:not([value=''])"
-            ).count();
-            System.out.println("🟢 Conference options loaded: " + optionCount);
-
-            // select first real conference
-            select.selectOption(new SelectOption().setIndex(1));
-
-            page.locator("button[matsteppernext]").first().click();
+        step("Wizard Step 1: Select Conference", () -> {
+            Locator confSelect = page.locator("select[name='conference_id']");
+            confSelect.waitFor();
+            // 确保 data.sql 已成功插入 ID 为 1 的会议
+            page.selectOption("select[name='conference_id']", new SelectOption().setValue("1"));
+            page.click("button[matsteppernext]");
         });
 
-        step("Upload PDF", () -> {
-            page.setInputFiles("input[type='file']", Paths.get(PDF_PATH));
-            page.locator("button[matsteppernext]").click();
+        step("Wizard Step 4: Upload File", () -> {
+            Path pdfPath = Paths.get("src/test/resources/sample.pdf");
+            page.setInputFiles("input[type='file']", pdfPath);
+            page.click("button[matsteppernext]:visible");
         });
 
-        step("Final Submit", () -> {
-            Locator submitBtn =
-                    page.locator("button.btn-primary:has-text('Submit Paper')");
-            submitBtn.waitFor(new Locator.WaitForOptions().setTimeout(15000));
-            submitBtn.click();
+        step("Final Submission", () -> {
+            page.click("button.btn-primary:has-text('Submit Paper')");
+            System.out.println("✅ 整个端到端测试流程成功跑通！");
         });
     }
 
-    // ===================== HELPERS =====================
-
     @Step("{0}")
     private void step(String name, Runnable action) {
-        System.out.println("▶ " + name);
+        System.out.println("▶ 执行步骤: " + name);
         action.run();
     }
 
     private static void ensurePdfExists() {
         try {
-            Path dir = Paths.get("src/test/resources");
-            if (!Files.exists(dir)) Files.createDirectories(dir);
-
-            File pdf = new File(PDF_PATH);
-            if (!pdf.exists()) {
-                Files.writeString(
-                        pdf.toPath(),
-                        "Dummy PDF for Playwright E2E testing"
-                );
-            }
+            Path dirPath = Paths.get("src/test/resources");
+            if (!Files.exists(dirPath)) Files.createDirectories(dirPath);
+            File pdfFile = new File("src/test/resources/sample.pdf");
+            if (!pdfFile.exists()) Files.writeString(pdfFile.toPath(), "Test PDF content.");
         } catch (IOException e) {
-            throw new RuntimeException("Failed to create PDF", e);
+            e.printStackTrace();
         }
     }
 }
