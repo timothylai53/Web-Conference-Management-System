@@ -28,7 +28,7 @@ public class ReviewerRegistrationE2ETest {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(false)
+                        .setHeadless(true)
                         .setSlowMo(150)
         );
     }
