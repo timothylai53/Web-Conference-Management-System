@@ -182,6 +182,13 @@ ScholarSync
 | 17 | <img width="700" src="https://github.com/user-attachments/assets/b4346544-2d4f-4e76-9e69-6fdf427d1ea6"/>  |  Conference(Create New Conference) |
 | 18 | <img width="700" src="https://github.com/user-attachments/assets/e727092e-7ed8-489b-be86-8d38ba9e38ad"/>  |  Conference Registration           |
 | 19 | <img width="700" src="https://github.com/user-attachments/assets/a35ede1a-2624-45ac-8fdc-ad19b2ff688a"/>  |  Comference Registration (Payment) |
+| 20 | <img width="700" src="https://github.com/user-attachments/assets/7358feeb-dc30-4124-9e85-8573ad054e11" /> |  Admin-dashboard                       |
+| 21 | <img width="700" src="https://github.com/user-attachments/assets/dbc4e898-071f-428c-a713-06895671cec6" /> |  Paper-submission (main page)          |
+| 22 | <img width="700" src="https://github.com/user-attachments/assets/553694c4-d8fb-4bc4-a462-1d4306a42291" /> |  Paper-submission (view paper details) |
+| 23 | <img width="700" src="https://github.com/user-attachments/assets/508f8738-a8cc-46ca-be3e-74a4c6703295" /> |  Paper-submission (submit new paper)   |
+| 24 | <img width="700" src="https://github.com/user-attachments/assets/967d474b-001d-40ad-bbb9-d0893a476427" /> |  Paper-submission (submit new paper)   |
+| 25 | <img width="700" src="https://github.com/user-attachments/assets/3a9c73d7-9350-4b95-8a93-ea601acc49db" /> |  Paper-submission (submit new paper)   |
+| 26 | <img width="700" src="https://github.com/user-attachments/assets/fca7855a-397a-4b86-9c8d-b9d233597fae" /> |  Paper-submission (submit new paper)   |
 
 ## References (Not less than 20)
 Amazon Web Services, Inc. (n.d.). AWS documentation. https://docs.aws.amazon.com/
