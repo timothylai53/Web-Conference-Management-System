@@ -93,13 +93,16 @@ ScholarSync
 | Delete Conference    | `/conferences/{id}`    | DELETE     | http://localhost:8080/conferences/{id}           | Delete a conference by its ID          |
 
 ## 4. Review
-| Operation          | Endpoint        | HTTP Method | URL                                           | Description                     |
-|-------------------|-----------------|------------|-----------------------------------------------|---------------------------------|
-| Create Review     | `/review`       | POST       | http://localhost:8080/review                  | Add a new review                |
-| Get All Reviews   | `/review`       | GET        | http://localhost:8080/review                  | Retrieve all reviews            |
-| Get Review by ID  | `/review/{id}`  | GET        | http://localhost:8080/review/{id}             | Retrieve a single review by ID  |
-| Update Review     | `/review/{id}`  | PUT        | http://localhost:8080/review/{id}             | Update existing review          |
-| Delete Review     | `/review/{id}`  | DELETE     | http://localhost:8080/review/{id}             | Delete a review by ID           |
+## Review API Endpoints
+
+| Operation           | Endpoint               | HTTP Method | URL                                    | Description                                                                 |
+|--------------------|-----------------------|------------|----------------------------------------|-----------------------------------------------------------------------------|
+| Create Review       | `/api/reviews`        | POST       | http://localhost:8080/api/reviews      | Add a new review; updates assignment status and paper status if applicable |
+| Get All Reviews     | `/api/reviews`        | GET        | http://localhost:8080/api/reviews      | Retrieve all reviews                                                        |
+| Get Review by ID    | `/api/reviews/{id}`   | GET        | http://localhost:8080/api/reviews/{id} | Retrieve a review by ID                                                     |
+| Update Review       | `/api/reviews/{id}`   | PUT        | http://localhost:8080/api/reviews/{id} | Update an existing review                                                   |
+| Delete Review       | `/api/reviews/{id}`   | DELETE     | http://localhost:8080/api/reviews/{id} | Delete a review by ID                                                       |
+
 
 
 ### 5. Paper
