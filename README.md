@@ -109,6 +109,16 @@ ScholarSync
 | Get Notification by ID | `GET` | http://localhost:8080/notifications/{id} | Retrieve a single notification by ID |
 | Update Notification | `PUT` | http://localhost:8080/notifications/{id} | Update existing notification |
 | Delete Notification | `DELETE` | http://localhost:8080/notifications/{id} | Delete a notification by ID |
+
+### 6. Schedule
+| Operation | HTTP Method | Endpoint | Description |
+|-----------|------------|---------|------------|
+| Create Schedule | `POST` | http://localhost:8080/schedule | Add a new schedule |
+| Get All Schedules | `GET` | http://localhost:8080/schedule | Retrieve all schedules |
+| Get Schedule by ID | `GET` | http://localhost:8080/schedule/5 | Retrieve a single schedule by ID |
+| Update Schedule | `PUT` | http://localhost:8080/schedule/2 | Update existing schedule |
+| Delete Schedule | `DELETE` | http://localhost:8080/schedule/4 | Delete a schedule by ID |
+
 ## Result/Output (Screenshot of the output)
 
 ## References (Not less than 20)
