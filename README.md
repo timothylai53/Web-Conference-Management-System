@@ -358,6 +358,9 @@ ScholarSync
 | 24 | <img width="700" src="https://github.com/user-attachments/assets/967d474b-001d-40ad-bbb9-d0893a476427" /> |  Paper-submission (submit new paper)   |
 | 25 | <img width="700" src="https://github.com/user-attachments/assets/3a9c73d7-9350-4b95-8a93-ea601acc49db" /> |  Paper-submission (submit new paper)   |
 | 26 | <img width="700" src="https://github.com/user-attachments/assets/fca7855a-397a-4b86-9c8d-b9d233597fae" /> |  Paper-submission (submit new paper)   |
+| 27 | <img width="700" src="https://github.com/user-attachments/assets/069c135b-0e23-45b2-b377-bfb1171d90bd" /> |  Review execution(main page)           |
+| 28 | <img width="700" src="https://github.com/user-attachments/assets/8b0e4f94-8fe0-46b3-a077-7e7900f4a81a" /> |  Review execution(review paper )       |
+| 29 | <img width="700" src="https://github.com/user-attachments/assets/cb773a38-00df-4f0c-a3f4-52544a9e55ba" /> |  Review execution(discussion )         |
 
 ## References (Not less than 20)
 Amazon Web Services, Inc. (n.d.). AWS documentation. https://docs.aws.amazon.com/
