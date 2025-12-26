@@ -65,6 +65,16 @@ ScholarSync
 
 ## List of all the endpoints
 
+### 1. User
+| Operation       | HTTP Method | Endpoint                                           | Description        |
+|-----------------|------------|---------------------------------------------------|------------------|
+| Create User     | `POST`       | [http://localhost:8080/users](http://localhost:8080/users) | Add a new user    |
+| Get All Users   | `GET`        | [http://localhost:8080/users](http://localhost:8080/users) | Retrieve all users|
+| Get User by ID  | `GET`        | [http://localhost:8080/users/{id}](http://localhost:8080/users/{id}) | Retrieve a user by ID|
+| Update User     | `PUT`        | [http://localhost:8080/users/{id}](http://localhost:8080/users/{id}) | Update a user    |
+| Delete User     | `DELETE`     | [http://localhost:8080/users/{id}](http://localhost:8080/users/{id}) | Delete a user    |
+
+
 ## Result/Output (Screenshot of the output)
 
 ## References (Not less than 20)
