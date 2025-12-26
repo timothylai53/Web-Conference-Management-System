@@ -92,6 +92,15 @@ ScholarSync
 | Update Review | `PUT` | http://localhost:8080/review/2 | Update existing review |
 | Delete Review | `DELETE` | http://localhost:8080/review/1 | Delete a review by ID |
 
+### 4. Paper
+| Operation | HTTP Method | Endpoint | Description |
+|-----------|------------|---------|------------|
+| Create Paper | `POST` | http://localhost:8080/papers | Add a new paper |
+| Get All Paper | `GET` | http://localhost:8080/papers | Retrieve all paper |
+| Get Paper by ID | `GET` | http://localhost:8080/papers/{id} | Retrieve a single paper by ID |
+| Update Paper | `PUT` | http://localhost:8080/papers/{id} | Update existing paper |
+| Delete Paper | `DELETE` | http://localhost:8080/papers/{id} | Delete a paper by ID |
+
 ## Result/Output (Screenshot of the output)
 
 ## References (Not less than 20)
