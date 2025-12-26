@@ -8,16 +8,16 @@
 1. Mention your group name for Assignment-1 and Assignment-2
 1. Other related info (if any)
 
-| Photo                                                                                                                 | Name | Matric Number | Phone Number | Previous Group |
-|-----------------------------------------------------------------------------------------------------------------------| --------------- |--------|------------| ------------- |
-| <img src="https://github.com/user-attachments/assets/b1d916b4-89e2-46fa-aaf5-fe7d11ec5729" width="120" height="170">  | ADTHIE CHARD A/L BOON | 299967 | 01131810149 | Webboys |
-| <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170">  | GEE SIN ROU | 298556   | 0142693893        | hi5 |
+| Photo | Name | Matric Number | Phone Number | Previous Group |
+| --------------- | --------------- |--------|------------| ------------- |
+| <img src="https://github.com/user-attachments/assets/b1d916b4-89e2-46fa-aaf5-fe7d11ec5729" width="120" height="170"> | ADTHIE CHARD A/L BOON | 299967 | 01131810149 | Webboys |
+| <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170"> | GEE SIN ROU | 298556   | 0142693893        | hi5 |
 | <img src="https://github.com/user-attachments/assets/d374f289-afb1-48c4-ad0b-f517e122c18b" width="120" height="170"/> | ALIA | 2222   | 0128700384        | syntaxerror |
-| <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170">  | TIMOTHY | 297880   | 0136483581        | 405 |
-| <Ima src="https://github.com/user-attachments/assets/e6679905-91ed-425b-a948-22514a490c73" width="120" height="170">  | FAYADH MUHAMMAD | 297032 | 0143287087 | BiscuIT |
-| <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170">  | WAN NUR AZIMAH BINTI WAN RAHMAT | 2222   | 01160724726        | webcrafters |
-| <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170">  | MUHD AFIF AFIFI BIN MUSA | 299783   | 0163878419        | budaksurau |
-| <img src="https://github.com/user-attachments/assets/6b063b37-8a92-4987-b879-157bc2f03a51" width="120" height="170">  | LOH JIA PING | 297839   | 01169503383        | g2 |
+| <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170"> | TIMOTHY | 297880   | 0136483581        | 405 |
+| <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170"> | FAYADH MUHAMMAD | 297032 | 0143287087 | BiscuIT |
+| <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170"> | WAN NUR AZIMAH BINTI WAN RAHMAT | 2222   | 01160724726        | webcrafters |
+| <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170"> | MUHD AFIF AFIFI BIN MUSA | 299783   | 0163878419        | budaksurau |
+| <img src="https://github.com/user-attachments/assets/6b063b37-8a92-4987-b879-157bc2f03a51" width="120" height="170"> | LOH JIA PING | 297839   | 01169503383        | g2 |
 
 ## Title of your application (a unique title)
 
