@@ -74,6 +74,14 @@ ScholarSync
 | Update User     | `PUT`        | [http://localhost:8080/users/{id}](http://localhost:8080/users/{id}) | Update a user    |
 | Delete User     | `DELETE`     | [http://localhost:8080/users/{id}](http://localhost:8080/users/{id}) | Delete a user    |
 
+### 2. Conference
+| Operation            | HTTP Method | Endpoint                                                                       | Description                            |
+| -------------------- | ----------- | ------------------------------------------------------------------------------ | -------------------------------------- |
+| Create Conference    | `POST`      | [http://localhost:8080/conferences](http://localhost:8080/conferences)           | Add a new conference                   |
+| Get All Conferences  | `GET`       | [http://localhost:8080/conferences](http://localhost:8080/conferences)           | Retrieve all conferences               |
+| Get Conference by ID | `GET`       | [http://localhost:8080/conferences/{id}](http://localhost:8080/conferences/{id}) | Retrieve a single conference by its ID |
+| Update Conference    | `PUT`       | [http://localhost:8080/conferences/{id}](http://localhost:8080/conferences/{id}) | Update an existing conference          |
+| Delete Conference    | `DELETE`    | [http://localhost:8080/conferences/{id}](http://localhost:8080/conferences/{id}) | Delete a conference by its ID          |
 
 ## Result/Output (Screenshot of the output)
 
