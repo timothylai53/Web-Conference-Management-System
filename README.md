@@ -66,7 +66,6 @@ ScholarSync
 ## List of all the endpoints
 
 ## 1. User
-
 | Operation       | Endpoint        | HTTP Method | URL                                           | Description            |
 |-----------------|-----------------|------------|-----------------------------------------------|------------------------|
 | Create User     | `/users`        | POST       | http://localhost:8080/users                   | Add a new user         |
@@ -77,7 +76,6 @@ ScholarSync
 
 
 ## 2. Conference
-
 | Operation            | Endpoint               | HTTP Method | URL                                              | Description                            |
 |---------------------|------------------------|------------|--------------------------------------------------|----------------------------------------|
 | Create Conference    | `/conferences`         | POST       | http://localhost:8080/conferences                | Add a new conference                   |
@@ -86,8 +84,7 @@ ScholarSync
 | Update Conference    | `/conferences/{id}`    | PUT        | http://localhost:8080/conferences/{id}           | Update an existing conference          |
 | Delete Conference    | `/conferences/{id}`    | DELETE     | http://localhost:8080/conferences/{id}           | Delete a conference by its ID          |
 
-## 3. Review 
-
+## 3. Review
 | Operation          | Endpoint        | HTTP Method | URL                                           | Description                     |
 |-------------------|-----------------|------------|-----------------------------------------------|---------------------------------|
 | Create Review     | `/review`       | POST       | http://localhost:8080/review                  | Add a new review                |
@@ -126,6 +123,14 @@ ScholarSync
 | Update Schedule     | `/schedule/{id}`  | PUT        | http://localhost:8080/schedule/{id}          | Update existing schedule        |
 | Delete Schedule     | `/schedule/{id}`  | DELETE     | http://localhost:8080/schedule/{id}          | Delete a schedule by ID         |
 
+### 7. Session
+| Operation         | Endpoint           | HTTP Method | URL                                          | Description                 |
+|-------------------|--------------------|------------|----------------------------------------------|-----------------------------|
+| Create Session    | `/sessions`        | POST       | http://localhost:8080/sessions               | Add a new session           |
+| Get All Sessions  | `/sessions`        | GET        | http://localhost:8080/sessions               | Retrieve all sessions       |
+| Get Session by ID | `/sessions/{id}`   | GET        | http://localhost:8080/sessions/{id}          | Retrieve a session by ID    |
+| Update Session    | `/sessions/{id}`   | PUT        | http://localhost:8080/sessions/{id}          | Update a session            |
+| Delete Session    | `/sessions/{id}`   | DELETE     | http://localhost:8080/sessions/{id}          | Delete a session            |
 
 ## Result/Output (Screenshot of the output)
 
