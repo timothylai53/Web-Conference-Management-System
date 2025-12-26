@@ -39,7 +39,22 @@ public class ScholarSyncE2ETest {
     void createContext() {
         context = browser.newContext();
         page = context.newPage();
+
+        // --- 核心调试代码：打印浏览器内部的报错 ---
+        page.onConsoleMessage(msg -> {
+            System.out.println("浏览器日志 >> [" + msg.type() + "] " + msg.text());
+        });
+
+        page.onPageError(err -> {
+            System.out.println("浏览器崩溃/错误 >> " + err);
+        });
     }
+
+    /*@BeforeEach
+    void createContext() {
+        context = browser.newContext();
+        page = context.newPage();
+    }*/
 
     @AfterEach
     void tearDown(TestInfo testInfo) {
