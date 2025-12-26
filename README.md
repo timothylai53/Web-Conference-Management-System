@@ -76,50 +76,56 @@ ScholarSync
 | Delete User     | `/users/{id}`   | DELETE     | http://localhost:8080/users/{id}              | Delete a user          |
 
 
-### 2. Conference
-| Operation            | HTTP Method | Endpoint                                                                       | Description                            |
-| -------------------- | ----------- | ------------------------------------------------------------------------------ | -------------------------------------- |
-| Create Conference    | `POST`      | [http://localhost:8080/conferences](http://localhost:8080/conferences)           | Add a new conference                   |
-| Get All Conferences  | `GET`       | [http://localhost:8080/conferences](http://localhost:8080/conferences)           | Retrieve all conferences               |
-| Get Conference by ID | `GET`       | [http://localhost:8080/conferences/{id}](http://localhost:8080/conferences/{id}) | Retrieve a single conference by its ID |
-| Update Conference    | `PUT`       | [http://localhost:8080/conferences/{id}](http://localhost:8080/conferences/{id}) | Update an existing conference          |
-| Delete Conference    | `DELETE`    | [http://localhost:8080/conferences/{id}](http://localhost:8080/conferences/{id}) | Delete a conference by its ID          |
+## 2. Conference
 
-## 3. Review
-| Operation | HTTP Method | Endpoint | Description |
-|-----------|------------|---------|------------|
-| Create Review | `POST` | http://localhost:8080/review | Add a new review |
-| Get All Reviews | `GET` | http://localhost:8080/review | Retrieve all reviews |
-| Get Review by ID | `GET` | http://localhost:8080/review/2 | Retrieve a single review by ID |
-| Update Review | `PUT` | http://localhost:8080/review/2 | Update existing review |
-| Delete Review | `DELETE` | http://localhost:8080/review/1 | Delete a review by ID |
+| Operation            | Endpoint               | HTTP Method | URL                                              | Description                            |
+|---------------------|------------------------|------------|--------------------------------------------------|----------------------------------------|
+| Create Conference    | `/conferences`         | POST       | http://localhost:8080/conferences                | Add a new conference                   |
+| Get All Conferences  | `/conferences`         | GET        | http://localhost:8080/conferences                | Retrieve all conferences               |
+| Get Conference by ID | `/conferences/{id}`    | GET        | http://localhost:8080/conferences/{id}           | Retrieve a single conference by its ID |
+| Update Conference    | `/conferences/{id}`    | PUT        | http://localhost:8080/conferences/{id}           | Update an existing conference          |
+| Delete Conference    | `/conferences/{id}`    | DELETE     | http://localhost:8080/conferences/{id}           | Delete a conference by its ID          |
+
+## 3. Review 
+
+| Operation          | Endpoint        | HTTP Method | URL                                           | Description                     |
+|-------------------|-----------------|------------|-----------------------------------------------|---------------------------------|
+| Create Review     | `/review`       | POST       | http://localhost:8080/review                  | Add a new review                |
+| Get All Reviews   | `/review`       | GET        | http://localhost:8080/review                  | Retrieve all reviews            |
+| Get Review by ID  | `/review/{id}`  | GET        | http://localhost:8080/review/{id}             | Retrieve a single review by ID  |
+| Update Review     | `/review/{id}`  | PUT        | http://localhost:8080/review/{id}             | Update existing review          |
+| Delete Review     | `/review/{id}`  | DELETE     | http://localhost:8080/review/{id}             | Delete a review by ID           |
+
 
 ### 4. Paper
-| Operation | HTTP Method | Endpoint | Description |
-|-----------|------------|---------|------------|
-| Create Paper | `POST` | http://localhost:8080/papers | Add a new paper |
-| Get All Paper | `GET` | http://localhost:8080/papers | Retrieve all paper |
-| Get Paper by ID | `GET` | http://localhost:8080/papers/{id} | Retrieve a single paper by ID |
-| Update Paper | `PUT` | http://localhost:8080/papers/{id} | Update existing paper |
-| Delete Paper | `DELETE` | http://localhost:8080/papers/{id} | Delete a paper by ID |
+| Operation          | Endpoint        | HTTP Method | URL                                           | Description                     |
+|-------------------|-----------------|------------|-----------------------------------------------|---------------------------------|
+| Create Paper      | `/papers`       | POST       | http://localhost:8080/papers                  | Add a new paper                 |
+| Get All Paper     | `/papers`       | GET        | http://localhost:8080/papers                  | Retrieve all paper              |
+| Get Paper by ID   | `/papers/{id}`  | GET        | http://localhost:8080/papers/{id}             | Retrieve a single paper by ID   |
+| Update Paper      | `/papers/{id}`  | PUT        | http://localhost:8080/papers/{id}             | Update existing paper           |
+| Delete Paper      | `/papers/{id}`  | DELETE     | http://localhost:8080/papers/{id}             | Delete a paper by ID            |
+
 
 ### 5. Notification
-| Operation | HTTP Method | Endpoint | Description |
-|-----------|------------|---------|------------|
-| Create Notification | `POST` | http://localhost:8080/notifications | Add a new notification |
-| Get All Notification | `GET` | http://localhost:8080/notifications | Retrieve all notification |
-| Get Notification by ID | `GET` | http://localhost:8080/notifications/{id} | Retrieve a single notification by ID |
-| Update Notification | `PUT` | http://localhost:8080/notifications/{id} | Update existing notification |
-| Delete Notification | `DELETE` | http://localhost:8080/notifications/{id} | Delete a notification by ID |
+| Operation                | Endpoint              | HTTP Method | URL                                               | Description                          |
+|--------------------------|-----------------------|------------|---------------------------------------------------|--------------------------------------|
+| Create Notification      | `/notifications`      | POST       | http://localhost:8080/notifications               | Add a new notification               |
+| Get All Notification     | `/notifications`      | GET        | http://localhost:8080/notifications               | Retrieve all notification            |
+| Get Notification by ID   | `/notifications/{id}` | GET        | http://localhost:8080/notifications/{id}          | Retrieve a single notification by ID |
+| Update Notification      | `/notifications/{id}` | PUT        | http://localhost:8080/notifications/{id}          | Update existing notification         |
+| Delete Notification      | `/notifications/{id}` | DELETE     | http://localhost:8080/notifications/{id}          | Delete a notification by ID          |
+
 
 ### 6. Schedule
-| Operation | HTTP Method | Endpoint | Description |
-|-----------|------------|---------|------------|
-| Create Schedule | `POST` | http://localhost:8080/schedule | Add a new schedule |
-| Get All Schedules | `GET` | http://localhost:8080/schedule | Retrieve all schedules |
-| Get Schedule by ID | `GET` | http://localhost:8080/schedule/5 | Retrieve a single schedule by ID |
-| Update Schedule | `PUT` | http://localhost:8080/schedule/2 | Update existing schedule |
-| Delete Schedule | `DELETE` | http://localhost:8080/schedule/4 | Delete a schedule by ID |
+| Operation            | Endpoint          | HTTP Method | URL                                          | Description                     |
+|---------------------|-------------------|------------|----------------------------------------------|---------------------------------|
+| Create Schedule     | `/schedule`       | POST       | http://localhost:8080/schedule               | Add a new schedule              |
+| Get All Schedules   | `/schedule`       | GET        | http://localhost:8080/schedule               | Retrieve all schedules          |
+| Get Schedule by ID  | `/schedule/{id}`  | GET        | http://localhost:8080/schedule/{id}          | Retrieve a single schedule by ID|
+| Update Schedule     | `/schedule/{id}`  | PUT        | http://localhost:8080/schedule/{id}          | Update existing schedule        |
+| Delete Schedule     | `/schedule/{id}`  | DELETE     | http://localhost:8080/schedule/{id}          | Delete a schedule by ID         |
+
 
 ## Result/Output (Screenshot of the output)
 
