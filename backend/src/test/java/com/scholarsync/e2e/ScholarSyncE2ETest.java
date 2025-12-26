@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class ScholarSyncTest {
+public class ScholarSyncE2ETest {
 
     public static void main(String[] args) {
         // 1. Prepare PDF file (create automatically if it doesn't exist)
