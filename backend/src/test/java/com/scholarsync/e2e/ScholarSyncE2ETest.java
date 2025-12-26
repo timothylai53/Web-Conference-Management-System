@@ -24,7 +24,7 @@ public class ScholarSyncE2ETest {
     static void launchBrowser() {
         ensurePdfExists();
         playwright = Playwright.create();
-        // Headless must be true for Jenkins
+        // Jenkins 环境必须使用 headless 模式
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
                 .setHeadless(true)
                 .setSlowMo(100));
@@ -40,7 +40,7 @@ public class ScholarSyncE2ETest {
         context = browser.newContext();
         page = context.newPage();
 
-        // --- 核心调试代码：打印浏览器内部的报错 ---
+        // --- 核心调试代码：将浏览器内部报错打印到 Jenkins 控制台 ---
         page.onConsoleMessage(msg -> {
             System.out.println("浏览器日志 >> [" + msg.type() + "] " + msg.text());
         });
@@ -50,16 +50,9 @@ public class ScholarSyncE2ETest {
         });
     }
 
-    /*@BeforeEach
-    void createContext() {
-        context = browser.newContext();
-        page = context.newPage();
-    }*/
-
     @AfterEach
     void tearDown(TestInfo testInfo) {
-        // --- FEATURE: Automatic Screenshot for Allure ---
-        // This helps you see why the test failed (e.g., CORS error or Login failed)
+        // --- 自动截图：无论成功失败，都会在 Allure 报告中保留最后画面 ---
         byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
         Allure.addAttachment("Final State - " + testInfo.getDisplayName(), new ByteArrayInputStream(screenshot));
 
@@ -67,27 +60,47 @@ public class ScholarSyncE2ETest {
     }
 
     @Test
-    @Story("User can submit a paper successfully")
-    @Description("End-to-end test for logging in and submitting a research paper via the wizard.")
+    @Story("User can register, login and submit a paper")
+    @Description("完整的端到端流程：从注册新用户到登录，再到通过向导提交论文。")
     @Severity(SeverityLevel.CRITICAL)
     public void testFullPaperSubmissionFlow() {
 
         step("Navigate to Homepage", () -> {
-            // Using host.docker.internal to access the host's port 4200 from inside the container
+            // 使用 host.docker.internal 访问宿主机的 4200 端口
             page.navigate("http://host.docker.internal:4200/");
             page.locator("button.btn-primary:has-text('Get Started')").waitFor();
             page.locator("button.btn-primary:has-text('Get Started')").click();
         });
 
-        step("Login to System", () -> {
+        // 🔥 新增步骤：解决 401 错误。如果用户不存在，我们先注册一个。
+        step("Register Test User (Ensure Account Exists)", () -> {
             page.waitForURL("**/auth");
-            page.locator("input[name='email']").fill("author@scholarsync.com");
-            page.locator("input[name='password']").fill("author123");
+            // 切换到注册模式
+            if (page.locator("text=Create an account").isVisible()) {
+                page.locator("text=Create an account").click();
+            }
+
+            page.locator("input[placeholder='First Name']").fill("Author");
+            page.locator("input[placeholder='Last Name']").fill("Test");
+            page.locator("input[name='email']").last().fill("author@scholarsync.com");
+            page.locator("input[name='password']").last().fill("author123");
+            page.locator("input[placeholder='University/Organization']").fill("UTM");
+
+            // 点击注册按钮（假设注册成功后会自动跳转或弹出提示）
+            page.locator("button:has-text('Sign Up')").click();
+            System.out.println("注册请求已发送...");
+        });
+
+        step("Login to System", () -> {
+            // 返回登录页（如果注册后没自动跳转）
+            page.navigate("http://host.docker.internal:4200/auth");
+            page.locator("input[name='email']").first().fill("author@scholarsync.com");
+            page.locator("input[name='password']").first().fill("author123");
             page.locator("button:has-text('Sign In')").click();
         });
 
         step("Start Paper Submission Wizard", () -> {
-            // If it hangs here, the screenshot in Allure will show you the error message
+            // 增加等待时间至 60 秒，确保后端 API 响应
             page.waitForURL("**/paper-submission", new Page.WaitForURLOptions().setTimeout(60000));
             page.locator("button.btn-primary:has-text('Submit New Paper')").click();
         });
@@ -127,9 +140,7 @@ public class ScholarSyncE2ETest {
             page.locator("input[placeholder='Type and press Enter']").fill("DevOps");
             page.locator("button.btn-primary:has-text('Add')").click();
             page.locator("button.btn-primary:has-text('Submit Paper')").click();
-
-            // Wait for success message or redirection
-            System.out.println("Test successfully completed navigation steps!");
+            System.out.println("测试成功跑通所有向导步骤！");
         });
     }
 
