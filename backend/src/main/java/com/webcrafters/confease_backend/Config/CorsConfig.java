@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // 允许所有路径
-                        .allowedOrigins("http://localhost:4200") // 明确允许前端地址
+                        .allowedOrigins("*") // 明确允许前端地址
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 允许的方法
                         .allowedHeaders("*") // 允许所有 Header
                         .allowCredentials(true); // 允许携带 Cookie/认证信息

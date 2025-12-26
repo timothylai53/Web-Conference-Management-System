@@ -25,8 +25,8 @@ pipeline {
                 script {
                     sh 'docker compose down || true'
                     sh 'docker compose up -d --build'
-                    echo 'Waiting 45s for stability...'
-                    sh 'sleep 45'
+                    echo 'Waiting 60s for stability...'
+                    sh 'sleep 60'
                 }
             }
         }
