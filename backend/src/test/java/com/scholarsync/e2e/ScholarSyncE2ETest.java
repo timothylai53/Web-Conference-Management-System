@@ -52,7 +52,7 @@ public class ScholarSyncE2ETest {
     public void testFullPaperSubmissionFlow() throws InterruptedException {
 
         step("Navigate to Homepage", () -> {
-            page.navigate("http://localhost:4200/");
+            page.navigate("http://frontend:80/");
             page.locator("button.btn-primary:has-text('Get Started')").click();
         });
 
