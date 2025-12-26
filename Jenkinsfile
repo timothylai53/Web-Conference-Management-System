@@ -3,14 +3,15 @@ pipeline {
 
     environment {
         DOCKER_HUB_USER = 'sinrou0410'
-        APP_NAME = 'confease-backend'
+        // 根据你刚才 docker images 的结果修改：
+        BACKEND_IMAGE = 'assignment-3-pipeline-backend'
+        FRONTEND_IMAGE = 'assignment-3-pipeline-frontend'
     }
 
     stages {
-        // Stage 1: 编译 JAR 包（跳过测试以加快速度）
         stage('Build Backend') {
             steps {
-                echo 'Building Spring Boot Backend (JAR file)...'
+                echo 'Building Spring Boot Backend...'
                 dir('backend') {
                     sh 'chmod +x mvnw'
                     sh './mvnw clean package -DskipTests'
@@ -18,41 +19,39 @@ pipeline {
             }
         }
 
-        // Stage 2: 部署到 Docker（让系统跑起来，测试才能访问）
         stage('Deploy') {
             steps {
                 echo 'Deploying containers locally...'
                 script {
-                    try {
-                        sh 'docker compose down || true'
-                        sh 'docker compose up -d --build'
-                        echo 'Waiting 15 seconds for backend to stabilize...'
-                        sh 'sleep 15' // 给数据库和后端一点启动时间
-                    } catch (Exception e) {
-                        error "Deployment failed. Check docker.sock permissions."
-                    }
+                    sh 'docker compose down || true'
+                    sh 'docker compose up -d --build'
+                    echo 'Waiting 15s for stability...'
+                    sh 'sleep 15'
                 }
             }
         }
 
-        // Stage 3: 运行 Playwright 测试（此时网页已在线）
         stage('Test') {
             steps {
                 echo 'Running Playwright Tests...'
                 dir('backend') {
-                    // 运行测试并生成 allure-results
+                    // 运行测试产生 allure-results
                     sh './mvnw test'
                 }
             }
         }
 
-        // Stage 4: 推送到 Docker Hub
         stage('Push to Docker Hub') {
             steps {
-                echo 'Tagging and Pushing images...'
+                echo 'Tagging and Pushing Backend & Frontend...'
                 script {
-                    sh "docker tag ${APP_NAME}:latest ${DOCKER_HUB_USER}/${APP_NAME}:latest"
-                    sh "docker push ${DOCKER_HUB_USER}/${APP_NAME}:latest"
+                    // 后端 Push
+                    sh "docker tag ${BACKEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-backend:latest"
+                    sh "docker push ${DOCKER_HUB_USER}/confease-backend:latest"
+
+                    // 前端 Push (既然老师要求 Image of your frontend)
+                    sh "docker tag ${FRONTEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-frontend:latest"
+                    sh "docker push ${DOCKER_HUB_USER}/confease-frontend:latest"
                 }
             }
         }
@@ -60,14 +59,11 @@ pipeline {
 
     post {
         always {
-            // 无论测试成功还是失败，都生成 Allure 报告
+            // 修正路径：由于是在 dir('backend') 下运行的测试，结果在 backend/target
             allure includeProperties: false, results: [[path: 'backend/target/allure-results']]
         }
         success {
-            echo '✅ SUCCESS: Built, Deployed, Tested, and Pushed to Docker Hub!'
-        }
-        failure {
-            echo '❌ FAILURE: Pipeline failed. Check console logs and Allure report.'
+            echo '✅ MISSION ACCOMPLISHED: Everything is on Docker Hub!'
         }
     }
 }
