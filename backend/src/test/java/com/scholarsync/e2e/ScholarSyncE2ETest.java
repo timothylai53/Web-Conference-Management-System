@@ -41,9 +41,14 @@ public class ScholarSyncE2ETest {
         context = browser.newContext();
         page = context.newPage();
 
-        // 调试：将浏览器内部日志输出到 Jenkins 控制台
+        // 🔥 核心修复：自动处理所有的对话框（Alert/Confirm/Prompt）
+        page.onDialog(dialog -> {
+            System.out.println("自动处理弹窗 >> " + dialog.message());
+            dialog.accept(); // 相当于点击“确定”
+        });
+
+        // 原有的调试日志保留
         page.onConsoleMessage(msg -> System.out.println("浏览器日志 >> [" + msg.type() + "] " + msg.text()));
-        page.onPageError(err -> System.out.println("浏览器崩溃/错误 >> " + err));
     }
 
     @AfterEach
