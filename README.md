@@ -101,6 +101,14 @@ ScholarSync
 | Update Paper | `PUT` | http://localhost:8080/papers/{id} | Update existing paper |
 | Delete Paper | `DELETE` | http://localhost:8080/papers/{id} | Delete a paper by ID |
 
+### 5. Notification
+| Operation | HTTP Method | Endpoint | Description |
+|-----------|------------|---------|------------|
+| Create Notification | `POST` | http://localhost:8080/notifications | Add a new notification |
+| Get All Notification | `GET` | http://localhost:8080/notifications | Retrieve all notification |
+| Get Notification by ID | `GET` | http://localhost:8080/notifications/{id} | Retrieve a single notification by ID |
+| Update Notification | `PUT` | http://localhost:8080/notifications/{id} | Update existing notification |
+| Delete Notification | `DELETE` | http://localhost:8080/notifications/{id} | Delete a notification by ID |
 ## Result/Output (Screenshot of the output)
 
 ## References (Not less than 20)
