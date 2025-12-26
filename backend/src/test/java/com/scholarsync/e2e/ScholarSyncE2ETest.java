@@ -12,7 +12,6 @@ import java.nio.file.*;
 
 @Epic("Conference Management System")
 @Feature("Paper Submission")
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ScholarSyncE2ETest {
 
     private static Playwright playwright;
@@ -27,38 +26,34 @@ public class ScholarSyncE2ETest {
     // ===================== SETUP =====================
 
     @BeforeAll
-    static void setupBrowser() {
+    static void beforeAll() {
         ensurePdfExists();
 
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(true)     // Jenkins = true
+                        .setHeadless(true)   // Jenkins = true
                         .setSlowMo(80)
         );
     }
 
     @AfterAll
-    static void teardownBrowser() {
+    static void afterAll() {
         if (playwright != null) playwright.close();
     }
 
     @BeforeEach
-    void createContext() {
+    void beforeEach() {
         context = browser.newContext(
                 new Browser.NewContextOptions()
                         .setViewportSize(1280, 800)
         );
-
         page = context.newPage();
 
-        // Auto-accept alerts
-        page.onDialog(dialog -> {
-            System.out.println("⚠️ Dialog: " + dialog.message());
-            dialog.accept();
-        });
+        // Auto accept alerts
+        page.onDialog(dialog -> dialog.accept());
 
-        // Print browser errors
+        // Log browser errors (VERY IMPORTANT)
         page.onConsoleMessage(msg -> {
             if ("error".equals(msg.type())) {
                 System.out.println("❌ Browser error: " + msg.text());
@@ -67,7 +62,7 @@ public class ScholarSyncE2ETest {
     }
 
     @AfterEach
-    void tearDown(TestInfo info) {
+    void afterEach(TestInfo info) {
         byte[] screenshot = page.screenshot(
                 new Page.ScreenshotOptions().setFullPage(true)
         );
@@ -75,16 +70,14 @@ public class ScholarSyncE2ETest {
                 "Final State - " + info.getDisplayName(),
                 new ByteArrayInputStream(screenshot)
         );
-
-        if (context != null) context.close();
+        context.close();
     }
 
     // ===================== TEST =====================
 
     @Test
-    @Story("Register → Login → Submit Paper")
     @Severity(SeverityLevel.CRITICAL)
-    public void testFullPaperSubmissionFlow() {
+    public void fullPaperSubmissionFlow() {
 
         String ts = String.valueOf(System.currentTimeMillis());
         String email = "author" + ts + "@scholarsync.com";
@@ -93,22 +86,15 @@ public class ScholarSyncE2ETest {
         step("Open Homepage", () -> {
             page.navigate(BASE_URL);
             page.waitForLoadState();
-
-            page.locator("button.btn-primary:has-text('Get Started')")
-                    .waitFor();
-            page.locator("button.btn-primary:has-text('Get Started')")
-                    .click();
+            page.click("button.btn-primary:has-text('Get Started')");
         });
 
-        step("Register New User", () -> {
+        step("Register User", () -> {
             page.waitForURL("**/auth");
 
-            Locator switchBtn = page.locator(
-                    ".auth-switch button:has-text('Create an account')"
-            );
-            if (switchBtn.isVisible()) {
-                switchBtn.click();
-            }
+            Locator switchBtn =
+                    page.locator(".auth-switch button:has-text('Create an account')");
+            if (switchBtn.isVisible()) switchBtn.click();
 
             page.fill("input[name='fName']", "Timothy");
             page.fill("input[name='lName']", "Test");
@@ -119,72 +105,70 @@ public class ScholarSyncE2ETest {
 
             page.click("button.btn-primary-lg:has-text('Create Account')");
 
-            // IMPORTANT: wait for register view to disappear
-            page.locator("input[name='regEmail']")
-                    .waitFor(new Locator.WaitForOptions()
+            // wait for register view to disappear
+            page.locator("input[name='regEmail']").waitFor(
+                    new Locator.WaitForOptions()
                             .setState(WaitForSelectorState.HIDDEN)
-                            .setTimeout(15000));
+                            .setTimeout(15000)
+            );
         });
 
         step("Login", () -> {
             page.waitForSelector("input[name='email']");
-
             page.fill("input[name='email']", email);
             page.fill("input[name='password']", password);
-
             page.click("button.btn-primary-lg:has-text('Sign In')");
         });
 
-        step("Go to Paper Submission", () -> {
+        step("Open Submission Wizard", () -> {
             page.waitForURL("**/paper-submission",
                     new Page.WaitForURLOptions().setTimeout(30000));
 
-            page.locator("button.btn-primary:has-text('Submit New Paper')")
-                    .waitFor();
             page.click("button.btn-primary:has-text('Submit New Paper')");
         });
 
-        step("Wizard Step 1 – Select Conference", () -> {
+        step("Select Conference (CORRECT WAY)", () -> {
+
+            // 🔥 WAIT FOR BACKEND API (NOT DOM)
+            page.waitForResponse(
+                    response ->
+                            response.url().contains("/api/conferences")
+                                    && response.status() == 200,
+                    new Page.WaitForResponseOptions().setTimeout(20000)
+            );
+
             Locator select = page.locator("select[name='conference_id']");
             select.waitFor();
 
-            // 🔥 CRITICAL FIX: wait for async options
-            page.waitForSelector(
-                    "select[name='conference_id'] option",
-                    new Page.WaitForSelectorOptions().setTimeout(15000)
-            );
+            // wait until REAL options exist (ignore placeholder)
+            page.waitForCondition(() -> {
+                int count = page.locator(
+                        "select[name='conference_id'] option[value]:not([value=''])"
+                ).count();
+                return count > 0;
+            });
 
-            // Debug safety
-            int count = page.locator(
-                    "select[name='conference_id'] option"
+            int optionCount = page.locator(
+                    "select[name='conference_id'] option[value]:not([value=''])"
             ).count();
-            System.out.println("🟢 Conference options loaded: " + count);
+            System.out.println("🟢 Conferences loaded: " + optionCount);
 
+            // select first real conference
             select.selectOption(new SelectOption().setIndex(1));
 
             page.locator("button[matsteppernext]").first().click();
         });
 
         step("Upload PDF", () -> {
-            page.setInputFiles(
-                    "input[type='file']",
-                    Paths.get(PDF_PATH)
-            );
-
+            page.setInputFiles("input[type='file']", Paths.get(PDF_PATH));
             page.locator("button[matsteppernext]").click();
         });
 
         step("Final Submit", () -> {
-            Locator submitBtn = page.locator(
-                    "button.btn-primary:has-text('Submit Paper')"
-            );
-
-            submitBtn.waitFor(
-                    new Locator.WaitForOptions().setTimeout(15000)
-            );
+            Locator submitBtn =
+                    page.locator("button.btn-primary:has-text('Submit Paper')");
+            submitBtn.waitFor(new Locator.WaitForOptions().setTimeout(15000));
             submitBtn.click();
-
-            System.out.println("🎉 Paper submitted successfully!");
         });
     }
 
@@ -203,10 +187,7 @@ public class ScholarSyncE2ETest {
 
             File pdf = new File(PDF_PATH);
             if (!pdf.exists()) {
-                Files.writeString(
-                        pdf.toPath(),
-                        "Dummy PDF for Playwright testing"
-                );
+                Files.writeString(pdf.toPath(), "Dummy PDF for E2E testing");
             }
         } catch (IOException e) {
             throw new RuntimeException("PDF setup failed", e);
