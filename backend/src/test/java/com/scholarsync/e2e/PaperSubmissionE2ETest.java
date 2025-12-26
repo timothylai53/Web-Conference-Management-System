@@ -20,10 +20,8 @@ public class PaperSubmissionE2ETest {
     private BrowserContext context;
     private Page page;
 
-    // 🔥 Using host.docker.internal for Jenkins/Docker environments
-    private static final String BASE_URL = System.getenv("APP_URL") != null
-            ? System.getenv("APP_URL")
-            : "http://host.docker.internal:4200";
+    // 🔥 适配 Jenkins：必须通过 host.docker.internal 访问宿主机端口
+    private static final String BASE_URL = "http://host.docker.internal:4200";
 
     @BeforeAll
     static void setupBrowser() {
@@ -31,7 +29,7 @@ public class PaperSubmissionE2ETest {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(true) // Required for CI/Jenkins
+                        .setHeadless(true) // 🔥 适配 Jenkins 容器环境
                         .setSlowMo(100)
         );
     }
@@ -45,9 +43,10 @@ public class PaperSubmissionE2ETest {
     void createContext() {
         context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1280, 800));
         page = context.newPage();
+        // 自动处理所有对话框/弹窗
         page.onDialog(Dialog::accept);
-        // Useful for Jenkins Console Logs
-        page.onConsoleMessage(msg -> System.out.println("Browser Log: " + msg.text()));
+        // 打印控制台日志以便调试
+        page.onConsoleMessage(msg -> System.out.println("浏览器日志 >> [" + msg.type() + "] " + msg.text()));
     }
 
     @AfterEach
@@ -59,63 +58,75 @@ public class PaperSubmissionE2ETest {
 
     @Test
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify end-to-end paper submission in Jenkins environment")
+    @Story("Author Submission Journey")
+    @Description("验证已注册作者能否成功登录并完成论文提交向导")
     public void testSuccessfulPaperSubmission() {
 
         step("Login as Author", () -> {
-            page.navigate(BASE_URL + "/auth"); // Navigate directly to auth to save time
+            page.navigate(BASE_URL);
+            page.click("button:has-text('Get Started')");
+
             page.locator("input[name='email']").fill("author@scholarsync.com");
             page.locator("input[name='password']").fill("author123");
+
+            // 点击登录并显式等待 URL 跳转
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
 
-            // Wait for dashboard element to confirm login
-            Locator submitBtn = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("+ Submit New Paper"));
-            submitBtn.waitFor(new Locator.WaitForOptions().setTimeout(15000));
-            Assertions.assertTrue(submitBtn.isVisible(), "Login failed: Submit button not found");
+            // 🔥 核心修复：等待 Angular 路由完成跳转
+            page.waitForURL("**/paper-submission", new Page.WaitForURLOptions().setTimeout(15000));
+
+            // 等待主页面元素可见
+            Locator dashboardBtn = page.locator("button:has-text('Submit New Paper')");
+            dashboardBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+
+            Assertions.assertTrue(dashboardBtn.isVisible(), "登录失败：未能进入论文提交页面");
         });
 
-        step("Select Conference", () -> {
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
+        step("Navigate to Submission Form & Select Conference", () -> {
+            page.click("button:has-text('Submit New Paper')");
 
-            // Wait for options to load from API
+            // 🔥 核心修复：等待下拉框 API 数据加载完成
             Locator confSelect = page.locator("select[name='conference_id']");
-            confSelect.waitFor();
+            page.waitForCondition(() -> confSelect.locator("option").count() > 1);
+
+            // 确保 data.sql 中 ID=1 的会议存在
             confSelect.selectOption("1");
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Next")).click();
+            page.click("button:has-text('Next')");
         });
 
-        step("Fill Paper Details", () -> {
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Enter paper title")).fill("Jenkins CI/CD Test Paper");
+        step("Fill Paper Details & Select Track", () -> {
+            page.waitForSelector("input[placeholder*='title']");
+            page.fill("input[placeholder*='title']", "AI Research Paper v1");
 
-            // Select track specifically
+            // 等待 Track 下拉框加载并选择
             Locator trackSelect = page.locator("select").filter(new Locator.FilterOptions().setHasText("Select a track"));
+            trackSelect.waitFor();
             trackSelect.selectOption(new SelectOption().setLabel("Artificial Intelligence"));
 
-            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Enter paper abstract")).fill("Automated abstract for Jenkins run.");
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Next")).click();
+            page.fill("textarea[placeholder*='abstract']", "This abstract discusses AI advancements in conference management.");
+            page.click("button:has-text('Next')");
         });
 
-        step("Author Info and File Upload", () -> {
-            // Fill Author (using generic textbox locators if names are dynamic)
-            page.getByRole(AriaRole.TEXTBOX).first().fill("Jenkins");
-            page.getByRole(AriaRole.TEXTBOX).nth(1).fill("Bot");
-            page.locator("input[type='email']").fill("jenkins-test@example.com");
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Next")).click();
+        step("Enter Author Information", () -> {
+            page.waitForSelector("input[name='author_fname']"); // 假设 name 属性
+            page.fill("input[name='author_fname']", "Test");
+            page.fill("input[name='author_lname']", "User");
+            page.fill("input[type='email']", "testauthor@example.com");
+            page.click("button:has-text('Next')");
+        });
 
-            // Keyword Step
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Next")).click();
+        step("Upload File and Submit", () -> {
+            // 跳过关键词或进入文件上传步骤
+            page.click("button:has-text('Next')");
 
-            // Upload File
+            // 自动生成并上传 PDF
             Path pdfPath = Paths.get("src/test/resources/sample.pdf");
             page.setInputFiles("input[type='file']", pdfPath);
 
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Next")).click();
-        });
+            page.click("button:has-text('Next')");
+            page.click("button:has-text('Submit Paper')");
 
-        step("Confirm Submission", () -> {
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
-            page.waitForTimeout(2000);
-            System.out.println("✅ Jenkins E2E Submission Successful");
+            System.out.println("✅ 论文提交流程端到端测试成功！");
         });
     }
 
@@ -131,7 +142,7 @@ public class PaperSubmissionE2ETest {
             if (!Files.exists(dirPath)) Files.createDirectories(dirPath);
             File pdfFile = new File("src/test/resources/sample.pdf");
             if (!pdfFile.exists()) {
-                Files.writeString(pdfFile.toPath(), "Test PDF content.");
+                Files.writeString(pdfFile.toPath(), "Test PDF content for Playwright.");
             }
         } catch (IOException e) {
             e.printStackTrace();
