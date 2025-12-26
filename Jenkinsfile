@@ -2,73 +2,76 @@ pipeline {
     agent any
 
     environment {
-        // Define Docker Compose command for consistency
-        DOCKER_COMPOSE_COMMAND = "docker compose"
+        // REPLACE 'your_dockerhub_username' with your actual Docker Hub ID
+        DOCKER_HUB_USER = 'sinrou0410'
+        APP_NAME = 'confease-backend'
     }
 
     stages {
-        // Stage 1: Pull the latest source code
-        stage('Checkout') {
-            steps {
-                echo 'Pulling the latest code from GitHub testing branch...'
-                // Code is usually checked out automatically by Jenkins from the job configuration
-            }
-        }
-
-        // Stage 2: Build the Spring Boot application
+        // Stage 1: Build the JAR file
         stage('Build Backend') {
             steps {
                 echo 'Building Spring Boot Backend (JAR file)...'
                 dir('backend') {
-                    // Grant execution permission to the Maven wrapper
                     sh 'chmod +x mvnw'
-                    // Clean and package the application, skipping unit tests for speed
+                    // We run clean package but skip tests here to build the artifact first
                     sh './mvnw clean package -DskipTests'
                 }
             }
         }
 
-        // Stage 3: Deploy the application using Docker Compose
+        // Stage 2: Run Playwright Tests & Generate Allure Results
+        stage('Test') {
+            steps {
+                echo 'Running Playwright Tests...'
+                dir('backend') {
+                    // Running actual tests to generate 'target/allure-results'
+                    sh './mvnw test'
+                }
+            }
+        }
+
+        // Stage 3: Deploy locally using Docker Compose
         stage('Deploy') {
             steps {
-                echo 'Deploying containers with Docker Compose...'
+                echo 'Deploying containers locally...'
                 script {
                     try {
-                        // Stop and remove existing containers, then build and start new ones in detached mode
-                        sh 'docker compose down || docker-compose down || true'
-                        sh 'docker compose up -d --build || docker-compose up -d --build'
-                        echo 'Deployment completed successfully.'
+                        // Use permission fix if needed: docker exec -u root my-jenkins chmod 666 /var/run/docker.sock
+                        sh 'docker compose down || true'
+                        sh 'docker compose up -d --build'
+                        echo 'Deployment successful.'
                     } catch (Exception e) {
-                        error "Deployment failed: Docker Compose command not found or execution error."
+                        error "Deployment failed. Check docker.sock permissions."
                     }
                 }
             }
         }
 
-        // Stage 4: Generate and Push images to Docker Hub
+        // Stage 4: Tag and Push images to Docker Hub
         stage('Push to Docker Hub') {
             steps {
-                echo 'Pushing images to Docker Hub...'
+                echo 'Tagging and Pushing images...'
                 script {
-                    try {
-                        // This uses the 'image' tags defined in your docker-compose.yml
-                        sh 'docker compose push || docker-compose push'
-                        echo 'Images successfully pushed to Docker Hub.'
-                    } catch (Exception e) {
-                        echo 'Warning: Push failed. Ensure you are logged in via "docker login" on the host machine.'
-                    }
+                    // Tagging the local image to match Docker Hub format: username/repository:tag
+                    sh "docker tag ${APP_NAME}:latest ${DOCKER_HUB_USER}/${APP_NAME}:latest"
+                    sh "docker push ${DOCKER_HUB_USER}/${APP_NAME}:latest"
                 }
             }
         }
     }
 
-    // Feedback after the pipeline execution
     post {
+        always {
+            // Generate Allure Report in Jenkins UI
+            // Ensure Allure Plugin is installed in Jenkins
+            allure includeProperties: false, results: [[path: 'backend/target/allure-results']]
+        }
         success {
-            echo '✅ SUCCESS: The project is built, deployed, and pushed to Docker Hub!'
+            echo '✅ SUCCESS: Built, Tested, Deployed, and Pushed to Docker Hub!'
         }
         failure {
-            echo '❌ FAILURE: Something went wrong. Check the Jenkins console logs for details.'
+            echo '❌ FAILURE: Pipeline failed. Check console logs and Allure report.'
         }
     }
 }
