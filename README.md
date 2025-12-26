@@ -93,7 +93,6 @@ ScholarSync
 | Delete Conference    | `/conferences/{id}`    | DELETE     | http://localhost:8080/conferences/{id}           | Delete a conference by its ID          |
 
 ## 4. Review
-## Review API Endpoints
 
 | Operation           | Endpoint               | HTTP Method | URL                                    | Description                                                                 |
 |--------------------|-----------------------|------------|----------------------------------------|-----------------------------------------------------------------------------|
@@ -102,7 +101,6 @@ ScholarSync
 | Get Review by ID    | `/api/reviews/{id}`   | GET        | http://localhost:8080/api/reviews/{id} | Retrieve a review by ID                                                     |
 | Update Review       | `/api/reviews/{id}`   | PUT        | http://localhost:8080/api/reviews/{id} | Update an existing review                                                   |
 | Delete Review       | `/api/reviews/{id}`   | DELETE     | http://localhost:8080/api/reviews/{id} | Delete a review by ID                                                       |
-
 
 
 ### 5. Paper
