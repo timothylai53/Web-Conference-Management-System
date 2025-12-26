@@ -83,6 +83,15 @@ ScholarSync
 | Update Conference    | `PUT`       | [http://localhost:8080/conferences/{id}](http://localhost:8080/conferences/{id}) | Update an existing conference          |
 | Delete Conference    | `DELETE`    | [http://localhost:8080/conferences/{id}](http://localhost:8080/conferences/{id}) | Delete a conference by its ID          |
 
+## 3. Review
+| Operation | HTTP Method | Endpoint | Description |
+|-----------|------------|---------|------------|
+| Create Review | `POST` | http://localhost:8080/review | Add a new review |
+| Get All Reviews | `GET` | http://localhost:8080/review | Retrieve all reviews |
+| Get Review by ID | `GET` | http://localhost:8080/review/2 | Retrieve a single review by ID |
+| Update Review | `PUT` | http://localhost:8080/review/2 | Update existing review |
+| Delete Review | `DELETE` | http://localhost:8080/review/1 | Delete a review by ID |
+
 ## Result/Output (Screenshot of the output)
 
 ## References (Not less than 20)
