@@ -65,7 +65,25 @@ ScholarSync
 
 ## List of all the endpoints
 
-## 1. User
+### Auth
+
+| Operation        | HTTP Method | Endpoint        | URL                               | Description                           |
+|-----------------|------------|----------------|----------------------------------|---------------------------------------|
+| Login           | POST       | /auth/login    | http://localhost:8080/auth/login  | Authenticate a user and return user info (without password) |
+| Register        | POST       | /auth/register | http://localhost:8080/auth/register | Register a new user and assign default "Author" role         |
+
+### Authors
+
+| Operation                  | HTTP Method | Endpoint            | URL                                   | Description                                  |
+|----------------------------|------------|-------------------|--------------------------------------|----------------------------------------------|
+| Get All Authors            | GET        | /author           | http://localhost:8080/author         | Retrieve all authors                          |
+| Get Author by ID           | GET        | /author/{id}      | http://localhost:8080/author/{id}    | Retrieve a single author by ID               |
+| Get Authors by Paper ID    | GET        | /author/paper/{paperId} | http://localhost:8080/author/paper/{paperId} | Retrieve all authors for a specific paper    |
+| Create Author              | POST       | /author           | http://localhost:8080/author         | Add a new author                              |
+| Update Author              | PUT        | /author/{id}      | http://localhost:8080/author/{id}    | Update an existing author                     |
+| Delete Author              | DELETE     | /author/{id}      | http://localhost:8080/author/{id}    | Delete an author by ID                        |
+
+## User
 | Operation       | HTTP Method | Endpoint     | URL                                | Description            |
 |-----------------|------------|-------------|------------------------------------|------------------------|
 | Create User     | POST       | /users      | http://localhost:8080/users        | Add a new user         |
@@ -73,7 +91,7 @@ ScholarSync
 | Get User by ID  | GET        | /users/{id} | http://localhost:8080/users/{id}   | Retrieve a user by ID  |
 | Update User     | PUT        | /users/{id} | http://localhost:8080/users/{id}   | Update a user          |
 | Delete User     | DELETE     | /users/{id} | http://localhost:8080/users/{id}   | Delete a user          |
-## 2. User Roles
+## User Roles
 | Operation           | HTTP Method | Endpoint           | URL                                    | Description                    |
 |--------------------|------------|------------------|----------------------------------------|--------------------------------|
 | Create User Role    | POST       | /user-roles      | http://localhost:8080/user-roles       | Add a new user role            |
@@ -81,7 +99,7 @@ ScholarSync
 | Get User Role by ID | GET        | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Retrieve a user role by ID     |
 | Update User Role    | PUT        | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Update an existing user role   |
 | Delete User Role    | DELETE     | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Delete a user role by ID       |
-## 3. Conference
+##  Conference
 | Operation            | HTTP Method | Endpoint           | URL                                 | Description                            |
 |---------------------|------------|------------------|------------------------------------|----------------------------------------|
 | Create Conference    | POST       | /conferences     | http://localhost:8080/conferences   | Add a new conference                   |
@@ -90,18 +108,8 @@ ScholarSync
 | Update Conference    | PUT        | /conferences/{id}| http://localhost:8080/conferences/{id}| Update an existing conference          |
 | Delete Conference    | DELETE     | /conferences/{id}| http://localhost:8080/conferences/{id}| Delete a conference by its ID          |
 
-## 4. Reviews
 
-| Operation       | HTTP Method | Endpoint     | URL                                | Description                                                                 |
-|-----------------|------------|-------------|------------------------------------|-----------------------------------------------------------------------------|
-| Create Review   | POST       | /reviews    | http://localhost:8080/reviews      | Add a new review; updates assignment and paper status if applicable        |
-| Get All Reviews | GET        | /reviews    | http://localhost:8080/reviews      | Retrieve all reviews                                                        |
-| Get Review by ID| GET        | /reviews/{id}| http://localhost:8080/reviews/{id} | Retrieve a review by ID                                                     |
-| Update Review   | PUT        | /reviews/{id}| http://localhost:8080/reviews/{id} | Update an existing review                                                   |
-| Delete Review   | DELETE     | /reviews/{id}| http://localhost:8080/reviews/{id} | Delete a review by ID                                                       |
-
-
-### 5. Paper
+### Paper
 | Operation        | HTTP Method | Endpoint        | URL                               | Description                     |
 |-----------------|------------|----------------|----------------------------------|---------------------------------|
 | Create Paper     | POST       | /papers        | http://localhost:8080/papers      | Add a new paper                 |
@@ -111,7 +119,7 @@ ScholarSync
 | Delete Paper     | DELETE     | /papers/{id}   | http://localhost:8080/papers/{id} | Delete a paper by ID            |
 
 
-### 6. Notification
+### Notification
 | Operation               | HTTP Method | Endpoint           | URL                                 | Description                          |
 |-------------------------|------------|------------------|------------------------------------|--------------------------------------|
 | Create Notification     | POST       | /notifications   | http://localhost:8080/notifications | Add a new notification               |
@@ -121,7 +129,7 @@ ScholarSync
 | Delete Notification     | DELETE     | /notifications/{id} | http://localhost:8080/notifications/{id} | Delete a notification by ID          |
 
 
-### 7. Schedule
+### Schedule
 | Operation           | HTTP Method | Endpoint          | URL                                | Description                     |
 |--------------------|------------|-----------------|-----------------------------------|---------------------------------|
 | Create Schedule     | POST       | /schedule       | http://localhost:8080/schedule    | Add a new schedule              |
@@ -130,7 +138,7 @@ ScholarSync
 | Update Schedule     | PUT        | /schedule/{id}  | http://localhost:8080/schedule/{id}| Update existing schedule        |
 | Delete Schedule     | DELETE     | /schedule/{id}  | http://localhost:8080/schedule/{id}| Delete a schedule by ID         |
 
-### 8. Session
+### Session
 | Operation         | HTTP Method | Endpoint         | URL                               | Description                 |
 |------------------|------------|----------------|----------------------------------|-----------------------------|
 | Create Session    | POST       | /sessions      | http://localhost:8080/sessions    | Add a new session           |
@@ -139,7 +147,7 @@ ScholarSync
 | Update Session    | PUT        | /sessions/{id} | http://localhost:8080/sessions/{id}| Update a session            |
 | Delete Session    | DELETE     | /sessions/{id} | http://localhost:8080/sessions/{id}| Delete a session            |
 
-## 9. Discussion
+## Discussion
 | Operation           | HTTP Method | Endpoint         | URL                              | Description                   |
 |--------------------|------------|----------------|---------------------------------|-------------------------------|
 | Create Discussion   | POST       | /discussion    | http://localhost:8080/discussion | Add a new discussion          |
@@ -148,7 +156,7 @@ ScholarSync
 | Update Discussion   | PUT        | /discussion/{id}| http://localhost:8080/discussion/{id} | Update an existing discussion |
 | Delete Discussion   | DELETE     | /discussion/{id}| http://localhost:8080/discussion/{id} | Delete a discussion by ID     |
 
-## 10. Room
+## Room
 | Operation       | HTTP Method | Endpoint     | URL                                | Description                    |
 |-----------------|------------|-------------|------------------------------------|--------------------------------|
 | Create Room     | POST       | /rooms      | http://localhost:8080/rooms        | Add a new room                 |
@@ -156,6 +164,167 @@ ScholarSync
 | Get Room by ID  | GET        | /rooms/{id} | http://localhost:8080/rooms/{id}   | Retrieve a room by ID          |
 | Update Room     | PUT        | /rooms/{id} | http://localhost:8080/rooms/{id}   | Update an existing room        |
 | Delete Room     | DELETE     | /rooms/{id} | http://localhost:8080/rooms/{id}   | Delete a room by ID            |
+
+### Email Logs
+
+| Operation            | HTTP Method | Endpoint          | URL                                  | Description                     |
+|---------------------|------------|-----------------|-------------------------------------|---------------------------------|
+| Create Email Log     | POST       | /email-logs     | http://localhost:8080/email-logs    | Add a new email log             |
+| Get All Email Logs   | GET        | /email-logs     | http://localhost:8080/email-logs    | Retrieve all email logs         |
+| Get Email Log by ID  | GET        | /email-logs/{id}| http://localhost:8080/email-logs/{id}| Retrieve a single email log by ID |
+| Update Email Log     | PUT        | /email-logs/{id}| http://localhost:8080/email-logs/{id}| Update an existing email log    |
+| Delete Email Log     | DELETE     | /email-logs/{id}| http://localhost:8080/email-logs/{id}| Delete an email log by ID       |
+
+### Events
+
+| Operation        | HTTP Method | Endpoint       | URL                                  | Description                     |
+|-----------------|------------|---------------|-------------------------------------|---------------------------------|
+| Create Event     | POST       | /events       | http://localhost:8080/events        | Add a new event                 |
+| Get All Events   | GET        | /events       | http://localhost:8080/events        | Retrieve all events             |
+| Get Event by ID  | GET        | /events/{id}  | http://localhost:8080/events/{id}   | Retrieve a single event by ID   |
+| Update Event     | PUT        | /events/{id}  | http://localhost:8080/events/{id}   | Update an existing event        |
+| Delete Event     | DELETE     | /events/{id}  | http://localhost:8080/events/{id}   | Delete an event by ID           |
+
+### Files
+
+| Operation      | HTTP Method | Endpoint         | URL                                 | Description                     |
+|---------------|------------|-----------------|------------------------------------|---------------------------------|
+| Upload File    | POST       | /files/upload   | http://localhost:8080/files/upload | Upload a file (PDF, DOC, etc.) |
+| Serve File     | GET        | /files/{filename}| http://localhost:8080/files/{filename} | Serve/download a file by filename |
+| Delete File    | DELETE     | /files/{filename}| http://localhost:8080/files/{filename} | Delete a file                  |
+
+### Keywords
+
+| Operation         | HTTP Method | Endpoint       | URL                                  | Description                  |
+|------------------|------------|---------------|-------------------------------------|------------------------------|
+| Create Keyword    | POST       | /keywords     | http://localhost:8080/keywords      | Add a new keyword            |
+| Get All Keywords  | GET        | /keywords     | http://localhost:8080/keywords      | Retrieve all keywords        |
+| Get Keyword by ID | GET        | /keywords/{id}| http://localhost:8080/keywords/{id} | Retrieve a single keyword by ID |
+| Update Keyword    | PUT        | /keywords/{id}| http://localhost:8080/keywords/{id} | Update an existing keyword   |
+| Delete Keyword    | DELETE     | /keywords/{id}| http://localhost:8080/keywords/{id} | Delete a keyword by ID       |
+
+### Log Activities
+
+| Operation             | HTTP Method | Endpoint            | URL                                         | Description                     |
+|----------------------|------------|-------------------|--------------------------------------------|---------------------------------|
+| Create Log Activity   | POST       | /log-activities    | http://localhost:8080/log-activities       | Add a new log activity          |
+| Get All Log Activities| GET        | /log-activities    | http://localhost:8080/log-activities       | Retrieve all log activities     |
+| Get Log Activity by ID| GET        | /log-activities/{id}| http://localhost:8080/log-activities/{id} | Retrieve a single log activity by ID |
+| Update Log Activity   | PUT        | /log-activities/{id}| http://localhost:8080/log-activities/{id} | Update an existing log activity |
+| Delete Log Activity   | DELETE     | /log-activities/{id}| http://localhost:8080/log-activities/{id} | Delete a log activity by ID     |
+
+### Paper Keywords
+
+| Operation               | HTTP Method | Endpoint                   | URL                                            | Description                           |
+|------------------------|------------|----------------------------|------------------------------------------------|---------------------------------------|
+| Create Paper Keyword    | POST       | /paper-keywords            | http://localhost:8080/paper-keywords          | Add a new paper keyword               |
+| Get All Paper Keywords  | GET        | /paper-keywords            | http://localhost:8080/paper-keywords          | Retrieve all paper keywords           |
+| Get Paper Keyword by ID | GET        | /paper-keywords/{paperId}/{keywordId} | http://localhost:8080/paper-keywords/{paperId}/{keywordId} | Retrieve a single paper keyword by composite ID |
+| Update Paper Keyword    | PUT        | /paper-keywords/{paperId}/{keywordId} | http://localhost:8080/paper-keywords/{paperId}/{keywordId} | Update an existing paper keyword      |
+| Delete Paper Keyword    | DELETE     | /paper-keywords/{paperId}/{keywordId} | http://localhost:8080/paper-keywords/{paperId}/{keywordId} | Delete a paper keyword by composite ID |
+
+### Payments
+
+| Operation           | HTTP Method | Endpoint            | URL                                      | Description                     |
+|--------------------|------------|-------------------|-----------------------------------------|---------------------------------|
+| Create Payment      | POST       | /payments         | http://localhost:8080/payments          | Add a new payment               |
+| Get All Payments    | GET        | /payments         | http://localhost:8080/payments          | Retrieve all payments           |
+| Get Payment by ID   | GET        | /payments/{id}    | http://localhost:8080/payments/{id}     | Retrieve a single payment by ID |
+| Update Payment      | PUT        | /payments/{id}    | http://localhost:8080/payments/{id}     | Update an existing payment      |
+| Delete Payment      | DELETE     | /payments/{id}    | http://localhost:8080/payments/{id}     | Delete a payment by ID          |
+
+### Rebuttals
+
+| Operation           | HTTP Method | Endpoint          | URL                                      | Description                     |
+|--------------------|------------|-----------------|-----------------------------------------|---------------------------------|
+| Create Rebuttal     | POST       | /rebuttals      | http://localhost:8080/rebuttals         | Add a new rebuttal              |
+| Get All Rebuttals   | GET        | /rebuttals      | http://localhost:8080/rebuttals         | Retrieve all rebuttals          |
+| Get Rebuttal by ID  | GET        | /rebuttals/{id} | http://localhost:8080/rebuttals/{id}    | Retrieve a single rebuttal by ID|
+| Update Rebuttal     | PUT        | /rebuttals/{id} | http://localhost:8080/rebuttals/{id}    | Update an existing rebuttal     |
+| Delete Rebuttal     | DELETE     | /rebuttals/{id} | http://localhost:8080/rebuttals/{id}    | Delete a rebuttal by ID         |
+
+### Registrations
+
+| Operation                     | HTTP Method | Endpoint              | URL                                              | Description                          |
+|-------------------------------|------------|----------------------|-------------------------------------------------|--------------------------------------|
+| Create Registration           | POST       | /registrations       | http://localhost:8080/registrations            | Add a new registration               |
+| Get All Registrations         | GET        | /registrations       | http://localhost:8080/registrations            | Retrieve all registrations           |
+| Get Registration by ID        | GET        | /registrations/{id}  | http://localhost:8080/registrations/{id}       | Retrieve a single registration by ID|
+| Get Registrations by User ID  | GET        | /registrations/user/{userId} | http://localhost:8080/registrations/user/{userId} | Retrieve registrations for a specific user |
+| Update Registration           | PUT        | /registrations/{id}  | http://localhost:8080/registrations/{id}       | Update an existing registration      |
+| Delete Registration           | DELETE     | /registrations/{id}  | http://localhost:8080/registrations/{id}       | Delete a registration by ID          |
+
+
+## Reviews
+
+| Operation       | HTTP Method | Endpoint     | URL                                | Description                                                                 |
+|-----------------|------------|-------------|------------------------------------|-----------------------------------------------------------------------------|
+| Create Review   | POST       | /reviews    | http://localhost:8080/reviews      | Add a new review; updates assignment and paper status if applicable        |
+| Get All Reviews | GET        | /reviews    | http://localhost:8080/reviews      | Retrieve all reviews                                                        |
+| Get Review by ID| GET        | /reviews/{id}| http://localhost:8080/reviews/{id} | Retrieve a review by ID                                                     |
+| Update Review   | PUT        | /reviews/{id}| http://localhost:8080/reviews/{id} | Update an existing review                                                   |
+| Delete Review   | DELETE     | /reviews/{id}| http://localhost:8080/reviews/{id} | Delete a review by ID                                                       |
+
+### Review Assignments
+
+| Operation                        | HTTP Method | Endpoint                     | URL                                              | Description                                 |
+|----------------------------------|------------|------------------------------|-------------------------------------------------|---------------------------------------------|
+| Create Review Assignment          | POST       | /review-assignments          | http://localhost:8080/review-assignments       | Add a new review assignment                |
+| Get All Review Assignments        | GET        | /review-assignments          | http://localhost:8080/review-assignments       | Retrieve all review assignments            |
+| Get Review Assignment by ID       | GET        | /review-assignments/{id}     | http://localhost:8080/review-assignments/{id}  | Retrieve a review assignment by ID         |
+| Get Review Assignments by Reviewer| GET        | /review-assignments/reviewer/{reviewerId} | http://localhost:8080/review-assignments/reviewer/{reviewerId} | Retrieve assignments for a specific reviewer |
+| Update Review Assignment          | PUT        | /review-assignments/{id}     | http://localhost:8080/review-assignments/{id}  | Update an existing review assignment       |
+| Delete Review Assignment          | DELETE     | /review-assignments/{id}     | http://localhost:8080/review-assignments/{id}  | Delete a review assignment by ID           |
+
+### Reviewer Applications
+
+| Operation                        | HTTP Method | Endpoint                         | URL                                              | Description                                 |
+|----------------------------------|------------|----------------------------------|-------------------------------------------------|---------------------------------------------|
+| Submit Reviewer Application      | POST       | /reviewer-applications/submit    | http://localhost:8080/reviewer-applications/submit | Submit a new reviewer application          |
+| Get All Pending Applications     | GET        | /reviewer-applications/pending   | http://localhost:8080/reviewer-applications/pending | Retrieve all pending applications (Admin only) |
+| Get All Applications             | GET        | /reviewer-applications/all       | http://localhost:8080/reviewer-applications/all | Retrieve all applications (Admin only)     |
+| Approve Application              | POST       | /reviewer-applications/approve/{id} | http://localhost:8080/reviewer-applications/approve/{id}?adminUserId={adminUserId} | Approve a pending application and create user account |
+| Reject Application               | POST       | /reviewer-applications/reject/{id} | http://localhost:8080/reviewer-applications/reject/{id}?adminUserId={adminUserId} | Reject a pending application with reason   |
+
+### Review Scores
+
+| Operation                        | HTTP Method | Endpoint                     | URL                                              | Description                                 |
+|----------------------------------|------------|------------------------------|-------------------------------------------------|---------------------------------------------|
+| Get All Review Scores            | GET        | /review-scores               | http://localhost:8080/review-scores            | Retrieve all review scores                  |
+| Get Review Score by ID           | GET        | /review-scores/{reviewId}/{criterionId} | http://localhost:8080/review-scores/{reviewId}/{criterionId} | Retrieve a review score by composite ID (review and criterion) |
+| Create Review Score              | POST       | /review-scores               | http://localhost:8080/review-scores            | Create a new review score                   |
+| Update Review Score              | PUT        | /review-scores/{reviewId}/{criterionId} | http://localhost:8080/review-scores/{reviewId}/{criterionId} | Update an existing review score            |
+| Delete Review Score              | DELETE     | /review-scores/{reviewId}/{criterionId} | http://localhost:8080/review-scores/{reviewId}/{criterionId} | Delete a review score by composite ID      |
+
+### Score Criteria
+
+| Operation                   | HTTP Method | Endpoint            | URL                                      | Description                          |
+|------------------------------|------------|-------------------|-----------------------------------------|--------------------------------------|
+| Get All Score Criteria       | GET        | /score-criteria   | http://localhost:8080/score-criteria    | Retrieve all score criteria          |
+| Get Score Criterion by ID    | GET        | /score-criteria/{id} | http://localhost:8080/score-criteria/{id} | Retrieve a score criterion by ID     |
+| Create Score Criterion       | POST       | /score-criteria   | http://localhost:8080/score-criteria    | Create a new score criterion         |
+| Update Score Criterion       | PUT        | /score-criteria/{id} | http://localhost:8080/score-criteria/{id} | Update an existing score criterion   |
+| Delete Score Criterion       | DELETE     | /score-criteria/{id} | http://localhost:8080/score-criteria/{id} | Delete a score criterion by ID       |
+
+### Roles
+
+| Operation        | HTTP Method | Endpoint   | URL                           | Description                  |
+|-----------------|------------|------------|-------------------------------|------------------------------|
+| Get All Roles    | GET        | /roles     | http://localhost:8080/roles   | Retrieve all roles           |
+| Get Role by ID   | GET        | /roles/{id} | http://localhost:8080/roles/{id} | Retrieve a role by ID       |
+| Create Role      | POST       | /roles     | http://localhost:8080/roles   | Create a new role            |
+| Update Role      | PUT        | /roles/{id} | http://localhost:8080/roles/{id} | Update an existing role     |
+| Delete Role      | DELETE     | /roles/{id} | http://localhost:8080/roles/{id} | Delete a role by ID         |
+
+### Tracks
+
+| Operation           | HTTP Method | Endpoint      | URL                              | Description                       |
+|--------------------|------------|---------------|---------------------------------|-----------------------------------|
+| Get All Tracks      | GET        | /tracks       | http://localhost:8080/tracks    | Retrieve all tracks               |
+| Get Track by ID     | GET        | /tracks/{id}  | http://localhost:8080/tracks/{id} | Retrieve a track by ID            |
+| Create Track        | POST       | /tracks       | http://localhost:8080/tracks    | Create a new track                |
+| Update Track        | PUT        | /tracks/{id}  | http://localhost:8080/tracks/{id} | Update an existing track          |
+| Delete Track        | DELETE     | /tracks/{id}  | http://localhost:8080/tracks/{id} | Delete a track by ID              |
 
 
 ## Result/Output (Screenshot of the output)
