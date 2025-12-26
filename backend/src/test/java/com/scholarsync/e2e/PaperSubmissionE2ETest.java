@@ -15,7 +15,7 @@ public class PaperSubmissionE2ETest {
     private BrowserContext context;
     private Page page;
 
-    private static final String BASE_URL = "http://localhost:4200";
+    private static final String BASE_URL = "http://host.docker.internal:4200";
 
     @BeforeAll
     static void setupBrowser() {

@@ -16,7 +16,7 @@ public class ReviewerRegistrationE2ETest {
     private BrowserContext context;
     private Page page;
 
-    private static final String BASE_URL = "http://localhost:4200";
+    private static final String BASE_URL = "http://host.docker.internal:4200";
 
     // Dynamic variables for this specific test run
     private String dynamicFirstName;
