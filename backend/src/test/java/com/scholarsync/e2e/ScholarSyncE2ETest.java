@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 @Epic("Conference Management System")
-@Feature("End-to-End Flow")
+@Feature("End-to-End Testing")
 public class ScholarSyncE2ETest {
 
     private static Playwright playwright;
@@ -20,7 +20,7 @@ public class ScholarSyncE2ETest {
     private BrowserContext context;
     private Page page;
 
-    // 🔥 适配 Jenkins 容器：访问宿主机的前端容器端口
+    // 🔥 适配 Jenkins：必须使用 host.docker.internal 访问前端容器
     private static final String BASE_URL = "http://host.docker.internal:4200";
 
     @BeforeAll
@@ -29,7 +29,7 @@ public class ScholarSyncE2ETest {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(true) // 🔥 Jenkins 必须开启无头模式
+                        .setHeadless(true) // 🔥 Jenkins 运行必须为 true
                         .setSlowMo(100)
         );
     }
@@ -46,94 +46,104 @@ public class ScholarSyncE2ETest {
         );
         page = context.newPage();
 
-        // 🔥 核心修复：自动处理注册成功后的 alert() 弹窗，防止浏览器冻结
+        // 🔥 处理注册成功的 JavaScript Alert 弹窗
         page.onDialog(Dialog::accept);
 
-        // 🔥 核心调试：将浏览器报错直接打印到 Jenkins 控制台
+        // 调试日志输出
         page.onConsoleMessage(msg -> System.out.println("浏览器日志 >> [" + msg.type() + "] " + msg.text()));
-        page.onPageError(err -> System.out.println("浏览器崩溃 >> " + err));
     }
 
     @AfterEach
     void tearDown(TestInfo info) {
-        // 自动截图并附加到 Allure 报告
+        // 测试失败时截取全屏附件
         byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
         Allure.addAttachment("Final State - " + info.getDisplayName(), new ByteArrayInputStream(screenshot));
         context.close();
     }
 
+    // ================== TEST 1: FULL SUBMISSION FLOW ==================
     @Test
     @Severity(SeverityLevel.BLOCKER)
-    @Story("User Registration and Paper Submission")
-    @Description("完整的流程：注册、登录、并完成论文提交向导。")
-    public void testFullFlow() {
+    @Story("User can register, login, and submit a paper")
+    public void testFullPaperSubmissionFlow() {
         String ts = String.valueOf(System.currentTimeMillis());
-        String testEmail = "author" + ts + "@confease.com";
+        String email = "author" + ts + "@confease.com";
 
-        step("Navigate to Landing Page", () -> {
+        step("1. Navigate and Switch to Register", () -> {
             page.navigate(BASE_URL);
-            page.locator("button:has-text('Get Started')").waitFor();
             page.click("button:has-text('Get Started')");
+            page.waitForURL("**/auth");
+            Locator switchBtn = page.locator("button:has-text('Create an account')");
+            if (switchBtn.isVisible()) switchBtn.click();
         });
 
-        step("Register New User", () -> {
-            page.waitForURL("**/auth");
-            // 切换到注册视图
-            Locator switchBtn = page.locator(".auth-switch button:has-text('Create an account')");
-            if (switchBtn.isVisible()) switchBtn.click();
-
-            // 填写表单：使用 HTML 里的 name 属性
-            page.fill("input[name='fName']", "Author");
-            page.fill("input[name='lName']", "Test");
-            page.fill("input[name='regEmail']", testEmail);
-            page.fill("input[name='regPass']", "author123");
+        step("2. Fill Registration Form", () -> {
+            page.fill("input[name='fName']", "Test");
+            page.fill("input[name='lName']", "Author");
+            page.fill("input[name='regEmail']", email);
+            page.fill("input[name='regPass']", "password123");
             page.fill("input[name='aff']", "UTM Melaka");
             page.fill("input[name='cnt']", "Malaysia");
-
-            // 点击提交：这将触发 alert() 并由 onDialog 自动处理
-            page.click("button.btn-primary-lg:has-text('Create Account')");
-            System.out.println("注册请求已发送: " + testEmail);
+            page.click("button:has-text('Create Account')");
         });
 
-        step("Login to System", () -> {
-            // 注册成功后视图会自动切回 Login
+        step("3. Login to System", () -> {
+            // 等待注册成功后自动切回的登录表单
             Locator loginEmail = page.locator("input[name='email']").first();
-            loginEmail.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(15000));
-
-            loginEmail.fill(testEmail);
-            page.fill("input[name='password']", "author123");
-            page.click("button.btn-primary-lg:has-text('Sign In')");
+            loginEmail.waitFor(new Locator.WaitForOptions().setTimeout(10000));
+            loginEmail.fill(email);
+            page.fill("input[name='password']", "password123");
+            page.click("button:has-text('Sign In')");
         });
 
-        step("Start Paper Submission Wizard", () -> {
-            // 等待登录接口响应并跳转
-            page.waitForURL("**/paper-submission", new Page.WaitForURLOptions().setTimeout(60000));
-            page.click("button.btn-primary:has-text('Submit New Paper')");
-        });
+        step("4. Paper Submission Wizard", () -> {
+            page.waitForURL("**/paper-submission", new Page.WaitForURLOptions().setTimeout(30000));
+            page.click("button:has-text('Submit New Paper')");
 
-        step("Wizard Step 1: Select Conference", () -> {
+            // 🔥 核心修复：解决下拉框超时问题
             Locator confSelect = page.locator("select[name='conference_id']");
             confSelect.waitFor();
-            // 确保 data.sql 已成功插入 ID 为 1 的会议
+
+            // 等待直到下拉框里除了“请选择”之外还有其他选项加载出来
+            page.waitForCondition(() -> confSelect.locator("option").count() > 1);
+            System.out.println("检测到可用会议数量: " + (confSelect.locator("option").count() - 1));
+
             page.selectOption("select[name='conference_id']", new SelectOption().setValue("1"));
             page.click("button[matsteppernext]");
         });
 
-        step("Wizard Step 4: Upload File", () -> {
+        step("5. Upload File and Final Submit", () -> {
+            // 连点 Next 到 Step 4 (Upload)
+            page.click("button[matsteppernext]"); // Step 2
+            page.click("button[matsteppernext]"); // Step 3
+
             Path pdfPath = Paths.get("src/test/resources/sample.pdf");
             page.setInputFiles("input[type='file']", pdfPath);
-            page.click("button[matsteppernext]:visible");
-        });
 
-        step("Final Submission", () -> {
+            page.click("button[matsteppernext]"); // Step 5
             page.click("button.btn-primary:has-text('Submit Paper')");
-            System.out.println("✅ 整个端到端测试流程成功跑通！");
+            System.out.println("✅ E2E Paper Submission Completed!");
+        });
+    }
+
+    // ================== TEST 2: INVALID LOGIN ==================
+    @Test
+    @Severity(SeverityLevel.NORMAL)
+    public void testInvalidLogin() {
+        step("Attempt Login with Wrong Credentials", () -> {
+            page.navigate(BASE_URL + "/auth");
+            page.fill("input[name='email']", "nonexistent@test.com");
+            page.fill("input[name='password']", "wrongpass");
+            page.click("button:has-text('Sign In')");
+
+            // 验证是否依然留在 Auth 页面，没有跳转
+            Assertions.assertTrue(page.url().contains("/auth"), "Should stay on auth page");
         });
     }
 
     @Step("{0}")
     private void step(String name, Runnable action) {
-        System.out.println("▶ 执行步骤: " + name);
+        System.out.println("▶ " + name);
         action.run();
     }
 
@@ -142,7 +152,7 @@ public class ScholarSyncE2ETest {
             Path dirPath = Paths.get("src/test/resources");
             if (!Files.exists(dirPath)) Files.createDirectories(dirPath);
             File pdfFile = new File("src/test/resources/sample.pdf");
-            if (!pdfFile.exists()) Files.writeString(pdfFile.toPath(), "Test PDF content.");
+            if (!pdfFile.exists()) Files.writeString(pdfFile.toPath(), "Dummy PDF content.");
         } catch (IOException e) {
             e.printStackTrace();
         }
