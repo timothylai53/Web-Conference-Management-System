@@ -329,7 +329,10 @@ ScholarSync
 | Delete Track        | DELETE     | /tracks/{id}  | http://localhost:8080/tracks/{id} | Delete a track by ID              |
 
 
+
 ## Result/Output (Screenshot of the output)
+
+
 | No | Screenshot | Description |
 |----|------------|-------------|
 | 1  | <img width="700" src="https://github.com/user-attachments/assets/48b5a242-1aef-4c96-bbf9-288d5c23961b" /> |  Auth-user-profile(sign in)        |
