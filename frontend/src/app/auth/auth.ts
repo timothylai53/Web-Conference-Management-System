@@ -53,7 +53,7 @@ export class AuthComponent {
 
     this.showError = false;
 
-    this.http.post('http://localhost:8080/api/auth/login', this.loginObj)
+    this.http.post('http://host.docker.internal:8080/api/auth/login', this.loginObj)
       .subscribe({
         next: (res: any) => {
 
