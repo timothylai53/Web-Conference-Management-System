@@ -66,99 +66,97 @@ ScholarSync
 ## List of all the endpoints
 
 ## 1. User
-| Operation       | Endpoint          | HTTP Method | URL                                           | Description            |
-|-----------------|-------------------|------------|-----------------------------------------------|------------------------|
-| Create User     | `/api/users`      | POST       | http://localhost:8080/users                   | Add a new user         |
-| Get All Users   | `/api/users`      | GET        | http://localhost:8080/users                   | Retrieve all users     |
-| Get User by ID  | `/api/users/{id}` | GET        | http://localhost:8080/users/{id}              | Retrieve a user by ID  |
-| Update User     | `/api/users/{id}` | PUT        | http://localhost:8080/users/{id}              | Update a user          |
-| Delete User     | `/api/users/{id}` | DELETE     | http://localhost:8080/users/{id}              | Delete a user          |
-
+| Operation       | HTTP Method | Endpoint     | URL                                | Description            |
+|-----------------|------------|-------------|------------------------------------|------------------------|
+| Create User     | POST       | /users      | http://localhost:8080/users        | Add a new user         |
+| Get All Users   | GET        | /users      | http://localhost:8080/users        | Retrieve all users     |
+| Get User by ID  | GET        | /users/{id} | http://localhost:8080/users/{id}   | Retrieve a user by ID  |
+| Update User     | PUT        | /users/{id} | http://localhost:8080/users/{id}   | Update a user          |
+| Delete User     | DELETE     | /users/{id} | http://localhost:8080/users/{id}   | Delete a user          |
 ## 2. User Roles
-| Operation           | Endpoint               | HTTP Method | URL                                      | Description                    |
-|--------------------|-----------------------|------------|------------------------------------------|--------------------------------|
-| Create User Role    | `/api/user-roles`     | POST       | http://localhost:8080/api/user-roles     | Add a new user role            |
-| Get All User Roles  | `/api/user-roles`     | GET        | http://localhost:8080/api/user-roles     | Retrieve all user roles        |
-| Get User Role by ID | `/api/user-roles/{id}`| GET        | http://localhost:8080/api/user-roles/{id}| Retrieve a user role by ID     |
-| Update User Role    | `/api/user-roles/{id}`| PUT        | http://localhost:8080/api/user-roles/{id}| Update an existing user role   |
-| Delete User Role    | `/api/user-roles/{id}`| DELETE     | http://localhost:8080/api/user-roles/{id}| Delete a user role by ID       |
-
+| Operation           | HTTP Method | Endpoint           | URL                                    | Description                    |
+|--------------------|------------|------------------|----------------------------------------|--------------------------------|
+| Create User Role    | POST       | /user-roles      | http://localhost:8080/user-roles       | Add a new user role            |
+| Get All User Roles  | GET        | /user-roles      | http://localhost:8080/user-roles       | Retrieve all user roles        |
+| Get User Role by ID | GET        | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Retrieve a user role by ID     |
+| Update User Role    | PUT        | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Update an existing user role   |
+| Delete User Role    | DELETE     | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Delete a user role by ID       |
 ## 3. Conference
-| Operation            | Endpoint                | HTTP Method | URL                                              | Description                            |
-|---------------------|-------------------------|------------|--------------------------------------------------|----------------------------------------|
-| Create Conference    | `/api/conferences`      | POST       | http://localhost:8080/conferences                | Add a new conference                   |
-| Get All Conferences  | `/api/conferences`      | GET        | http://localhost:8080/conferences                | Retrieve all conferences               |
-| Get Conference by ID | `/api/conferences/{id}` | GET        | http://localhost:8080/conferences/{id}           | Retrieve a single conference by its ID |
-| Update Conference    | `/api/conferences/{id}` | PUT        | http://localhost:8080/conferences/{id}           | Update an existing conference          |
-| Delete Conference    | `/api/conferences/{id}` | DELETE     | http://localhost:8080/conferences/{id}           | Delete a conference by its ID          |
+| Operation            | HTTP Method | Endpoint           | URL                                 | Description                            |
+|---------------------|------------|------------------|------------------------------------|----------------------------------------|
+| Create Conference    | POST       | /conferences     | http://localhost:8080/conferences   | Add a new conference                   |
+| Get All Conferences  | GET        | /conferences     | http://localhost:8080/conferences   | Retrieve all conferences               |
+| Get Conference by ID | GET        | /conferences/{id}| http://localhost:8080/conferences/{id}| Retrieve a single conference by its ID |
+| Update Conference    | PUT        | /conferences/{id}| http://localhost:8080/conferences/{id}| Update an existing conference          |
+| Delete Conference    | DELETE     | /conferences/{id}| http://localhost:8080/conferences/{id}| Delete a conference by its ID          |
 
-## 4. Review
+## 4. Reviews
 
-| Operation           | Endpoint               | HTTP Method | URL                                    | Description                                                                 |
-|--------------------|-----------------------|------------|----------------------------------------|-----------------------------------------------------------------------------|
-| Create Review       | `/api/reviews`        | POST       | http://localhost:8080/api/reviews      | Add a new review; updates assignment status and paper status if applicable |
-| Get All Reviews     | `/api/reviews`        | GET        | http://localhost:8080/api/reviews      | Retrieve all reviews                                                        |
-| Get Review by ID    | `/api/reviews/{id}`   | GET        | http://localhost:8080/api/reviews/{id} | Retrieve a review by ID                                                     |
-| Update Review       | `/api/reviews/{id}`   | PUT        | http://localhost:8080/api/reviews/{id} | Update an existing review                                                   |
-| Delete Review       | `/api/reviews/{id}`   | DELETE     | http://localhost:8080/api/reviews/{id} | Delete a review by ID                                                       |
+| Operation       | HTTP Method | Endpoint     | URL                                | Description                                                                 |
+|-----------------|------------|-------------|------------------------------------|-----------------------------------------------------------------------------|
+| Create Review   | POST       | /reviews    | http://localhost:8080/reviews      | Add a new review; updates assignment and paper status if applicable        |
+| Get All Reviews | GET        | /reviews    | http://localhost:8080/reviews      | Retrieve all reviews                                                        |
+| Get Review by ID| GET        | /reviews/{id}| http://localhost:8080/reviews/{id} | Retrieve a review by ID                                                     |
+| Update Review   | PUT        | /reviews/{id}| http://localhost:8080/reviews/{id} | Update an existing review                                                   |
+| Delete Review   | DELETE     | /reviews/{id}| http://localhost:8080/reviews/{id} | Delete a review by ID                                                       |
 
 
 ### 5. Paper
-| Operation          | Endpoint           | HTTP Method | URL                                           | Description                     |
-|-------------------|--------------------|------------|-----------------------------------------------|---------------------------------|
-| Create Paper      | `/api/papers`      | POST       | http://localhost:8080/papers                  | Add a new paper                 |
-| Get All Paper     | `/api/papers`      | GET        | http://localhost:8080/papers                  | Retrieve all paper              |
-| Get Paper by ID   | `/api/papers/{id}` | GET        | http://localhost:8080/papers/{id}             | Retrieve a single paper by ID   |
-| Update Paper      | `/api/papers/{id}` | PUT        | http://localhost:8080/papers/{id}             | Update existing paper           |
-| Delete Paper      | `/api/papers/{id}` | DELETE     | http://localhost:8080/papers/{id}             | Delete a paper by ID            |
+| Operation        | HTTP Method | Endpoint        | URL                               | Description                     |
+|-----------------|------------|----------------|----------------------------------|---------------------------------|
+| Create Paper     | POST       | /papers        | http://localhost:8080/papers      | Add a new paper                 |
+| Get All Paper    | GET        | /papers        | http://localhost:8080/papers      | Retrieve all paper              |
+| Get Paper by ID  | GET        | /papers/{id}   | http://localhost:8080/papers/{id} | Retrieve a single paper by ID   |
+| Update Paper     | PUT        | /papers/{id}   | http://localhost:8080/papers/{id} | Update existing paper           |
+| Delete Paper     | DELETE     | /papers/{id}   | http://localhost:8080/papers/{id} | Delete a paper by ID            |
 
 
 ### 6. Notification
-| Operation                | Endpoint                  | HTTP Method | URL                                               | Description                          |
-|--------------------------|---------------------------|------------|---------------------------------------------------|--------------------------------------|
-| Create Notification      | `/api/notifications`      | POST       | http://localhost:8080/notifications               | Add a new notification               |
-| Get All Notification     | `/api/notifications`      | GET        | http://localhost:8080/notifications               | Retrieve all notification            |
-| Get Notification by ID   | `/api/notifications/{id}` | GET        | http://localhost:8080/notifications/{id}          | Retrieve a single notification by ID |
-| Update Notification      | `/api/notifications/{id}` | PUT        | http://localhost:8080/notifications/{id}          | Update existing notification         |
-| Delete Notification      | `/api/notifications/{id}` | DELETE     | http://localhost:8080/notifications/{id}          | Delete a notification by ID          |
+| Operation               | HTTP Method | Endpoint           | URL                                 | Description                          |
+|-------------------------|------------|------------------|------------------------------------|--------------------------------------|
+| Create Notification     | POST       | /notifications   | http://localhost:8080/notifications | Add a new notification               |
+| Get All Notification    | GET        | /notifications   | http://localhost:8080/notifications | Retrieve all notification            |
+| Get Notification by ID  | GET        | /notifications/{id} | http://localhost:8080/notifications/{id} | Retrieve a single notification by ID |
+| Update Notification     | PUT        | /notifications/{id} | http://localhost:8080/notifications/{id} | Update existing notification         |
+| Delete Notification     | DELETE     | /notifications/{id} | http://localhost:8080/notifications/{id} | Delete a notification by ID          |
 
 
 ### 7. Schedule
-| Operation            | Endpoint             | HTTP Method | URL                                          | Description                     |
-|---------------------|----------------------|------------|----------------------------------------------|---------------------------------|
-| Create Schedule     | `/api/schedule`      | POST       | http://localhost:8080/schedule               | Add a new schedule              |
-| Get All Schedules   | `/api/schedule`      | GET        | http://localhost:8080/schedule               | Retrieve all schedules          |
-| Get Schedule by ID  | `/api/schedule/{id}` | GET        | http://localhost:8080/schedule/{id}          | Retrieve a single schedule by ID|
-| Update Schedule     | `/api/schedule/{id}` | PUT        | http://localhost:8080/schedule/{id}          | Update existing schedule        |
-| Delete Schedule     | `/api/schedule/{id}` | DELETE     | http://localhost:8080/schedule/{id}          | Delete a schedule by ID         |
+| Operation           | HTTP Method | Endpoint          | URL                                | Description                     |
+|--------------------|------------|-----------------|-----------------------------------|---------------------------------|
+| Create Schedule     | POST       | /schedule       | http://localhost:8080/schedule    | Add a new schedule              |
+| Get All Schedules   | GET        | /schedule       | http://localhost:8080/schedule    | Retrieve all schedules          |
+| Get Schedule by ID  | GET        | /schedule/{id}  | http://localhost:8080/schedule/{id}| Retrieve a single schedule by ID|
+| Update Schedule     | PUT        | /schedule/{id}  | http://localhost:8080/schedule/{id}| Update existing schedule        |
+| Delete Schedule     | DELETE     | /schedule/{id}  | http://localhost:8080/schedule/{id}| Delete a schedule by ID         |
 
 ### 8. Session
-| Operation         | Endpoint             | HTTP Method | URL                                          | Description                 |
-|-------------------|----------------------|------------|----------------------------------------------|-----------------------------|
-| Create Session    | `/api/sessions`      | POST       | http://localhost:8080/sessions               | Add a new session           |
-| Get All Sessions  | `/api/sessions`      | GET        | http://localhost:8080/sessions               | Retrieve all sessions       |
-| Get Session by ID | `/api/sessions/{id}` | GET        | http://localhost:8080/sessions/{id}          | Retrieve a session by ID    |
-| Update Session    | `/api/sessions/{id}` | PUT        | http://localhost:8080/sessions/{id}          | Update a session            |
-| Delete Session    | `/api/sessions/{id}` | DELETE     | http://localhost:8080/sessions/{id}          | Delete a session            |
+| Operation         | HTTP Method | Endpoint         | URL                               | Description                 |
+|------------------|------------|----------------|----------------------------------|-----------------------------|
+| Create Session    | POST       | /sessions      | http://localhost:8080/sessions    | Add a new session           |
+| Get All Sessions  | GET        | /sessions      | http://localhost:8080/sessions    | Retrieve all sessions       |
+| Get Session by ID | GET        | /sessions/{id} | http://localhost:8080/sessions/{id}| Retrieve a session by ID    |
+| Update Session    | PUT        | /sessions/{id} | http://localhost:8080/sessions/{id}| Update a session            |
+| Delete Session    | DELETE     | /sessions/{id} | http://localhost:8080/sessions/{id}| Delete a session            |
 
 ## 9. Discussion
-| Operation             | Endpoint               | HTTP Method | URL                                          | Description                     |
-|-----------------------|------------------------|------------|----------------------------------------------|---------------------------------|
-| Create Discussion     | `/api/discussion`      | POST       | http://localhost:8080/discussion             | Add a new discussion            |
-| Get All Discussions   | `/api/discussion`      | GET        | http://localhost:8080/discussion             | Retrieve all discussions        |
-| Get Discussion by ID  | `/api/discussion/{id}` | GET        | http://localhost:8080/discussion/{id}        | Retrieve a discussion by ID     |
-| Update Discussion     | `/api/discussion/{id}` | PUT        | http://localhost:8080/discussion/{id}        | Update an existing discussion   |
-| Delete Discussion     | `/api/discussion/{id}` | DELETE     | http://localhost:8080/discussion/{id}        | Delete a discussion by ID       |
+| Operation           | HTTP Method | Endpoint         | URL                              | Description                   |
+|--------------------|------------|----------------|---------------------------------|-------------------------------|
+| Create Discussion   | POST       | /discussion    | http://localhost:8080/discussion | Add a new discussion          |
+| Get All Discussions | GET        | /discussion    | http://localhost:8080/discussion | Retrieve all discussions      |
+| Get Discussion by ID| GET        | /discussion/{id}| http://localhost:8080/discussion/{id} | Retrieve a discussion by ID  |
+| Update Discussion   | PUT        | /discussion/{id}| http://localhost:8080/discussion/{id} | Update an existing discussion |
+| Delete Discussion   | DELETE     | /discussion/{id}| http://localhost:8080/discussion/{id} | Delete a discussion by ID     |
 
 ## 10. Room
+| Operation       | HTTP Method | Endpoint     | URL                                | Description                    |
+|-----------------|------------|-------------|------------------------------------|--------------------------------|
+| Create Room     | POST       | /rooms      | http://localhost:8080/rooms        | Add a new room                 |
+| Get All Rooms   | GET        | /rooms      | http://localhost:8080/rooms        | Retrieve all rooms             |
+| Get Room by ID  | GET        | /rooms/{id} | http://localhost:8080/rooms/{id}   | Retrieve a room by ID          |
+| Update Room     | PUT        | /rooms/{id} | http://localhost:8080/rooms/{id}   | Update an existing room        |
+| Delete Room     | DELETE     | /rooms/{id} | http://localhost:8080/rooms/{id}   | Delete a room by ID            |
 
-| Operation           | Endpoint           | HTTP Method | URL                                 | Description                    |
-|--------------------|------------------|------------|-------------------------------------|--------------------------------|
-| Create Room        | `/api/rooms`      | POST       | http://localhost:8080/api/rooms     | Add a new room                 |
-| Get All Rooms      | `/api/rooms`      | GET        | http://localhost:8080/api/rooms     | Retrieve all rooms             |
-| Get Room by ID     | `/api/rooms/{id}` | GET        | http://localhost:8080/api/rooms/{id}| Retrieve a room by ID          |
-| Update Room        | `/api/rooms/{id}` | PUT        | http://localhost:8080/api/rooms/{id}| Update an existing room        |
-| Delete Room        | `/api/rooms/{id}` | DELETE     | http://localhost:8080/api/rooms/{id}| Delete a room by ID            |
 
 ## Result/Output (Screenshot of the output)
 | No | Screenshot | Description |
