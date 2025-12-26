@@ -2,6 +2,7 @@ package com.scholarsync.e2e;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.SelectOption;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import java.io.ByteArrayInputStream;
@@ -24,7 +25,7 @@ public class ScholarSyncE2ETest {
     static void launchBrowser() {
         ensurePdfExists();
         playwright = Playwright.create();
-        // Jenkins 环境必须使用 headless 模式
+        // Headless mode is required for Jenkins environment
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
                 .setHeadless(true)
                 .setSlowMo(100));
@@ -40,7 +41,7 @@ public class ScholarSyncE2ETest {
         context = browser.newContext();
         page = context.newPage();
 
-        // --- 核心调试代码：将浏览器内部报错打印到 Jenkins 控制台 ---
+        // --- Debugging: Prints browser console errors directly to Jenkins Console Output ---
         page.onConsoleMessage(msg -> {
             System.out.println("浏览器日志 >> [" + msg.type() + "] " + msg.text());
         });
@@ -52,7 +53,7 @@ public class ScholarSyncE2ETest {
 
     @AfterEach
     void tearDown(TestInfo testInfo) {
-        // --- 自动截图：无论成功失败，都会在 Allure 报告中保留最后画面 ---
+        // --- Allure Attachment: Saves a full-page screenshot of the final state ---
         byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
         Allure.addAttachment("Final State - " + testInfo.getDisplayName(), new ByteArrayInputStream(screenshot));
 
@@ -61,46 +62,57 @@ public class ScholarSyncE2ETest {
 
     @Test
     @Story("User can register, login and submit a paper")
-    @Description("完整的端到端流程：从注册新用户到登录，再到通过向导提交论文。")
+    @Description("Full E2E flow: Registration (to ensure account exists), Login, and Paper Submission.")
     @Severity(SeverityLevel.CRITICAL)
     public void testFullPaperSubmissionFlow() {
 
         step("Navigate to Homepage", () -> {
-            // 使用 host.docker.internal 访问宿主机的 4200 端口
+            // Using host.docker.internal to reach the host's 4200 port from the Jenkins container
             page.navigate("http://host.docker.internal:4200/");
             page.locator("button.btn-primary:has-text('Get Started')").waitFor();
             page.locator("button.btn-primary:has-text('Get Started')").click();
         });
 
-        // 🔥 新增步骤：解决 401 错误。如果用户不存在，我们先注册一个。
         step("Register Test User (Ensure Account Exists)", () -> {
             page.waitForURL("**/auth");
-            // 切换到注册模式
-            if (page.locator("text=Create an account").isVisible()) {
-                page.locator("text=Create an account").click();
+
+            // Toggle to registration mode if the button is visible
+            Locator createAccountBtn = page.locator("text=Create an account");
+            if (createAccountBtn.isVisible()) {
+                createAccountBtn.click();
             }
 
-            page.locator("input[placeholder='First Name']").fill("Author");
-            page.locator("input[placeholder='Last Name']").fill("Test");
+            // FIXED: Using 'name' attribute because placeholder is 'John'
+            page.locator("input[name='fName']").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+            page.locator("input[name='fName']").fill("Author");
+
+            // Assuming Last Name follows the pattern name='lName'
+            page.locator("input[name='lName']").fill("Test");
+
+            // Fill registration Email and Password (use .last() to target the registration form)
             page.locator("input[name='email']").last().fill("author@scholarsync.com");
             page.locator("input[name='password']").last().fill("author123");
-            page.locator("input[placeholder='University/Organization']").fill("UTM");
 
-            // 点击注册按钮（假设注册成功后会自动跳转或弹出提示）
+            // Fill Affiliation (Based on your HTML pattern, likely name='affiliation')
+            page.locator("input[placeholder*='University'], input[name*='affiliation']").last().fill("UTM Melaka");
+
+            // Submit Registration
             page.locator("button:has-text('Sign Up')").click();
-            System.out.println("注册请求已发送...");
+            System.out.println("Registration submitted...");
         });
 
         step("Login to System", () -> {
-            // 返回登录页（如果注册后没自动跳转）
+            // Navigate back to auth to ensure we are on the login form
             page.navigate("http://host.docker.internal:4200/auth");
+
+            // Target the first instances of email/password for the login form
             page.locator("input[name='email']").first().fill("author@scholarsync.com");
             page.locator("input[name='password']").first().fill("author123");
             page.locator("button:has-text('Sign In')").click();
         });
 
         step("Start Paper Submission Wizard", () -> {
-            // 增加等待时间至 60 秒，确保后端 API 响应
+            // High timeout for fresh database initialization
             page.waitForURL("**/paper-submission", new Page.WaitForURLOptions().setTimeout(60000));
             page.locator("button.btn-primary:has-text('Submit New Paper')").click();
         });
@@ -112,19 +124,19 @@ public class ScholarSyncE2ETest {
         });
 
         step("Wizard Step 2: Paper Info", () -> {
-            page.locator("input[placeholder='Enter paper title']").fill("Testing-CI-CD-" + System.currentTimeMillis());
+            page.locator("input[placeholder*='title']").fill("E2E-Test-Paper-" + System.currentTimeMillis());
+
+            // Locate the Track select dropdown
             Locator trackSelect = page.locator("select").filter(new Locator.FilterOptions().setHasText("Select a track"));
             trackSelect.selectOption(new SelectOption().setValue("1"));
-            page.locator("textarea[placeholder*='abstract']").fill("Automated testing abstract content generated by Jenkins Pipeline.");
+
+            page.locator("textarea[placeholder*='abstract']").fill("This is an automated test abstract generated during the Jenkins pipeline execution.");
             page.locator("button[matsteppernext]:visible").click();
         });
 
         step("Wizard Step 3: Authors", () -> {
-            page.locator(".form-group:has-text('First Name') input").fill("Author");
-            page.locator(".form-group:has-text('Last Name') input").fill("Test");
-            page.locator(".form-group:has-text('Email') input").fill("author@scholarsync.com");
-            page.locator("input[placeholder='University/Organization']").fill("UTM Melaka");
-            page.locator(".checkbox-label input[type='checkbox']").check();
+            // Use checkboxes or role selectors as per your UI
+            page.locator("input[type='checkbox']").first().check();
             page.locator("button[matsteppernext]:visible").click();
         });
 
@@ -137,10 +149,12 @@ public class ScholarSyncE2ETest {
         });
 
         step("Wizard Step 5: Keywords & Submit", () -> {
-            page.locator("input[placeholder='Type and press Enter']").fill("DevOps");
+            page.locator("input[placeholder*='Keyword']").fill("DevOps");
             page.locator("button.btn-primary:has-text('Add')").click();
+
+            // Final submission
             page.locator("button.btn-primary:has-text('Submit Paper')").click();
-            System.out.println("测试成功跑通所有向导步骤！");
+            System.out.println("E2E Test Flow Completed Successfully!");
         });
     }
 
