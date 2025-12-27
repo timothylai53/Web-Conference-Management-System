@@ -119,29 +119,15 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Confirm Password *")).fill("password123");
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Expertise Area *")).fill("Computer Science");
 
-            // ✨ 诊断增强：监听点击后的网络请求
-            page.onResponse(response -> {
-                if (response.status() >= 400) {
-                    System.out.println("⚠️ 后端请求失败: " + response.url() + " 状态码: " + response.status());
-                }
-            });
-
-            // 强制点击提交
+            // Use force click to bypass potential overlaps from navigation bars
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Submit Application"))
                     .click(new Locator.ClickOptions().setForce(true));
 
-            // ✨ 核心修复：将状态改为 ATTACHED 且增加到 45 秒
-            // 考虑到 26 张表的创建压力，30秒有时依然不够
-            try {
-                page.waitForSelector("text=/.*Application submitted.*/",
-                        new Page.WaitForSelectorOptions()
-                                .setState(WaitForSelectorState.ATTACHED)
-                                .setTimeout(45000));
-            } catch (Exception e) {
-                // 如果失败，打印当前页面的文本，看看是不是出了什么错误提示（如 "Email already exists"）
-                System.out.println("❌ 提交超时！页面当前可见文本：\n" + page.innerText("body"));
-                throw e;
-            }
+            // Regex allows for "Application submitted successfully" or similar variations
+            page.waitForSelector("text=/.*Application submitted.*/",
+                    new Page.WaitForSelectorOptions()
+                            .setState(WaitForSelectorState.ATTACHED)
+                            .setTimeout(20000));
         });
 
         step("3. Admin: Approve Reviewer", () -> {
