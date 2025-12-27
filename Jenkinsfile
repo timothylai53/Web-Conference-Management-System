@@ -56,12 +56,17 @@ pipeline {
             steps {
                 echo 'Tagging and Pushing Backend & Frontend...'
                 script {
+                def tag = "build-${BUILD_NUMBER}"
                     // 后端 Push
+                    sh "docker tag ${BACKEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-backend:${tag}"
                     sh "docker tag ${BACKEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-backend:latest"
+                    sh "docker push ${DOCKER_HUB_USER}/confease-backend:${tag}"
                     sh "docker push ${DOCKER_HUB_USER}/confease-backend:latest"
 
                     // 前端 Push
+                    sh "docker tag ${FRONTEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-frontend:${tag}"
                     sh "docker tag ${FRONTEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-frontend:latest"
+                    sh "docker push ${DOCKER_HUB_USER}/confease-frontend:${tag}"
                     sh "docker push ${DOCKER_HUB_USER}/confease-frontend:latest"
                 }
             }
