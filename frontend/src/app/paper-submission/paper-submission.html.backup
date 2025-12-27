@@ -1,0 +1,343 @@
+<app-header></app-header>
+
+<div class="content-wrapper">
+  <div class="container">
+    <!-- Error Message -->
+    <div class="error-message" *ngIf="errorMessage">
+      ⚠️ {{ errorMessage }}
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div class="dashboard-view" *ngIf="currentView === 'dashboard'">
+    <div class="dashboard-header">
+      <h2>My Submissions</h2>
+      <button class="btn-primary" (click)="showWizard()">
+        ➕ Submit New Paper
+      </button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Loading submissions...</p>
+    </div>
+
+    <!-- Submissions Table -->
+    <div class="submissions-table" *ngIf="!loading">
+      <table *ngIf="submittedPapers.length > 0">
+        <thead>
+          <tr>
+            <th>Paper ID</th>
+            <th>Title</th>
+            <th>Track</th>
+            <th>Status</th>
+            <th>Submitted</th>
+            <th>Last Updated</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let paper of submittedPapers">
+            <td>{{ paper.paper_id }}</td>
+            <td class="title-cell">{{ paper.title }}</td>
+            <td>{{ paper.trackName }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(paper.status)">
+                {{ paper.status }}
+              </span>
+            </td>
+            <td>{{ paper.submitted_at ? (paper.submitted_at | date:'short') : 'N/A' }}</td>
+            <td>{{ paper.last_updated ? (paper.last_updated | date:'short') : 'N/A' }}</td>
+            <td class="actions-cell">
+              <button class="btn-sm btn-info" (click)="showDetail(paper)">View</button>
+              <button class="btn-sm btn-danger" (click)="withdrawPaper(paper.paper_id)">Withdraw</button>
+              <button class="btn-sm btn-success" (click)="uploadCameraReady(paper.paper_id)" 
+                      *ngIf="paper.status === 'Accepted'">Upload CR</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="empty-state" *ngIf="submittedPapers.length === 0">
+        <p>📭 No submissions yet</p>
+        <button class="btn-primary" (click)="showWizard()">Submit Your First Paper</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIZARD VIEW -->
+  <div class="wizard-view" *ngIf="currentView === 'wizard'">
+    <div class="wizard-header">
+      <button class="btn-back" (click)="showDashboard()">← Back to Dashboard</button>
+      <h2>Submit New Paper</h2>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="wizard-steps">
+      <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+        <div class="step-number">1</div>
+        <div class="step-label">Paper Info</div>
+      </div>
+      <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+        <div class="step-number">2</div>
+        <div class="step-label">Authors</div>
+      </div>
+      <div class="step" [class.active]="currentStep === 3" [class.completed]="currentStep > 3">
+        <div class="step-number">3</div>
+        <div class="step-label">Upload File</div>
+      </div>
+      <div class="step" [class.active]="currentStep === 4" [class.completed]="currentStep > 4">
+        <div class="step-number">4</div>
+        <div class="step-label">Keywords</div>
+      </div>
+    </div>
+
+    <!-- Step 1: Paper Info -->
+    <div class="wizard-step-content" *ngIf="currentStep === 1">
+      <h3>Paper Information</h3>
+      <div class="form-group">
+        <label>Title *</label>
+        <input type="text" [(ngModel)]="paperInfo.title" 
+               placeholder="Enter paper title" class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <label>Track *</label>
+        <select [(ngModel)]="paperInfo.track_id" class="form-control">
+          <option [value]="0">Select a track</option>
+          <option *ngFor="let track of tracks" [value]="track.track_id">
+            {{ track.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Abstract *</label>
+        <textarea [(ngModel)]="paperInfo.abstractText" rows="8" 
+                  placeholder="Enter paper abstract (minimum 100 words)" 
+                  class="form-control"></textarea>
+      </div>
+    </div>
+
+    <!-- Step 2: Authors -->
+    <div class="wizard-step-content" *ngIf="currentStep === 2">
+      <h3>Authors</h3>
+      <div class="authors-section">
+        <div class="author-row" *ngFor="let author of authors; let i = index">
+          <div class="author-card">
+            <div class="author-header">
+              <h4>Author {{ i + 1 }}</h4>
+              <button class="btn-remove" (click)="removeAuthor(i)" *ngIf="authors.length > 1">
+                ✕
+              </button>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>First Name *</label>
+                <input type="text" [(ngModel)]="author.first_name" 
+                       placeholder="First name" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" [(ngModel)]="author.last_name" 
+                       placeholder="Last name" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" [(ngModel)]="author.email" 
+                     placeholder="email@example.com" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label>Affiliation</label>
+              <input type="text" [(ngModel)]="author.affiliation" 
+                     placeholder="University/Organization" class="form-control">
+            </div>
+
+            <div class="form-check">
+              <input type="checkbox" [(ngModel)]="author.is_corresponding_author" 
+                     [id]="'corresponding-' + i">
+              <label [for]="'corresponding-' + i">Corresponding Author</label>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-add-author" (click)="addAuthor()">
+          ➕ Add Another Author
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: File Upload -->
+    <div class="wizard-step-content" *ngIf="currentStep === 3">
+      <h3>Upload Submission File</h3>
+      
+      <div class="file-upload-section">
+        <div class="upload-area">
+          <input type="file" #fileInput (change)="onFileSelected($event)" 
+                 accept=".pdf,.doc,.docx" id="file-upload" style="display: none;">
+          <label for="file-upload" class="upload-label">
+            <div class="upload-icon">📎</div>
+            <p *ngIf="!uploadedFileName">Click to upload or drag and drop</p>
+            <p *ngIf="uploadedFileName" class="uploaded-file">✓ {{ uploadedFileName }}</p>
+            <small>PDF, DOC, DOCX (Max 10MB)</small>
+          </label>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>File Type</label>
+            <select [(ngModel)]="fileInfo.file_type" class="form-control">
+              <option value="PDF">PDF</option>
+              <option value="DOC">DOC/DOCX</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Version</label>
+            <input type="number" [(ngModel)]="fileInfo.version" 
+                   min="1" class="form-control">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Keywords -->
+    <div class="wizard-step-content" *ngIf="currentStep === 4">
+      <h3>Keywords/Tags</h3>
+      
+      <div class="keywords-section">
+        <div class="add-keyword">
+          <input type="text" [(ngModel)]="newKeyword" 
+                 placeholder="Add custom keyword" 
+                 class="form-control"
+                 (keyup.enter)="addKeyword()">
+          <button class="btn-add" (click)="addKeyword()">Add</button>
+        </div>
+
+        <div class="selected-keywords">
+          <h4>Selected Keywords:</h4>
+          <div class="keyword-chips">
+            <span class="keyword-chip selected" *ngFor="let keyword of selectedKeywords">
+              {{ keyword }}
+              <button (click)="removeKeyword(keyword)">✕</button>
+            </span>
+            <span *ngIf="selectedKeywords.length === 0" class="no-keywords">
+              No keywords selected yet
+            </span>
+          </div>
+        </div>
+
+        <div class="available-keywords">
+          <h4>Suggested Keywords:</h4>
+          <div class="keyword-chips">
+            <span class="keyword-chip" 
+                  *ngFor="let keyword of availableKeywords"
+                  [class.selected]="selectedKeywords.includes(keyword)"
+                  (click)="toggleKeyword(keyword)">
+              {{ keyword }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wizard Navigation -->
+    <div class="wizard-navigation">
+      <button class="btn-secondary" (click)="previousStep()" 
+              [disabled]="currentStep === 1">
+        ← Previous
+      </button>
+      
+      <button class="btn-primary" (click)="nextStep()" 
+              *ngIf="currentStep < 4">
+        Next →
+      </button>
+      
+      <button class="btn-submit" (click)="submitPaper()" 
+              [disabled]="loading"
+              *ngIf="currentStep === 4">
+        {{ loading ? 'Submitting...' : 'Submit Paper' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- DETAIL VIEW -->
+  <div class="detail-view" *ngIf="currentView === 'detail' && selectedPaper">
+    <div class="detail-header">
+      <button class="btn-back" (click)="showDashboard()">← Back to Dashboard</button>
+      <h2>Paper Details</h2>
+    </div>
+
+    <div class="detail-content">
+      <div class="detail-section">
+        <div class="detail-row">
+          <strong>Paper ID:</strong>
+          <span>{{ selectedPaper.paper_id }}</span>
+        </div>
+        
+        <div class="detail-row">
+          <strong>Status:</strong>
+          <span class="status-badge" [ngClass]="getStatusClass(selectedPaper.status)">
+            {{ selectedPaper.status }}
+          </span>
+        </div>
+
+        <div class="detail-row">
+          <strong>Track:</strong>
+          <span>{{ selectedPaper.trackName }}</span>
+        </div>
+
+        <div class="detail-row">
+          <strong>Version:</strong>
+          <span>{{ selectedPaper.version || 1 }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>{{ selectedPaper.title }}</h3>
+      </div>
+
+      <div class="detail-section">
+        <h4>Abstract</h4>
+        <p class="abstract-text">{{ selectedPaper.abstractText }}</p>
+      </div>
+
+      <div class="detail-section" *ngIf="selectedPaper.submission_file">
+        <h4>Submission File</h4>
+        <div class="file-link">
+          <span>📎 {{ selectedPaper.submission_file }}</span>
+          <span class="file-type">({{ selectedPaper.file_type }})</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h4>Timeline</h4>
+        <div class="timeline">
+          <div class="timeline-item">
+            <strong>Submitted:</strong> {{ selectedPaper.submitted_at ? (selectedPaper.submitted_at | date:'full') : 'N/A' }}
+          </div>
+          <div class="timeline-item">
+            <strong>Last Updated:</strong> {{ selectedPaper.last_updated ? (selectedPaper.last_updated | date:'full') : 'N/A' }}
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-actions">
+        <button class="btn-danger" (click)="withdrawPaper(selectedPaper.paper_id)">
+          Withdraw Paper
+        </button>
+        <button class="btn-success" (click)="uploadCameraReady(selectedPaper.paper_id)"
+                *ngIf="selectedPaper.status === 'Accepted'">
+          Upload Camera-Ready Version
+        </button>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

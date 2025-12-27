@@ -1,0 +1,145 @@
+package com.webcrafters.confease_backend.controller;
+
+import com.webcrafters.confease_backend.model.Review;
+import com.webcrafters.confease_backend.model.ReviewAssignment;
+import com.webcrafters.confease_backend.model.Paper;
+import com.webcrafters.confease_backend.repository.ReviewRepository;
+import com.webcrafters.confease_backend.repository.ReviewAssignmentRepository;
+import com.webcrafters.confease_backend.repository.PaperRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/reviews")
+@CrossOrigin(origins = "http://localhost:4200")
+public class ReviewController {
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+    
+    @Autowired
+    private ReviewAssignmentRepository reviewAssignmentRepository;
+    
+    @Autowired
+    private PaperRepository paperRepository;
+
+    // Get all reviews
+    @GetMapping
+    public ResponseEntity<List<Review>> getAllReviews() {
+        List<Review> reviews = reviewRepository.findAll();
+        return ResponseEntity.ok(reviews);
+    }
+
+    // Get review by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
+        Optional<Review> review = reviewRepository.findById(id);
+        if (review.isPresent()) {
+            return ResponseEntity.ok(review.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Create a new review
+    @PostMapping
+    public ResponseEntity<Review> createReview(@RequestBody Review review) {
+        Review savedReview = reviewRepository.save(review);
+        
+        // Update the assignment status to "Completed"
+        Long paperId = null;
+        if (savedReview.getAssignment_id() != null) {
+            Optional<ReviewAssignment> assignmentOpt = reviewAssignmentRepository.findById(savedReview.getAssignment_id());
+            if (assignmentOpt.isPresent()) {
+                ReviewAssignment assignment = assignmentOpt.get();
+                assignment.setStatus("Completed");
+                reviewAssignmentRepository.save(assignment);
+                paperId = assignment.getPaper_id();
+            }
+        }
+        
+        // Check if all reviews for this paper are completed and update paper status
+        if (paperId != null) {
+            List<ReviewAssignment> paperAssignments = reviewAssignmentRepository.findByPaperId(paperId);
+            boolean allCompleted = paperAssignments.stream()
+                .allMatch(a -> "Completed".equals(a.getStatus()));
+            
+            if (allCompleted && !paperAssignments.isEmpty()) {
+                Optional<Paper> paperOpt = paperRepository.findById(paperId);
+                if (paperOpt.isPresent()) {
+                    Paper paper = paperOpt.get();
+                    
+                    // Get all reviews for this paper to determine final status
+                    List<Review> paperReviews = reviewRepository.findByAssignmentIdIn(
+                        paperAssignments.stream()
+                            .map(ReviewAssignment::getAssignment_id)
+                            .collect(java.util.stream.Collectors.toList())
+                    );
+                    
+                    // Count accepted vs rejected recommendations
+                    long acceptedCount = paperReviews.stream()
+                        .filter(r -> "Accepted".equalsIgnoreCase(r.getRecommendation()))
+                        .count();
+                    long rejectedCount = paperReviews.stream()
+                        .filter(r -> "Rejected".equalsIgnoreCase(r.getRecommendation()))
+                        .count();
+                    
+                    // Set paper status based on majority decision
+                    if (acceptedCount > rejectedCount) {
+                        paper.setStatus("Accepted");
+                    } else if (rejectedCount > acceptedCount) {
+                        paper.setStatus("Rejected");
+                    } else {
+                        // Tie - default to Reviewed for program chair decision
+                        paper.setStatus("Reviewed");
+                    }
+                    
+                    paperRepository.save(paper);
+                }
+            }
+        }
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedReview);
+    }
+
+    // Update an existing review
+    @PutMapping("/{id}")
+    public ResponseEntity<Review> updateReview(@PathVariable Long id, @RequestBody Review reviewDetails) {
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+        if (optionalReview.isPresent()) {
+            Review review = optionalReview.get();
+            // Update fields
+            review.setAssignment_id(reviewDetails.getAssignment_id());
+            review.setReviewer_id(reviewDetails.getReviewer_id());
+            review.setOverall_score(reviewDetails.getOverall_score());
+            review.setComments_to_author(reviewDetails.getComments_to_author());
+            review.setComments_to_chair(reviewDetails.getComments_to_chair());
+            review.setRecommendation(reviewDetails.getRecommendation());
+            review.setRound_number(reviewDetails.getRound_number());
+            review.setDue_date(reviewDetails.getDue_date());
+            review.setAttachment(reviewDetails.getAttachment());
+            // Note: reviewed_at is typically not updated, as it's a timestamp for when the review was submitted
+
+            Review updatedReview = reviewRepository.save(review);
+            return ResponseEntity.ok(updatedReview);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Delete a review
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+        if (reviewRepository.existsById(id)) {
+            reviewRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}

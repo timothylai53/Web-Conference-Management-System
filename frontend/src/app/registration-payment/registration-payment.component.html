@@ -1,0 +1,381 @@
+<!-- Main Layout -->
+<div class="page-container">
+
+  <!-- LEFT CARD: Registration Form -->
+  <div class="registration-card">
+    <div class="registration-header">
+      <h2>Conference Registration</h2>
+      <div class="registration-subtitle">Secure Premium Registration Portal</div>
+    </div>
+
+    <form (ngSubmit)="submitRegistration()" #registrationForm="ngForm">
+      <!-- Conference Selection -->
+      <div class="form-group">
+        <label class="form-label">Select Conference</label>
+        <select
+          class="form-select"
+          [(ngModel)]="selectedConferenceId"
+          name="conference"
+          (change)="onConferenceSelect()"
+          required>
+          <option [value]="null">Choose a conference...</option>
+          <option *ngFor="let conference of conferences" [value]="conference.conference_id">
+            {{ conference.title }}
+          </option>
+        </select>
+        <div *ngIf="selectedConferenceId" class="conference-date-display">
+          {{ getSelectedConferenceDate() }}
+        </div>
+      </div>
+
+      <!-- Registration Type -->
+      <div class="form-group">
+        <label class="form-label">Registration Type</label>
+        <select
+          class="form-select"
+          [(ngModel)]="registrationType"
+          name="registrationType"
+          (change)="calculatePrice()"
+          required>
+          <option value="student">Student Registration - RM 100</option>
+          <option value="professional">Professional Registration - RM 250</option>
+        </select>
+      </div>
+
+      <!-- Early Bird Discount -->
+      <div class="form-group">
+        <div class="checkbox-container">
+          <input
+            type="checkbox"
+            class="checkbox-input"
+            [(ngModel)]="earlyBird"
+            (ngModelChange)="calculatePrice()"
+            name="earlyBird"
+            id="earlyBird">
+          <label class="checkbox-label" for="earlyBird">
+            Early Bird Discount (-RM 30)
+            <span class="discount-note">Available for registrations completed 30 days before conference</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Dietary Requirements -->
+      <div class="form-group">
+        <label class="form-label">Dietary Requirements (Optional)</label>
+        <input
+          type="text"
+          class="form-input"
+          [(ngModel)]="dietaryRequirements"
+          name="dietaryRequirements"
+          placeholder="e.g., Vegetarian, Halal, Gluten-Free">
+      </div>
+
+      <!-- Price Display -->
+      <div class="price-display">
+        <div class="price-label">Total Amount</div>
+        <div class="price-amount">
+          <span class="price-currency">RM</span>
+          {{ registrationPrice }}
+        </div>
+        <div class="price-note">Includes access to all sessions, conference materials, and lunch</div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="!selectedConferenceId || isProcessing">
+          <span *ngIf="!isProcessing">Complete Registration</span>
+          <span *ngIf="isProcessing">Processing...</span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="resetForm()">
+          Clear Form
+        </button>
+      </div>
+    </form>
+
+    <!-- Features List -->
+    <div class="features-list">
+      <div class="feature-item">
+        <div class="feature-icon">✓</div>
+        <div class="feature-text">Secure SSL Encryption</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">✓</div>
+        <div class="feature-text">Instant Confirmation</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">✓</div>
+        <div class="feature-text">24/7 Support</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">✓</div>
+        <div class="feature-text">Flexible Payment Options</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT CARD: Invoices/Registrations -->
+  <div class="invoices-card">
+    <div class="invoices-header">
+      <h2>My Registrations</h2>
+      <div class="invoice-count">{{ invoices.length }} Total</div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="loading-spinner"></div>
+      <div>Loading your registrations...</div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage" class="error-state">
+      <div class="error-icon"></div>
+      <div class="error-text">{{ errorMessage }}</div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && invoices.length === 0" class="empty-state">
+      <div class="empty-icon"></div>
+      <h3>No Registrations Found</h3>
+      <p>You haven't registered for any conferences yet. Complete the registration form to get started.</p>
+    </div>
+
+    <!-- Invoices Table -->
+    <div *ngIf="!isLoading && invoices.length > 0" class="invoices-container">
+      <table class="invoice-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Conference</th>
+          <th>Status</th>
+          <th>Amount</th>
+          <th>Receipt</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let invoice of invoices">
+          <td>#{{ invoice.id }}</td>
+          <td>
+            <div class="conference-name">{{ invoice.conference_name }}</div>
+            <div class="conference-date">Registered: {{ invoice.registration_date }}</div>
+            <div *ngIf="invoice.payment_date" class="payment-date">
+              Paid: {{ invoice.payment_date }}
+            </div>
+          </td>
+          <td>
+              <span [class]="getStatusBadgeClass(invoice.status)">
+                {{ getStatusText(invoice.status) }}
+              </span>
+          </td>
+          <td class="amount-cell">{{ formatCurrency(invoice.amount) }}</td>
+          <td>
+              <span *ngIf="invoice.receipt" class="receipt-link" (click)="downloadReceipt(invoice.receipt)">
+                 Download
+              </span>
+            <span *ngIf="!invoice.receipt" class="no-receipt">
+                —
+              </span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button
+                *ngIf="invoice.status === 'pending'"
+                class="btn-pay"
+                (click)="payNow(invoice)"
+                [disabled]="isProcessing">
+                Pay Now
+              </button>
+              <button
+                class="btn-cancel"
+                (click)="cancelRegistration(invoice.id)"
+                [disabled]="isProcessing || invoice.status === 'cancelled'">
+                {{ invoice.status === 'cancelled' ? 'Cancelled' : 'Cancel' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <!-- Summary Footer -->
+      <div class="invoice-summary">
+        <div class="summary-item">
+          <span class="summary-label">Total Registrations:</span>
+          <span class="summary-value">{{ invoices.length }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Paid Amount:</span>
+          <span class="summary-value">
+            {{ formatCurrency(getPaidTotal()) }}
+          </span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Pending Amount:</span>
+          <span class="summary-value pending">
+            {{ formatCurrency(getPendingTotal()) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment Modal -->
+<div *ngIf="showPaymentModal" class="modal-overlay" (click)="closePaymentModal()">
+  <div class="payment-modal" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Complete Payment</h3>
+        <div class="modal-subtitle">Secure Payment Gateway</div>
+      </div>
+
+      <!-- Progress Steps -->
+      <div class="progress-steps">
+        <div class="progress-step">
+          <div [class]="'step-indicator ' + (currentStep >= 1 ? 'active' : '') + (currentStep > 1 ? ' completed' : '')">
+            {{ currentStep > 1 ? '✓' : '1' }}
+          </div>
+          <div [class]="'step-label ' + (currentStep >= 1 ? 'active' : '') + (currentStep > 1 ? ' completed' : '')">
+            Registration
+          </div>
+        </div>
+        <div class="progress-step">
+          <div [class]="'step-indicator ' + (currentStep >= 2 ? 'active' : '') + (currentStep > 2 ? ' completed' : '')">
+            {{ currentStep > 2 ? '✓' : '2' }}
+          </div>
+          <div [class]="'step-label ' + (currentStep >= 2 ? 'active' : '') + (currentStep > 2 ? ' completed' : '')">
+            Payment
+          </div>
+        </div>
+        <div class="progress-step">
+          <div [class]="'step-indicator ' + (currentStep >= 3 ? 'active' : '')">
+            {{ currentStep >= 3 ? '✓' : '3' }}
+          </div>
+          <div [class]="'step-label ' + (currentStep >= 3 ? 'active' : '')">
+            Confirmation
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Payment -->
+      <div *ngIf="currentStep === 2" class="payment-step">
+        <div class="payment-details">
+          <div class="detail-row">
+            <span class="detail-label">Registration ID:</span>
+            <span class="detail-value">#{{ selectedInvoiceId }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Conference:</span>
+            <span class="detail-value">{{ getSelectedInvoiceConferenceName() }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Amount Due:</span>
+            <span class="detail-value amount">{{ formatCurrency(getSelectedInvoiceAmount()) }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Payment Method:</span>
+            <select class="form-select" [(ngModel)]="paymentMethod">
+              <option value="bank_transfer">Bank Transfer</option>
+              <option value="credit_card">Credit Card</option>
+              <option value="paypal">PayPal</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="form-group">
+          <label class="form-label">Upload Payment Receipt</label>
+          <div class="file-upload">
+            <input
+              type="file"
+              (change)="onReceiptSelected($event)"
+              accept=".pdf,.jpg,.jpeg,.png">
+            <div class="upload-icon"></div>
+            <div class="upload-text">Click to upload receipt</div>
+            <div class="upload-hint">PDF, JPG, PNG up to 5MB</div>
+          </div>
+
+          <div *ngIf="receiptFile" class="file-preview">
+            <div class="file-icon"></div>
+            <div class="file-name">{{ receiptFile.name }}</div>
+            <div class="file-remove" (click)="receiptFile = null">✕</div>
+          </div>
+        </div>
+
+        <!-- Payment Instructions -->
+        <div class="payment-instructions">
+          <h4>Payment Instructions:</h4>
+          <ol>
+            <li>Transfer <strong>{{ formatCurrency(getSelectedInvoiceAmount()) }}</strong> to:</li>
+            <li>Bank: <strong>Maybank Berhad</strong></li>
+            <li>Account: <strong>5648 1234 5678</strong></li>
+            <li>Reference: <strong>CONF-{{ selectedInvoiceId }}</strong></li>
+            <li>Upload proof of payment</li>
+          </ol>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="modal-actions">
+          <button
+            class="btn-primary"
+            (click)="submitPayment()"
+            [disabled]="!receiptFile || isProcessing">
+            <span *ngIf="!isProcessing">Submit Payment</span>
+            <span *ngIf="isProcessing">Processing...</span>
+          </button>
+          <button
+            class="btn-secondary"
+            (click)="closePaymentModal()">
+            Cancel Payment
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Confirmation -->
+      <div *ngIf="currentStep === 3" class="success-state">
+        <div class="success-icon">✓</div>
+        <h3 class="success-title">Payment Successful!</h3>
+        <p class="success-message">
+          Your payment has been received and your registration is now confirmed.
+        </p>
+        <div class="confirmation-details">
+          <div class="confirmation-row">
+            <span>Confirmation Number:</span>
+            <strong>CONF-{{ selectedInvoiceId }}-PAID</strong>
+          </div>
+          <div class="confirmation-row">
+            <span>Conference:</span>
+            <span>{{ getSelectedInvoiceConferenceName() }}</span>
+          </div>
+          <div class="confirmation-row">
+            <span>Payment Date:</span>
+            <span>{{ getCurrentDate() }}</span>
+          </div>
+        </div>
+        <button
+          class="btn-primary"
+          (click)="closePaymentModal()">
+          Return to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notifications -->
+<div *ngIf="errorMessage" class="notification notification-error">
+  <span></span>
+  <span>{{ errorMessage }}</span>
+</div>
+
+<div *ngIf="successMessage" class="notification notification-success">
+  <span>✓</span>
+  <span>{{ successMessage }}</span>
+</div>

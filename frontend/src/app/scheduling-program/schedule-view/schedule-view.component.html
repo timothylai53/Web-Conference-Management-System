@@ -1,0 +1,63 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Conference Schedule</h1>
+      <p class="page-subtitle">Manage sessions, rooms, and program schedule</p>
+    </div>
+    <div class="action-buttons">
+      <button routerLink="/scheduling-program/sessions" class="btn btn-secondary">
+        <span class="icon">+</span> Create Session
+      </button>
+      <button routerLink="/scheduling-program/rooms" class="btn btn-primary">
+        <span class="icon">🏢</span> Manage Rooms
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calendar-container">
+      <!-- Calendar Header -->
+      <div class="calendar-header">
+        <button class="nav-btn" (click)="previousWeek()">‹</button>
+        <h2 class="calendar-title">{{ getWeekRange() }}</h2>
+        <button class="nav-btn" (click)="nextWeek()">›</button>
+      </div>
+
+      <!-- Calendar Grid -->
+      <div class="calendar-grid">
+        <!-- Day Columns -->
+        <div class="day-column" *ngFor="let day of weekDays">
+          <div class="day-header">
+            <div class="day-name">{{ day.name }}</div>
+            <div class="day-date">{{ day.date }}</div>
+          </div>
+          <div class="sessions-container">
+            <div class="session-card" *ngFor="let session of getSessionsForDay(day.fullDate)">
+              <div class="session-card-time">{{ formatTime(session.start_time) }} - {{ formatTime(session.end_time) }}</div>
+              <div class="session-card-title">{{ session.title }}</div>
+              <div class="session-card-room">📍 {{ getRoomName(session.room_id) }}</div>
+            </div>
+            <div class="no-sessions" *ngIf="getSessionsForDay(day.fullDate).length === 0">
+              No sessions
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="rooms.length === 0" class="empty-state">
+      <div class="empty-icon">🏢</div>
+      <h3>No rooms available</h3>
+      <p>Get started by adding rooms to your conference schedule.</p>
+      <button routerLink="/scheduling-program/rooms" class="btn btn-secondary mt-3">Add Room</button>
+    </div>
+
+    <div *ngIf="rooms.length > 0 && sessions.length === 0" class="empty-state">
+      <div class="empty-icon">📅</div>
+      <h3>No sessions scheduled</h3>
+      <p>Create sessions to populate your conference schedule.</p>
+      <button routerLink="/scheduling-program/sessions" class="btn btn-primary mt-3">Create Session</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+/* Global App Styles */
+:host {
+  display: block;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  min-height: calc(100vh - 72px - 300px); /* header height - footer approximate height */
+  width: 100%;
+}
+
+/* Global color variables matching the header/footer design */
+:root {
+  --primary-navy: rgb(10, 22, 40);
+  --accent-purple: rgb(139, 92, 246);
+  --accent-blue: rgb(59, 130, 246);
+  --text-light: rgba(255, 255, 255, 0.9);
+  --text-muted: rgba(255, 255, 255, 0.6);
+}

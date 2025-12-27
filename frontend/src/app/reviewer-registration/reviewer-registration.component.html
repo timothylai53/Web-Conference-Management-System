@@ -1,0 +1,164 @@
+<div class="reviewer-registration-container">
+  <div class="registration-card">
+    <div class="card-header">
+      <h1>Reviewer Application</h1>
+      <p class="subtitle">Join our community of expert reviewers</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="showError" class="error-banner">
+      {{ errorMessage }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="registration-form">
+      
+      <!-- Personal Information -->
+      <div class="form-section">
+        <h2>Personal Information</h2>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="firstName" 
+              [(ngModel)]="reviewerData.first_name" 
+              name="firstName"
+              required>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="lastName" 
+              [(ngModel)]="reviewerData.last_name" 
+              name="lastName"
+              required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email <span class="required">*</span></label>
+          <input 
+            type="email" 
+            id="email" 
+            [(ngModel)]="reviewerData.email" 
+            name="email"
+            required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="affiliation">Affiliation</label>
+            <input 
+              type="text" 
+              id="affiliation" 
+              [(ngModel)]="reviewerData.affiliation" 
+              name="affiliation"
+              placeholder="University/Institution">
+          </div>
+
+          <div class="form-group">
+            <label for="country">Country</label>
+            <input 
+              type="text" 
+              id="country" 
+              [(ngModel)]="reviewerData.country" 
+              name="country">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="orcid">ORCID</label>
+          <input 
+            type="text" 
+            id="orcid" 
+            [(ngModel)]="reviewerData.orcid" 
+            name="orcid"
+            placeholder="0000-0000-0000-0000">
+        </div>
+      </div>
+
+      <!-- Account Security -->
+      <div class="form-section">
+        <h2>Account Security</h2>
+        
+        <div class="form-group">
+          <label for="password">Password <span class="required">*</span></label>
+          <input 
+            type="password" 
+            id="password" 
+            [(ngModel)]="reviewerData.password_hash" 
+            name="password"
+            required
+            minlength="6">
+          <small>Minimum 6 characters</small>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            [(ngModel)]="reviewerData.confirmPassword" 
+            name="confirmPassword"
+            required>
+        </div>
+      </div>
+
+      <!-- Reviewer Information -->
+      <div class="form-section">
+        <h2>Reviewer Profile</h2>
+        
+        <div class="form-group">
+          <label for="expertise">Expertise Area <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="expertise" 
+            [(ngModel)]="reviewerData.expertise_area" 
+            name="expertise"
+            placeholder="e.g., Machine Learning, Computer Vision, NLP"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="maxPapers">Maximum Papers to Review</label>
+          <input 
+            type="number" 
+            id="maxPapers" 
+            [(ngModel)]="reviewerData.max_papers" 
+            name="maxPapers"
+            min="1"
+            max="20">
+          <small>How many papers can you review per conference?</small>
+        </div>
+
+        <div class="form-group">
+          <label for="bio">Brief Bio</label>
+          <textarea 
+            id="bio" 
+            [(ngModel)]="reviewerData.bio" 
+            name="bio"
+            rows="4"
+            placeholder="Tell us about your background and expertise..."></textarea>
+        </div>
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="goBack()" [disabled]="isSubmitting">
+          Cancel
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Submitting...' : 'Submit Application' }}
+        </button>
+      </div>
+
+      <div class="info-note">
+        <strong>Note:</strong> Your application will be reviewed by our admin team. 
+        You will be notified via email once your application is approved.
+      </div>
+    </form>
+  </div>
+</div>

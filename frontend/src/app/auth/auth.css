@@ -1,0 +1,255 @@
+/* 引入字体和图标库 */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css');
+
+:host {
+  display: block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #f8fafc; /* 与整个页面背景融合 */
+}
+
+/* 视口容器：使用 flex 居中，留出头部和底部的空间 */
+.auth-viewport {
+  width: 100%;
+  min-height: 85vh; /* 避免强制 100vh 导致 footer 被推太远，适应现有布局 */
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* 错误提示弹窗 (Toast) */
+.toast-notification {
+  position: fixed; /* 使用 fixed 确保在屏幕上方居中 */
+  top: 100px;      /* 根据你的 header 高度可能需要微调 */
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  z-index: 1050;
+}
+
+.toast-notification.active {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.toast-body {
+  background: #ffffff;
+  color: #ef4444;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid #fee2e2;
+  box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 核心卡片容器 */
+.auth-card-container {
+  width: 100%;
+  max-width: 480px; /* 限制最大宽度，保持精致感 */
+  margin: 0 auto;
+}
+
+/* 品牌头部 */
+.brand-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.brand-logo {
+  font-weight: 800;
+  color: #1e293b;
+  font-size: 2.5rem;
+  letter-spacing: -1px;
+  margin: 0;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-tagline {
+  color: #64748b;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+/* 白色卡片表面 */
+.auth-card-surface {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+  0 20px 25px -5px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  overflow: hidden; /* 防止动画溢出 */
+  transition: all 0.3s ease;
+}
+
+/* 标题样式 */
+.form-title {
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* 输入框组样式 */
+.input-block, .reg-input-block {
+  margin-bottom: 20px;
+}
+
+.input-block label, .small-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+/* 带图标的输入框容器 */
+.input-control {
+  position: relative;
+  width: 100%; /* 确保容器宽度正常 */
+}
+
+.icon-start {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+  pointer-events: none; /* 防止图标阻挡点击输入框 */
+}
+
+/* 输入框通用样式 */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #1e293b;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box; /* 关键：防止padding撑大宽度，解决溢出问题 */
+}
+
+/* 登录框特定padding (留出图标位置) */
+.input-control input {
+  padding-left: 45px;
+}
+
+/* 聚焦状态 */
+input:focus {
+  background-color: #ffffff;
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.input-control input:focus + .icon-start,
+.input-control:focus-within .icon-start {
+  color: #3b82f6;
+}
+
+/* 按钮样式 */
+.btn-primary-lg {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(to right, #2563eb, #1d4ed8);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.btn-primary-lg:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary-lg:active {
+  transform: translateY(0);
+}
+
+/* 切换链接 */
+.auth-switch {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.auth-switch button {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 5px;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.auth-switch button:hover {
+  text-decoration: underline;
+}
+
+/* 注册页面的网格布局辅助 */
+.row {
+  display: flex;
+  gap: 15px;
+  margin-right: 0; /* 确保 row 不会产生额外的 margin */
+  margin-left: 0;
+}
+.col-md-6 {
+  flex: 1;
+  min-width: 0; /* 防止 flex 子元素溢出 */
+}
+
+.text-muted { color: #64748b; }
+.text-center { text-align: center; }
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+
+/* 动画效果 */
+.view-animate {
+  animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 响应式调整 */
+@media (max-width: 500px) {
+  .auth-card-surface {
+    padding: 30px 20px;
+  }
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

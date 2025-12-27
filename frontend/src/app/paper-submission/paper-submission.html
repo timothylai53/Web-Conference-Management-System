@@ -1,0 +1,482 @@
+<div class="page-container">
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-banner">
+    <mat-icon>warning</mat-icon>
+    <span>{{ errorMessage }}</span>
+  </div>
+
+  <!-- DASHBOARD VIEW -->
+  <div class="dashboard-view" *ngIf="currentView === 'dashboard'">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Paper Submissions</h1>
+        <p class="page-subtitle">Manage and track your conference paper submissions</p>
+      </div>
+      <button mat-raised-button class="btn btn-primary" (click)="showWizard()">
+        <span class="icon">+</span>
+        Submit New Paper
+      </button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading-container" *ngIf="loading">
+      <mat-spinner></mat-spinner>
+      <p>Loading submissions...</p>
+    </div>
+
+    <!-- Submissions Table -->
+    <div class="card" *ngIf="!loading && submittedPapers.length > 0">
+      <table mat-table [dataSource]="submittedPapers" class="data-table">
+        <!-- Paper ID Column -->
+        <ng-container matColumnDef="paper_id">
+          <th mat-header-cell *matHeaderCellDef>Paper ID</th>
+          <td mat-cell *matCellDef="let paper" class="font-bold text-navy">{{ paper.paper_id }}</td>
+        </ng-container>
+
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let paper" class="title-cell">{{ paper.title }}</td>
+        </ng-container>
+
+        <!-- Conference Column -->
+        <ng-container matColumnDef="conference">
+          <th mat-header-cell *matHeaderCellDef>Conference</th>
+          <td mat-cell *matCellDef="let paper" class="text-secondary">{{ getConferenceName(paper.conference_id) }}</td>
+        </ng-container>
+
+        <!-- Track Column -->
+        <ng-container matColumnDef="track">
+          <th mat-header-cell *matHeaderCellDef>Track</th>
+          <td mat-cell *matCellDef="let paper" class="text-secondary">{{ paper.trackName }}</td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Status</th>
+          <td mat-cell *matCellDef="let paper" style="text-align: center;">
+            <span class="status-badge" [ngClass]="getStatusClass(paper.status)">
+              {{ paper.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Submitted Column -->
+        <ng-container matColumnDef="submitted_at">
+          <th mat-header-cell *matHeaderCellDef>Submitted</th>
+          <td mat-cell *matCellDef="let paper">
+            {{ paper.submitted_at ? (paper.submitted_at | date:'mediumDate') : 'N/A' }}
+          </td>
+        </ng-container>
+
+        <!-- Last Updated Column -->
+        <ng-container matColumnDef="last_updated">
+          <th mat-header-cell *matHeaderCellDef>Last Updated</th>
+          <td mat-cell *matCellDef="let paper">
+            {{ paper.last_updated ? (paper.last_updated | date:'mediumDate') : 'N/A' }}
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef style="text-align: right;">Actions</th>
+          <td mat-cell *matCellDef="let paper" class="actions-cell">
+            <div class="action-buttons-wrapper">
+              <button mat-icon-button class="action-btn view" (click)="showDetail(paper)" matTooltip="View Details">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button class="action-btn delete" (click)="withdrawPaper(paper.paper_id)" matTooltip="Withdraw">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-icon-button class="action-btn upload" (click)="uploadCameraReady(paper.paper_id)" 
+                      *ngIf="paper.status === 'Accepted'" matTooltip="Upload Camera-Ready">
+                <mat-icon>upload</mat-icon>
+              </button>
+              <button mat-icon-button class="action-btn amend" (click)="showAmendWizard(paper)" 
+                      *ngIf="paper.status === 'Rejected'" matTooltip="Amend & Resubmit">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <!-- Empty State -->
+    <div class="card" *ngIf="!loading && submittedPapers.length === 0">
+      <div class="empty-state">
+        <div class="empty-icon">📄</div>
+        <h3>No submissions yet</h3>
+        <p>Get started by submitting your first conference paper</p>
+        <button mat-raised-button class="btn btn-secondary mt-3" (click)="showWizard()">
+          Submit Your First Paper
+        </button>
+      </div>
+    </div>
+  </div>
+
+    <!-- WIZARD VIEW -->
+    <div class="wizard-view" *ngIf="currentView === 'wizard'">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <div class="wizard-header">
+              <button mat-button (click)="showDashboard()">
+                <mat-icon>arrow_back</mat-icon>
+                Back to Dashboard
+              </button>
+              <h2>{{ isAmendment ? 'Amend & Resubmit Paper' : 'Submit New Paper' }}</h2>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <mat-stepper linear #stepper [(selectedIndex)]="currentStep">
+            <!-- Step 1: Conference Selection -->
+            <mat-step label="Select Conference">
+              <div class="step-content">
+                <h3 class="step-title">Select Conference</h3>
+                
+                <div class="form-group">
+                  <label>Conference *</label>
+                  <select class="form-control" [(ngModel)]="paperInfo.conference_id" name="conference_id" required>
+                    <option [value]="0">Select a conference</option>
+                    <option *ngFor="let conf of conferences" [value]="conf.conference_id">
+                      {{ conf.title }} - {{ conf.location }} ({{ conf.date | date:'mediumDate' }})
+                    </option>
+                  </select>
+                </div>
+
+                <div *ngIf="conferences.length === 0" class="empty-state">
+                  <p>Loading conferences...</p>
+                </div>
+
+                <div class="step-actions">
+                  <button class="btn btn-secondary" matStepperPrevious disabled>Previous</button>
+                  <button class="btn btn-primary" matStepperNext [disabled]="paperInfo.conference_id === 0">Next</button>
+                </div>
+              </div>
+            </mat-step>
+
+            <!-- Step 2: Paper Info -->
+            <mat-step label="Paper Information">
+              <div class="step-content">
+                <h3 class="step-title">Paper Information</h3>
+                
+                <div class="form-group">
+                  <label>Title *</label>
+                  <input type="text" class="form-control" [(ngModel)]="paperInfo.title" placeholder="Enter paper title" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Track *</label>
+                  <select class="form-control" [(ngModel)]="paperInfo.track_id" required>
+                    <option [value]="0">Select a track</option>
+                    <option *ngFor="let track of tracks" [value]="track.track_id">
+                      {{ track.name }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Abstract *</label>
+                  <textarea class="form-control" [(ngModel)]="paperInfo.abstractText" rows="8" 
+                            placeholder="Enter paper abstract (minimum 100 words)" required>
+                  </textarea>
+                </div>
+
+                <div class="step-actions">
+                  <button class="btn btn-secondary" matStepperPrevious>Previous</button>
+                  <button class="btn btn-primary" matStepperNext>Next</button>
+                </div>
+              </div>
+            </mat-step>
+
+            <!-- Step 3: Authors -->
+            <mat-step label="Authors">
+              <div class="step-content">
+                <h3 class="step-title">Authors</h3>
+                
+                <div *ngFor="let author of authors; let i = index" class="author-card-simple">
+                  <div class="author-header-simple">
+                    <span class="author-number">Author {{ i + 1 }}</span>
+                    <button *ngIf="authors.length > 1" (click)="removeAuthor(i)" class="remove-author-btn">
+                      <span>&times;</span>
+                    </button>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>First Name *</label>
+                      <input type="text" class="form-control" [(ngModel)]="author.first_name" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Last Name *</label>
+                      <input type="text" class="form-control" [(ngModel)]="author.last_name" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" class="form-control" [(ngModel)]="author.email" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Affiliation</label>
+                    <input type="text" class="form-control" [(ngModel)]="author.affiliation" placeholder="University/Organization">
+                  </div>
+
+                  <div class="checkbox-group">
+                    <label class="checkbox-label">
+                      <input type="checkbox" [(ngModel)]="author.is_corresponding_author">
+                      Corresponding Author
+                    </label>
+                  </div>
+                </div>
+
+                <button (click)="addAuthor()" class="btn btn-secondary add-author-btn">
+                  <span class="icon">+</span> Add Another Author
+                </button>
+
+                <div class="step-actions">
+                  <button class="btn btn-secondary" matStepperPrevious>Previous</button>
+                  <button class="btn btn-primary" matStepperNext>Next</button>
+                </div>
+              </div>
+            </mat-step>
+
+            <!-- Step 3: File Upload -->
+            <mat-step label="Upload File">
+              <div class="step-content">
+                <h3>Upload Submission File</h3>
+                
+                <mat-card class="upload-card">
+                  <mat-card-content>
+                    <div class="upload-area">
+                      <input type="file" #fileInput (change)="onFileSelected($event)" 
+                             accept=".pdf,.doc,.docx" id="file-upload" style="display: none;">
+                      <label for="file-upload" class="upload-label">
+                        <mat-icon class="upload-icon">cloud_upload</mat-icon>
+                        <p *ngIf="!uploadedFileName">Click to upload or drag and drop</p>
+                        <p *ngIf="uploadedFileName" class="uploaded-file">
+                          <mat-icon>check_circle</mat-icon>
+                          {{ uploadedFileName }}
+                        </p>
+                        <small>PDF, DOC, DOCX (Max 10MB)</small>
+                      </label>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+
+                <div class="form-row simple-form">
+                  <div class="form-group">
+                    <label>File Type</label>
+                    <select [(ngModel)]="fileInfo.file_type" class="form-control">
+                      <option value="PDF">PDF</option>
+                      <option value="DOC">DOC/DOCX</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Version</label>
+                    <input type="number" [(ngModel)]="fileInfo.version" min="1" class="form-control" placeholder="1">
+                  </div>
+                </div>
+
+                <div class="step-actions">
+                  <button class="btn btn-secondary" matStepperPrevious>Previous</button>
+                  <button class="btn btn-primary" matStepperNext>Next</button>
+                </div>
+              </div>
+            </mat-step>
+
+            <!-- Step 4: Keywords -->
+            <mat-step label="Keywords">
+              <div class="step-content">
+                <h3 class="step-title">Keywords/Tags</h3>
+                
+                <div class="keyword-card">
+                  <div class="add-keyword">
+                    <div class="form-group keyword-input">
+                      <label>Add Keyword</label>
+                      <input type="text" [(ngModel)]="newKeyword" 
+                             class="form-control"
+                             placeholder="Type and press Enter" 
+                             (keyup.enter)="addKeyword()">
+                    </div>
+                    <button class="btn btn-primary" (click)="addKeyword()">
+                      <span class="icon">+</span>
+                      Add
+                    </button>
+                  </div>
+
+                  <div class="divider"></div>
+
+                  <div class="keywords-section">
+                    <h4>Selected Keywords:</h4>
+                    <div class="keyword-chips">
+                      <span *ngFor="let keyword of selectedKeywords" class="keyword-chip selected">
+                        {{ keyword }}
+                        <button (click)="removeKeyword(keyword)" class="chip-remove">×</button>
+                      </span>
+                      <span *ngIf="selectedKeywords.length === 0" class="empty-message">
+                        No keywords selected yet
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="divider"></div>
+
+                  <div class="keywords-section">
+                    <h4>Suggested Keywords:</h4>
+                    <div class="keyword-chips">
+                      <span *ngFor="let keyword of availableKeywords"
+                            [class.selected]="selectedKeywords.includes(keyword)"
+                            class="keyword-chip"
+                            (click)="toggleKeyword(keyword)">
+                        {{ keyword }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step-actions">
+                  <button class="btn btn-secondary" matStepperPrevious>Previous</button>
+                  <button class="btn btn-primary" (click)="submitPaper()" [disabled]="loading">
+                    <span class="icon">✓</span>
+                    {{ loading ? (isAmendment ? 'Resubmitting...' : 'Submitting...') : (isAmendment ? 'Resubmit Paper' : 'Submit Paper') }}
+                  </button>
+                </div>
+              </div>
+            </mat-step>
+          </mat-stepper>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- DETAIL VIEW -->
+    <div class="detail-view" *ngIf="currentView === 'detail' && selectedPaper">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <div class="detail-header">
+              <button mat-button (click)="showDashboard()">
+                <mat-icon>arrow_back</mat-icon>
+                Back to Dashboard
+              </button>
+              <h2>Paper Details</h2>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- Paper Title Section -->
+          <div class="paper-title-section">
+            <h1 class="paper-title">{{ selectedPaper.title }}</h1>
+            <mat-chip [class]="getStatusClass(selectedPaper.status)" class="status-chip-large">
+              {{ selectedPaper.status }}
+            </mat-chip>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <!-- Paper Information Grid -->
+          <div class="detail-grid">
+            <!-- Paper Information Section -->
+            <div class="detail-section">
+              <h3 class="section-title">
+                <mat-icon>info</mat-icon>
+                Paper Information
+              </h3>
+              <div class="info-grid">
+                <div class="info-item">
+                  <div class="info-content">
+                    <label>Paper ID</label>
+                    <span>{{ selectedPaper.paper_id }}</span>
+                  </div>
+                </div>
+                
+                <div class="info-item">
+                  <div class="info-content">
+                    <label>Track</label>
+                    <span>{{ selectedPaper.trackName }}</span>
+                  </div>
+                </div>
+
+                <div class="info-item">
+                  <div class="info-content">
+                    <label>Version</label>
+                    <span>{{ selectedPaper.version || 1 }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Abstract Section -->
+            <div class="detail-section">
+              <h3 class="section-title">
+                <mat-icon>description</mat-icon>
+                Abstract
+              </h3>
+              <div class="abstract-text">{{ selectedPaper.abstractText }}</div>
+            </div>
+
+            <!-- Submission File Section -->
+            <div class="detail-section" *ngIf="selectedPaper.submission_file">
+              <h3 class="section-title">
+                <mat-icon>attach_file</mat-icon>
+                Submission File
+              </h3>
+              <div class="file-info">
+                <div class="file-details">
+                  <strong>{{ selectedPaper.submission_file }}</strong>
+                </div>
+                <button mat-icon-button color="primary" matTooltip="Download File">
+                  <mat-icon>download</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <!-- Timeline Section -->
+            <div class="detail-section">
+              <h3 class="section-title">
+                <mat-icon>schedule</mat-icon>
+                Timeline
+              </h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-content">
+                    <label>Submitted</label>
+                    <span>{{ selectedPaper.submitted_at ? (selectedPaper.submitted_at | date:'full') : 'N/A' }}</span>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-content">
+                    <label>Last Updated</label>
+                    <span>{{ selectedPaper.last_updated ? (selectedPaper.last_updated | date:'full') : 'N/A' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <button mat-raised-button color="warn" (click)="withdrawPaper(selectedPaper.paper_id)">
+              <mat-icon>delete</mat-icon>
+              Withdraw Paper
+            </button>
+            <button mat-raised-button color="accent" (click)="uploadCameraReady(selectedPaper.paper_id)"
+                    *ngIf="selectedPaper.status === 'Accepted'">
+              <mat-icon>upload</mat-icon>
+              Upload Camera-Ready Version
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+</div>

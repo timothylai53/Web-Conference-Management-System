@@ -1,0 +1,102 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Room Management</h1>
+      <p class="page-subtitle">Create and manage conference rooms and venues</p>
+    </div>
+    <button routerLink="/scheduling-program" class="btn btn-secondary">
+      <span class="icon">←</span> Back to Schedule
+    </button>
+  </div>
+
+  <!-- Create Room Form -->
+  <div class="card form-card">
+    <h2 class="section-title">{{ room.room_id ? 'Edit Room' : 'Add New Room' }}</h2>
+    
+    <form (ngSubmit)="saveRoom()" class="session-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Room Name *</label>
+          <input
+            type="text"
+            [(ngModel)]="room.name"
+            name="name"
+            class="form-control"
+            placeholder="Enter room name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Capacity *</label>
+          <input
+            type="number"
+            [(ngModel)]="room.capacity"
+            name="capacity"
+            class="form-control"
+            placeholder="Enter capacity"
+            min="1"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Location *</label>
+        <input
+          type="text"
+          [(ngModel)]="room.location"
+          name="location"
+          class="form-control"
+          placeholder="Enter location/building"
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        <span class="icon">{{ room.room_id ? '✓' : '+' }}</span> {{ room.room_id ? 'Update Room' : 'Add Room' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Rooms List -->
+  <div class="card">
+    <h2 class="section-title">Existing Rooms</h2>
+    
+    <div *ngIf="rooms.length === 0" class="empty-state">
+      <div class="empty-icon">🏢</div>
+      <h3>No rooms created yet</h3>
+      <p>Add your first room using the form above</p>
+    </div>
+
+    <table *ngIf="rooms.length > 0" class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 25%;">Room Name</th>
+          <th style="width: 20%;">Capacity</th>
+          <th style="width: 40%;">Location</th>
+          <th style="width: 15%; text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of rooms">
+          <td class="font-bold text-navy">{{ r.name }}</td>
+          <td class="text-secondary">{{ r.capacity }} people</td>
+          <td class="text-secondary">{{ r.location }}</td>
+          <td class="actions-cell">
+            <div class="action-buttons-wrapper">
+              <button (click)="editRoom(r)" class="action-btn edit" title="Edit Room">
+                ✎
+              </button>
+              <button (click)="deleteRoom(r.room_id)" class="action-btn delete" title="Delete Room">
+                &times;
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

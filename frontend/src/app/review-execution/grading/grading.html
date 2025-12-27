@@ -1,0 +1,151 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Review Paper</h1>
+      <p class="page-subtitle" *ngIf="paper">{{ paper.title }}</p>
+    </div>
+    <button routerLink="/review-execution/dashboard" class="btn btn-secondary">
+      ← Back to Dashboard
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="empty-icon">⏳</div>
+    <h3>Loading paper details...</h3>
+  </div>
+
+  <div class="grading-container" *ngIf="!loading && paper">
+
+    <!-- LEFT: PAPER DETAILS & PDF -->
+    <div class="card paper-card">
+      <div class="card-header">
+        <h3>Paper Information</h3>
+      </div>
+      
+      <div class="paper-info">
+        <div class="info-row">
+          <span class="info-label">Title:</span>
+          <span class="info-value">{{ paper.title }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Abstract:</span>
+          <span class="info-value">{{ paper.abstractText }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Status:</span>
+          <span class="status-badge status-{{ paper.status }}">{{ paper.status }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Submitted:</span>
+          <span class="info-value">{{ paper.submitted_at | date:'medium' }}</span>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <div class="card-header">
+        <h3>Paper Document</h3>
+      </div>
+      <div class="pdf-download-section">
+        <div *ngIf="paper.submission_file" class="download-card">
+          <div class="download-icon">📄</div>
+          <div class="download-info">
+            <h4>{{ paper.submission_file }}</h4>
+            <p class="text-muted">Click the button below to download the paper for review</p>
+          </div>
+          <a [href]="getFileDownloadUrl()" 
+             [download]="paper.submission_file"
+             class="btn btn-download">
+            <span class="download-arrow">⬇</span>
+            Download Paper
+          </a>
+        </div>
+        <div *ngIf="!paper.submission_file" class="no-pdf">
+          <div class="empty-icon">📄</div>
+          <p>No PDF available for this paper</p>
+          <small>File: Not uploaded</small>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- RIGHT: REVIEW FORM -->
+    <div class="card form-card">
+      <div class="card-header">
+        <h3>Submit Review</h3>
+      </div>
+
+      <div class="form-section">
+        <h4 class="section-title">Scoring Criteria</h4>
+        <div *ngFor="let c of scoreCriteria" class="form-group">
+          <label class="form-label">{{ c.name }} (0-10)</label>
+          <input type="number" [(ngModel)]="c.score" (ngModelChange)="onScoreChange()" min="0" max="10" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Overall Score (Auto-calculated)</label>
+          <input type="number" [value]="overallScore" readonly class="form-input readonly-input" />
+          <small class="text-muted">Calculated as: (Sum of all criteria × 2.5)</small>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <div class="form-section">
+        <h4 class="section-title">Comments</h4>
+        
+        <div class="form-group">
+          <label class="form-label">Comments to Author</label>
+          <textarea rows="4" [(ngModel)]="commentsToAuthor" 
+                    placeholder="Provide constructive feedback for the author" 
+                    class="form-textarea"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Comments to Chair (Private)</label>
+          <textarea rows="3" [(ngModel)]="commentsToChair"
+                    placeholder="Internal comments for the chair" 
+                    class="form-textarea"></textarea>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <div class="form-section">
+        <h4 class="section-title">Recommendation</h4>
+        
+        <div class="form-group">
+          <label class="form-label">Decision *</label>
+          <select [(ngModel)]="recommendation" required class="form-select">
+            <option value="">Select a decision</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Confidence Level (1-5, optional)</label>
+          <input type="number" [(ngModel)]="confidence" min="1" max="5"
+                 placeholder="1=Low, 5=High" class="form-input" />
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button (click)="submitReview()" [disabled]="!recommendation" class="btn btn-primary">
+          Submit Review
+        </button>
+        <button routerLink="/review-execution/dashboard" class="btn btn-secondary">
+          Cancel
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="!loading && !paper" class="error-state">
+    <div class="empty-icon">⚠️</div>
+    <h3>Failed to load paper details</h3>
+    <p>Please try again or contact support if the problem persists.</p>
+    <button routerLink="/review-execution/dashboard" class="btn btn-secondary mt-3">Back to Dashboard</button>
+  </div>
+</div>

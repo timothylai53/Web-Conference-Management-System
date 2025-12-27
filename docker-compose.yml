@@ -1,0 +1,66 @@
+services:
+  # --- Database Service (MySQL) ---
+  db:
+    image: mysql:8.1
+    environment:
+      # Root password for full database access
+      MYSQL_ROOT_PASSWORD: root12345
+      # Name of the database to be created on startup
+      MYSQL_DATABASE: cmsdb
+      # Optional: Application-specific user credentials
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    ports:
+      - "3307:3306" # Maps host port 3307 to container port 3306
+    healthcheck:
+      # Ensures the database is fully ready before other services start
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot12345"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    volumes:
+      # Persists database data even if the container is deleted
+      - mysql_data:/var/lib/mysql
+      # Automatically executes SQL scripts in this folder during first initialization
+      - ./backend/sql:/docker-entrypoint-initdb.d
+
+  # --- Backend Service (Spring Boot) ---
+  backend:
+    image: sinrou0410/confease-backend:v1.0
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: assignment-2-webcrafters-backend-1
+    ports:
+      - "8080:8080"
+    environment:
+      # Database connection string using the service name 'db' as the hostname
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/cmsdb?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root12345
+    depends_on:
+      db:
+        # Wait for the DB to pass the healthcheck before starting the backend
+        condition: service_healthy
+    volumes:
+      # Maps local uploads folder to the container for persistent storage
+      - ./backend/uploads:/uploads
+    command: >
+      java -jar /app.jar
+
+  # --- Frontend Service (Angular) ---
+  frontend:
+    image: sinrou0410/confease-frontend:v1.0
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: assignment-2-webcrafters-frontend-1
+    ports:
+      - "4200:80"  # Access via browser at http://localhost:4200
+    depends_on:
+      - backend
+
+# --- Global Volumes ---
+volumes:
+  mysql_data: # Named volume for MySQL data persistence

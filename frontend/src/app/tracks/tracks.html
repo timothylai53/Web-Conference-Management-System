@@ -1,0 +1,86 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Tracks Management</h1>
+      <p class="page-subtitle" *ngIf="authService.getCurrentUser()">Organize submission categories for your events</p>
+      <p class="page-subtitle" *ngIf="!authService.getCurrentUser()">View submission categories for conferences</p>
+    </div>
+
+    <div class="header-actions" style="display: flex; gap: 10px; align-items: center;">
+
+      <select
+        [(ngModel)]="selectedConferenceId"
+        (change)="applyFilter()"
+        class="form-control"
+        style="width: 250px; cursor: pointer;">
+
+        <option value="all">Show All Conferences</option>
+        <option *ngFor="let c of conferencesList" [value]="c.conference_id">
+          Filter: {{ c.acronym }}
+        </option>
+
+      </select>
+
+      <a *ngIf="authService.getCurrentUser()" routerLink="/tracks/form" class="btn btn-primary">
+        <span class="icon">+</span> Create Track
+      </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="data-table">
+      <thead>
+      <tr>
+        <th style="width: 20%;">Track Name</th>
+        <th style="width: 30%;">Conference</th>
+        <th style="width: 35%;">Description</th>
+        <th style="width: 15%; text-align: right;">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let track of displayedTracks">
+        <td class="font-bold text-navy">{{ track.name }}</td>
+
+        <td>
+            <span class="status-badge"
+                  [ngClass]="selectedConferenceId !== 'all' ? 'status-ongoing' : 'status-upcoming'">
+              {{ getConferenceName(track.conference_id) }}
+            </span>
+        </td>
+
+        <td class="text-secondary">{{ track.description }}</td>
+
+        <td class="actions-cell">
+          <div class="action-buttons-wrapper" *ngIf="authService.getCurrentUser()">
+            <a [routerLink]="['/tracks/form', track.track_id]" class="action-btn edit" title="Edit">
+              ✎
+            </a>
+            <button (click)="deleteTrack(track.track_id!)" class="action-btn delete" title="Delete">
+              &times;
+            </button>
+          </div>
+          <span *ngIf="!authService.getCurrentUser()" class="text-secondary" style="font-size: 0.85rem;">
+            Login to manage
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="displayedTracks.length === 0" class="empty-state">
+      <div class="empty-icon">📂</div>
+
+      <div *ngIf="selectedConferenceId === 'all'">
+        <h3>No tracks defined</h3>
+        <p>Create tracks so authors know where to submit their papers.</p>
+      </div>
+
+      <div *ngIf="selectedConferenceId !== 'all'">
+        <h3>No tracks for this conference</h3>
+        <p>Select a different conference or create a track now.</p>
+      </div>
+    </div>
+  </div>
+</div>

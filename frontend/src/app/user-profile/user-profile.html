@@ -1,0 +1,104 @@
+<div class="profile-viewport">
+
+  <div class="background-blob blob-1"></div>
+  <div class="background-blob blob-2"></div>
+
+  <div class="success-overlay" *ngIf="showSuccess">
+    <div class="success-card">
+      <div class="success-icon"><i class="bi bi-check-lg"></i></div>
+      <h4>Synced Successfully</h4>
+      <p>Your scholar profile is now up to date.</p>
+    </div>
+  </div>
+
+  <div class="glass-container">
+    <div class="glass-card">
+
+      <div class="card-visual-header">
+        <div class="header-pattern"></div>
+      </div>
+
+      <div class="profile-identity">
+        <div class="avatar-floating">
+          {{ currentUser?.first_name?.[0] }}{{ currentUser?.last_name?.[0] }}
+        </div>
+        <div class="identity-text">
+          <h2 class="user-name">{{ currentUser?.first_name }} {{ currentUser?.last_name }}</h2>
+          <span class="user-badge">
+            <i class="bi bi-cpu"></i> NODE ID: {{ currentUser?.user_id }}
+          </span>
+        </div>
+      </div>
+
+      <div class="profile-body">
+        <form *ngIf="profileForm" [formGroup]="profileForm" (ngSubmit)="onUpdate()">
+
+          <div class="form-grid">
+            <div class="form-group span-half">
+              <label>First Name</label>
+              <div class="input-wrapper">
+                <i class="bi bi-person-fill icon"></i>
+                <input type="text" formControlName="first_name" placeholder="Ex: Loh">
+              </div>
+            </div>
+
+            <div class="form-group span-half">
+              <label>Last Name</label>
+              <div class="input-wrapper">
+                <i class="bi bi-person-fill icon"></i>
+                <input type="text" formControlName="last_name" placeholder="Ex: Jia Ping">
+              </div>
+            </div>
+
+            <div class="form-group span-full">
+              <label>Academic Email</label>
+              <div class="input-wrapper locked">
+                <i class="bi bi-envelope-fill icon"></i>
+                <input type="email" formControlName="email" readonly>
+                <span class="lock-indicator"><i class="bi bi-lock-fill"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider">
+            <span>Academic Profile</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group span-full">
+              <label>Institution / Affiliation</label>
+              <div class="input-wrapper">
+                <i class="bi bi-building-fill icon"></i>
+                <input type="text" formControlName="affiliation" placeholder="University Name">
+              </div>
+            </div>
+
+            <div class="form-group span-half">
+              <label>Country</label>
+              <div class="input-wrapper">
+                <i class="bi bi-globe-americas icon"></i>
+                <input type="text" formControlName="country" placeholder="Malaysia">
+              </div>
+            </div>
+
+            <div class="form-group span-half">
+              <label>ORCID ID</label>
+              <div class="input-wrapper">
+                <i class="bi bi-fingerprint icon"></i>
+                <input type="text" formControlName="orcid" placeholder="0000-0000-...">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-update" [disabled]="profileForm.invalid || profileForm.pristine">
+              <span>Save Changes</span>
+              <i class="bi bi-arrow-right-short"></i>
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
