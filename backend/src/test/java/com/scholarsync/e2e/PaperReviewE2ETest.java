@@ -5,7 +5,9 @@ import com.microsoft.playwright.options.*;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import java.io.ByteArrayInputStream;
+import java.nio.file.Paths;
 import java.util.UUID;
+import com.microsoft.playwright.options.WaitForSelectorState;
 
 @Epic("Conference Management System")
 @Feature("Full Conference Lifecycle")
@@ -21,7 +23,6 @@ public class PaperReviewE2ETest {
     private String uniqueID;
     private String randomPaperTitle;
     private String randomReviewerEmail;
-    // 🔥 Added these variables so they are available in all steps
     private String randomFirstName;
     private String randomLastName;
 
@@ -43,7 +44,6 @@ public class PaperReviewE2ETest {
         uniqueID = UUID.randomUUID().toString().substring(0, 5);
         randomPaperTitle = "Research Paper " + uniqueID;
         randomReviewerEmail = "rev_" + uniqueID + "@scholarsync.com";
-        // 🔥 Initialize them here
         randomFirstName = "AutoReviewer";
         randomLastName = uniqueID;
 
@@ -71,7 +71,12 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
 
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
-            page.locator("select[name='conference_id']").selectOption("1");
+
+            // Wait for backend data to populate the dropdown (handling slow startup)
+            Locator confSelect = page.locator("select[name='conference_id']");
+            confSelect.locator("option[value='1']").waitFor();
+            confSelect.selectOption("1");
+
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
 
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Enter paper title")).fill(randomPaperTitle);
@@ -98,7 +103,6 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("➜")).click();
         });
 
-        // Step 2: Registration
         step("2. Register Random Reviewer", () -> {
             page.navigate(BASE_URL);
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("🎓 Become a Reviewer")).click();
@@ -111,11 +115,10 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Expertise Area *")).fill("Computer Science");
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Submit Application")).click();
 
-            // Ensures the backend has saved the data before moving to Admin step
+            // Explicitly wait for success to ensure DB persistence before Admin checks
             page.waitForSelector("text=Application submitted", new Page.WaitForSelectorOptions().setTimeout(10000));
         });
 
-        // Step 3: Approval
         step("3. Admin: Approve Reviewer", () -> {
             page.navigate(BASE_URL);
             page.click("button:has-text('Get Started')");
@@ -125,69 +128,54 @@ public class PaperReviewE2ETest {
 
             page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Admin Panel")).click();
 
-            // Wait for the table to at least render its first data row
+            // Wait for the table to render initial rows
             page.locator("table tr").nth(1).waitFor();
 
             Locator row = page.locator("tr").filter(new Locator.FilterOptions().setHasText(randomReviewerEmail));
             try {
-                row.waitFor(new Locator.WaitForOptions().setState(ElementState.VISIBLE).setTimeout(10000));
+                // FIXED: Used WaitForSelectorState.VISIBLE to match Playwright Java API requirements
+                row.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(10000));
             } catch (Exception e) {
-                System.out.println("Data not found on first load, reloading page...");
+                System.out.println("Reviewer not found, reloading page...");
                 page.reload();
-                row.waitFor(new Locator.WaitForOptions().setState(ElementState.VISIBLE).setTimeout(10000));
+                row.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(10000));
             }
 
             row.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("Approve")).click();
-            // Clicking the confirmation checkmark/button
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("➜")).click();
         });
 
         step("4. Chair: Assign Paper", () -> {
             page.navigate(BASE_URL);
             page.click("button:has-text('Get Started')");
-
-            // Login as Chair
             page.locator("input[name='email']").fill("chair@scholarsync.com");
             page.locator("input[name='password']").fill("chair123");
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
 
-            // Navigate to Review Setup
             page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Review Setup")).waitFor();
             page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Review Setup")).click();
 
-            // 1. Locate the specific row for your random paper
             Locator targetRow = page.locator("tr").filter(new Locator.FilterOptions().setHasText(randomPaperTitle));
             targetRow.waitFor();
 
-            // 2. Identify the reviewer name
             String reviewerNamePart = randomFirstName + " " + randomLastName;
             Locator selectDropdown = targetRow.locator("select");
 
-            // 3. Wait for the reviewer to appear
             page.waitForCondition(() -> selectDropdown.innerText().contains(reviewerNamePart));
 
-            // 🔥 FIX: We use JavaScript to find the option and return its VALUE attribute
-            // This is much more stable than matching a Label with hidden spaces
             String optionValue = (String) selectDropdown.locator("option").evaluateAll(
                     "options => options.find(o => o.textContent.includes('" + reviewerNamePart + "'))?.value"
             );
 
-            System.out.println("Found option value for " + reviewerNamePart + ": " + optionValue);
-
-            // 4. Select by VALUE (not Label) to avoid space issues
             if (optionValue != null) {
                 selectDropdown.selectOption(optionValue);
             } else {
                 throw new RuntimeException("Could not find value for reviewer: " + reviewerNamePart);
             }
 
-            // 5. Click Assign and Logout
-            // Adding a small delay to ensure the UI registers the selection
             page.waitForTimeout(500);
             targetRow.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("Assign")).click();
-
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("➜")).click();
-            System.out.println("✅ Assignment complete!");
         });
 
         step("5. Reviewer: Submit Review", () -> {
