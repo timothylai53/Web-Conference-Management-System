@@ -73,8 +73,10 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
 
             // Wait for backend data to populate the dropdown (handling slow startup)
-            Locator confSelect = page.locator("select[name='conference_id']");
-            confSelect.locator("option[value='1']").waitFor();
+            confSelect.locator("option[value='1']").waitFor(new Locator.WaitForOptions()
+                    .setState(WaitForSelectorState.ATTACHED)
+                    .setTimeout(15000));
+
             confSelect.selectOption("1");
 
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
