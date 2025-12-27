@@ -52,26 +52,28 @@ pipeline {
         }
 
         stage('Push to Docker Hub') {
-            // 只有当 Test 阶段成功时，才会执行 Push
             steps {
-                echo 'Tagging and Pushing Backend & Frontend...'
+                echo "Tagging and Pushing Backend & Frontend (${RELEASE_VERSION})"
                 script {
-                def tag = "build-${BUILD_NUMBER}"
-                    // 后端 Push
-                    sh "docker tag ${BACKEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-backend:${tag}"
-                    sh "docker tag ${BACKEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-backend:latest"
-                    sh "docker push ${DOCKER_HUB_USER}/confease-backend:${tag}"
-                    sh "docker push ${DOCKER_HUB_USER}/confease-backend:latest"
+                    // Backend
+                    sh """
+                      docker tag ${BACKEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-backend:${RELEASE_VERSION}
+                      docker tag ${BACKEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-backend:latest
+                      docker push ${DOCKER_HUB_USER}/confease-backend:${RELEASE_VERSION}
+                      docker push ${DOCKER_HUB_USER}/confease-backend:latest
+                    """
 
-                    // 前端 Push
-                    sh "docker tag ${FRONTEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-frontend:${tag}"
-                    sh "docker tag ${FRONTEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-frontend:latest"
-                    sh "docker push ${DOCKER_HUB_USER}/confease-frontend:${tag}"
-                    sh "docker push ${DOCKER_HUB_USER}/confease-frontend:latest"
+                    // Frontend
+                    sh """
+                      docker tag ${FRONTEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-frontend:${RELEASE_VERSION}
+                      docker tag ${FRONTEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-frontend:latest
+                      docker push ${DOCKER_HUB_USER}/confease-frontend:${RELEASE_VERSION}
+                      docker push ${DOCKER_HUB_USER}/confease-frontend:latest
+                    """
                 }
             }
         }
-    }
+
 
     post {
         always {
