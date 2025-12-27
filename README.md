@@ -481,6 +481,29 @@ After passing all tests, the images are pushed to our Docker Hub repository with
 docker pull sinrou0410/confease-frontend:v1.0.0
 docker pull sinrou0410/confease-backend:v1.0.0
 ```
+## Deployment & Hosting Documentation
+This project is successfully hosted on a DigitalOcean Droplet and containerized using Docker.
+Live Demo
+URL: ```bash http://129.212.231.197 ```
+
+<img width="1892" height="967" alt="image" src="https://github.com/user-attachments/assets/28be5e88-38e3-49a2-aa96-1d545f2c6ba4" />
+
+<img width="1880" height="960" alt="image" src="https://github.com/user-attachments/assets/bc69a3e6-cd13-40f2-9b7b-51d0864344fd" />
+
+
+### Hosting Architecture
+The application is deployed using a modern container-orchestration workflow:
+
+Cloud Provider: DigitalOcean (Ubuntu 22.04 LTS)
+
+Container Registry: Docker Hub (timothylai53)
+
+Orchestration: Docker Compose
+
+Database: MySQL 8.0 (with automated schema migration)
+
+<img width="1896" height="857" alt="image" src="https://github.com/user-attachments/assets/08705e31-c7ef-494b-8c0d-85da677a20cb" />
+
 
 ## References (Not less than 20)
 Assad, M., Meiklejohn, C. S., Miller, H., & Krusche, S. (2024). Can my microservice tolerate an unreliable database? Resilience testing with fault injection and visualization. Proceedings of the 2024 IEEE/ACM 46th International Conference on Software Engineering, 54–58. https://doi.org/10.1145/3639478.3640030
