@@ -71,7 +71,7 @@ public class PaperSubmissionE2ETest {
         step("Navigate to Submission Form", () -> {
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
 
-            Locator confSelect = page.locator("select[name='conference_id']");
+            Locator confSelect = page.locator("select[name='conference_id']").selectOption("1");
             // 🔥 Wait for the specific data to arrive from the API
             page.waitForCondition(() -> confSelect.innerText().contains("Conference"),
                     new Page.WaitForConditionOptions().setTimeout(15000));
