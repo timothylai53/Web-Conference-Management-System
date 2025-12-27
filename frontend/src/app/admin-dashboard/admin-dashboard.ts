@@ -46,7 +46,7 @@ export class AdminDashboard implements OnInit {
   }
 
   loadPendingApplications(): void {
-    this.http.get<any[]>('http://localhost:8080/api/reviewer-applications/pending')
+    this.http.get<any[]>('http://host.docker.internal:8080/api/reviewer-applications/pending')
       .subscribe({
         next: (data) => {
           this.pendingApplications = data;
@@ -65,7 +65,7 @@ export class AdminDashboard implements OnInit {
     if (!confirm('Approve this reviewer application?')) return;
 
     this.http.post(
-      `http://localhost:8080/api/reviewer-applications/approve/${appId}`,
+      `http://host.docker.internal:8080/api/reviewer-applications/approve/${appId}`,
       null,
       { params: { adminUserId: currentUser.user_id.toString() } }
     ).subscribe({
@@ -90,7 +90,7 @@ export class AdminDashboard implements OnInit {
     if (!reason) return;
 
     this.http.post(
-      `http://localhost:8080/api/reviewer-applications/reject/${appId}`,
+      `http://host.docker.internal:8080/api/reviewer-applications/reject/${appId}`,
       { reason },
       { params: { adminUserId: currentUser.user_id.toString() } }
     ).subscribe({

@@ -29,7 +29,7 @@ export class ReviewSetupComponent implements OnInit {
   }
 
   loadReviewers() {
-    this.http.get<any[]>('http://localhost:8080/api/reviewers')
+    this.http.get<any[]>('http://host.docker.internal:8080/api/reviewers')
       .subscribe({
         next: (data) => {
           this.reviewers = data;
@@ -41,7 +41,7 @@ export class ReviewSetupComponent implements OnInit {
   }
 
   loadPapers() {
-    this.http.get<any[]>('http://localhost:8080/api/papers')
+    this.http.get<any[]>('http://host.docker.internal:8080/api/papers')
       .subscribe({
         next: (data) => {
           // Filter only submitted papers
@@ -54,7 +54,7 @@ export class ReviewSetupComponent implements OnInit {
   }
 
   loadAssignments() {
-    this.http.get<any[]>('http://localhost:8080/api/review-assignments')
+    this.http.get<any[]>('http://host.docker.internal:8080/api/review-assignments')
       .subscribe({
         next: (data) => {
           this.assignments = data;
@@ -105,8 +105,8 @@ export class ReviewSetupComponent implements OnInit {
     // Only check for active (Pending or In Progress) assignments
     // Allow reassignment if previous assignment was Completed (paper was reviewed and potentially rejected/resubmitted)
     return this.assignments.some(
-      a => a.paper_id === paperId && 
-           a.reviewer_id === reviewerId && 
+      a => a.paper_id === paperId &&
+           a.reviewer_id === reviewerId &&
            (a.status === 'Pending' || a.status === 'In Progress')
     );
   }
@@ -118,7 +118,7 @@ export class ReviewSetupComponent implements OnInit {
     }
 
     const selectedReviewer = this.reviewers.find(r => r.reviewer_id === paper.selectedReviewerId);
-    
+
     if (!selectedReviewer) {
       alert('Invalid reviewer selection');
       return;
@@ -142,18 +142,18 @@ export class ReviewSetupComponent implements OnInit {
       status: 'Pending'
     };
 
-    this.http.post('http://localhost:8080/api/review-assignments', payload)
+    this.http.post('http://host.docker.internal:8080/api/review-assignments', payload)
       .subscribe({
         next: () => {
           const reviewerName = selectedReviewer.user?.first_name || 'Reviewer';
           alert(`Successfully assigned "${paper.title}" to ${reviewerName}`);
-          
+
           // Update paper status to Under Review
           this.updatePaperStatus(paper.paper_id, 'Under Review');
-          
+
           // Reload assignments
           this.loadAssignments();
-          
+
           // Clear selection
           paper.selectedReviewerId = null;
         },
@@ -177,7 +177,7 @@ export class ReviewSetupComponent implements OnInit {
 
     // Check if already assigned (only active assignments)
     const existingAssignment = this.assignments.find(
-      a => a.paper_id === this.selectedPaper.paper_id && 
+      a => a.paper_id === this.selectedPaper.paper_id &&
            a.reviewer_id === this.selectedReviewer.reviewer_id &&
            (a.status === 'Pending' || a.status === 'In Progress')
     );
@@ -195,17 +195,17 @@ export class ReviewSetupComponent implements OnInit {
       status: 'Pending'
     };
 
-    this.http.post('http://localhost:8080/api/review-assignments', payload)
+    this.http.post('http://host.docker.internal:8080/api/review-assignments', payload)
       .subscribe({
         next: () => {
           alert(`Successfully assigned "${this.selectedPaper.title}" to ${this.selectedReviewer.user?.first_name || 'Reviewer'}`);
-          
+
           // Update paper status to Under Review
           this.updatePaperStatus(this.selectedPaper.paper_id, 'Under Review');
-          
+
           // Reload assignments
           this.loadAssignments();
-          
+
           // Clear selection
           this.selectedPaper = null;
           this.selectedReviewer = null;
@@ -221,7 +221,7 @@ export class ReviewSetupComponent implements OnInit {
     const paper = this.papers.find(p => p.paper_id === paperId);
     if (paper) {
       paper.status = status;
-      this.http.put(`http://localhost:8080/api/papers/${paperId}`, { ...paper, status })
+      this.http.put(`http://host.docker.internal:8080/api/papers/${paperId}`, { ...paper, status })
         .subscribe({
           next: () => console.log('Paper status updated'),
           error: (err) => console.error('Error updating paper status:', err)
@@ -234,7 +234,7 @@ export class ReviewSetupComponent implements OnInit {
       return;
     }
 
-    this.http.delete(`http://localhost:8080/api/review-assignments/${assignmentId}`)
+    this.http.delete(`http://host.docker.internal:8080/api/review-assignments/${assignmentId}`)
       .subscribe({
         next: () => {
           alert('Assignment removed successfully');

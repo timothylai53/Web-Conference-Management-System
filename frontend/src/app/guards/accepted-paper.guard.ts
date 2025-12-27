@@ -8,10 +8,10 @@ import { of } from 'rxjs';
 export const acceptedPaperGuard: CanActivateFn = (route, state) => {
   const http = inject(HttpClient);
   const router = inject(Router);
-  
+
   // Get current user from localStorage
   const currentUser = localStorage.getItem('currentUser');
-  
+
   if (!currentUser) {
     // Not logged in, redirect to auth
     router.navigate(['/auth']);
@@ -22,7 +22,7 @@ export const acceptedPaperGuard: CanActivateFn = (route, state) => {
   const userId = user.user_id;
 
   // Check if user has accepted papers
-  return http.get<boolean>(`http://localhost:8080/api/papers/user/${userId}/has-accepted`).pipe(
+  return http.get<boolean>(`http://host.docker.internal:8080/api/papers/user/${userId}/has-accepted`).pipe(
     map(hasAccepted => {
       if (hasAccepted) {
         return true;

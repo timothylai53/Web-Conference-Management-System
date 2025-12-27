@@ -7,7 +7,7 @@ import { ActivityLog } from './admin.model';
   providedIn: 'root',
 })
 export class AdminService {
-  private apiUrl = 'http://localhost:8080/api/log-activities';
+  private apiUrl = 'http://host.docker.internal:8080/api/log-activities';
 
   constructor(private http: HttpClient) {}
 

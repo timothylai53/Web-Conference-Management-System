@@ -16,7 +16,7 @@ export interface ReviewAssignment {
 })
 export class ReviewerService {
 
-  private baseUrl = 'http://localhost:8080/api/reviewers';
+  private baseUrl = 'http://host.docker.internal:8080/api/reviewers';
 
   constructor(private http: HttpClient) {}
 

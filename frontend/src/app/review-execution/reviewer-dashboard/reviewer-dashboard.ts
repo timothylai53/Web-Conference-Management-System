@@ -50,7 +50,7 @@ export class ReviewerDashboardComponent implements OnInit {
 
   getReviewerIdAndLoadAssignments(): void {
     // Find reviewer record by user_id
-    this.http.get<any[]>('http://localhost:8080/api/reviewers').subscribe({
+    this.http.get<any[]>('http://host.docker.internal:8080/api/reviewers').subscribe({
       next: (reviewers) => {
         const reviewer = reviewers.find(r => r.user_id === this.currentUserId);
         if (reviewer && reviewer.reviewer_id) {

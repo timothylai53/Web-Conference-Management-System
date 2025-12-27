@@ -60,7 +60,7 @@ export class UserProfileComponent implements OnInit {
     };
 
     // 保持原本的 PUT 请求逻辑
-    this.http.put(`http://localhost:8080/api/users/${this.currentUser.user_id}`, updatedData).subscribe({
+    this.http.put(`http://host.docker.internal:8080/api/users/${this.currentUser.user_id}`, updatedData).subscribe({
       next: (res: any) => {
         // 1. 通知 AuthService 更新全局状态
         this.authService.updateUser(res);

@@ -53,7 +53,7 @@ interface InvoiceDisplay {
   styleUrls: ['./registration-payment.component.css']
 })
 export class RegistrationPaymentComponent implements OnInit {
-  private readonly API_BASE_URL = 'http://localhost:8080/api';
+  private readonly API_BASE_URL = 'http://host.docker.internal:8080/api';
 
   conferences: Conference[] = [];
   invoices: InvoiceDisplay[] = [];
@@ -441,7 +441,7 @@ export class RegistrationPaymentComponent implements OnInit {
   private handlePaymentSuccess(): void {
     // Reload all data to get latest status from backend
     this.loadAllData();
-    
+
     this.currentStep = 3;
     this.isProcessing = false;
     this.showSuccess('Payment submitted successfully!');

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class DiscussionService {
 
-  private API = 'http://localhost:8080/api/discussions';
+  private API = 'http://host.docker.internal:8080/api/discussions';
 
   constructor(private http: HttpClient) {}
 

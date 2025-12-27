@@ -12,7 +12,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrls: ['./reviewer-registration.component.css']
 })
 export class ReviewerRegistrationComponent {
-  
+
   reviewerData = {
     first_name: '',
     last_name: '',
@@ -38,7 +38,7 @@ export class ReviewerRegistrationComponent {
 
   onSubmit(): void {
     // Validation
-    if (!this.reviewerData.first_name || !this.reviewerData.last_name || 
+    if (!this.reviewerData.first_name || !this.reviewerData.last_name ||
         !this.reviewerData.email || !this.reviewerData.password_hash ||
         !this.reviewerData.expertise_area) {
       this.showErrorMsg('Please fill in all required fields');
@@ -60,7 +60,7 @@ export class ReviewerRegistrationComponent {
     // Prepare data (remove confirmPassword)
     const { confirmPassword, ...applicationData } = this.reviewerData;
 
-    this.http.post('http://localhost:8080/api/reviewer-applications/submit', applicationData)
+    this.http.post('http://host.docker.internal:8080/api/reviewer-applications/submit', applicationData)
       .subscribe({
         next: (response: any) => {
           alert('✅ Application submitted successfully!\n\nYour reviewer application is pending admin approval. You will be notified once it has been reviewed.');

@@ -7,7 +7,7 @@ import { Track } from './track.model';
   providedIn: 'root'
 })
 export class TrackService {
-  private apiUrl = 'http://localhost:8080/api/tracks';
+  private apiUrl = 'http://host.docker.internal:8080/api/tracks';
 
   constructor(private http: HttpClient) { }
 

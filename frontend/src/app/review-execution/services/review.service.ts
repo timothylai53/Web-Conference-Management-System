@@ -17,7 +17,7 @@ export interface ReviewPayload {
 })
 export class ReviewService {
 
-  private API = 'http://localhost:8080/api/reviews';
+  private API = 'http://host.docker.internal:8080/api/reviews';
 
   constructor(private http: HttpClient) {}
 

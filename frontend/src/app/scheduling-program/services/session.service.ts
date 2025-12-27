@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SessionService {
 
-  private api = 'http://localhost:8080/api/sessions';
+  private api = 'http://host.docker.internal:8080/api/sessions';
 
   constructor(private http: HttpClient) {}
 

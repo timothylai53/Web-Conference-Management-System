@@ -92,7 +92,7 @@ export class GradingComponent implements OnInit {
   // =====================
   getFileDownloadUrl(): string {
     if (this.paper && this.paper.submission_file) {
-      return `http://localhost:8080/api/files/${this.paper.submission_file}`;
+      return `http://host.docker.internal:8080/api/files/${this.paper.submission_file}`;
     }
     return '';
   }
@@ -102,16 +102,16 @@ export class GradingComponent implements OnInit {
   // =====================
   loadAssignmentDetails(): void {
     this.loading = true;
-    
+
     // Get assignment details
-    this.http.get<any>(`http://localhost:8080/api/review-assignments/${this.assignmentId}`)
+    this.http.get<any>(`http://host.docker.internal:8080/api/review-assignments/${this.assignmentId}`)
       .subscribe({
         next: (assignment) => {
           this.assignment = assignment;
-          
+
           // Load paper details
           if (assignment.paper_id) {
-            this.http.get<any>(`http://localhost:8080/api/papers/${assignment.paper_id}`)
+            this.http.get<any>(`http://host.docker.internal:8080/api/papers/${assignment.paper_id}`)
               .subscribe({
                 next: (paper) => {
                   this.paper = paper;
@@ -153,7 +153,7 @@ export class GradingComponent implements OnInit {
       reviewed_at: new Date()
     };
 
-    this.http.post('http://localhost:8080/api/reviews', payload)
+    this.http.post('http://host.docker.internal:8080/api/reviews', payload)
       .subscribe({
         next: (response) => {
           console.log('Review submitted:', response);

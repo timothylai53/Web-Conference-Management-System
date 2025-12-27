@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RoomService {
 
-  private api = 'http://localhost:8080/api/rooms';
+  private api = 'http://host.docker.internal:8080/api/rooms';
 
   constructor(private http: HttpClient) {}
 
