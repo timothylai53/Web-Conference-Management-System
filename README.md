@@ -85,6 +85,45 @@ docker pull sinrou0410/confease-backend:v1.0.0
 ```
    
 ## Instructions on how to run Docker.
+Step 1: Pull Docker Images
+```bash
+docker pull sinrou0410/confease-frontend
+docker pull sinrou0410/confease-backend
+```
+
+Step 2: Run Backend Container
+```bash
+docker run -d \
+  --name confease-backend \
+  -p 8080:8080 \
+  sinrou0410/confease-backend
+```
+Backend will be available at:
+http://localhost:8080
+
+Step 3: Run Frontend Container
+```bash
+docker run -d \
+  --name confease-frontend \
+  -p 4200:80 \
+  sinrou0410/confease-frontend
+  ```
+Frontend will be available at:
+http://localhost:4200
+
+Step 4: Verify Running Containers
+```bash
+docker ps
+```
+Stop Containers
+```bash
+docker stop confease-backend confease-frontend
+```
+Remove Containers
+Stop Containers
+```bash
+docker rm confease-backend confease-frontend
+```
 
 ## List of all the endpoints
 
