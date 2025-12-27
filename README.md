@@ -349,7 +349,7 @@ ScholarSync
 | 11 | <img width="700" src="https://github.com/user-attachments/assets/e23cfbc9-ca3a-4230-b523-84d567a412e2"/>  |  Conference(View Tracks)           |
 | 12 | <img width="700" src="https://github.com/user-attachments/assets/241181ba-3423-4bf2-b10c-d285d73566f6"/>  |  Conference(Edit Tracks)           |
 | 13 | <img width="700" src="https://github.com/user-attachments/assets/d680f77e-e2b1-400e-a39a-5e200aa2ab3e"/>  |  Conference (Create New Tracks)    |    
-| 14 | <img width="700" src="https://github.com/user-attachments/assets/e727092e-7ed8-489b-be86-8d38ba9e38ad"/>  |  Conference Registration           |
+| 14 | <img width="700" src="https://github.com/user-attachments/assets/ae8ae058-54f2-4234-b8da-db23beba841e"/>  |  Conference Registration           |
 | 15 | <img width="700" src="https://github.com/user-attachments/assets/a35ede1a-2624-45ac-8fdc-ad19b2ff688a"/>  |  Comference Registration (Payment) |
 | 16 | <img width="700" src="https://github.com/user-attachments/assets/dbc4e898-071f-428c-a713-06895671cec6" /> |  Paper-submission (main page)          |
 | 17 | <img width="700" src="https://github.com/user-attachments/assets/553694c4-d8fb-4bc4-a462-1d4306a42291" /> |  Paper-submission (view paper details) |
@@ -358,6 +358,7 @@ ScholarSync
 | 20 | <img width="700" src="https://github.com/user-attachments/assets/3a9c73d7-9350-4b95-8a93-ea601acc49db" /> |  Paper-submission (submit new paper)   |
 | 21 | <img width="700" src="https://github.com/user-attachments/assets/fca7855a-397a-4b86-9c8d-b9d233597fae" /> |  Paper-submission (submit new paper)   |
 | *  | <img width="700" src="https://github.com/user-attachments/assets/7b78b457-45b6-472c-a47b-41e75520268a" /> |  Review setup                          |
+
 
 Capture full size screenshot
 
