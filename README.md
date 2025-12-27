@@ -22,7 +22,7 @@
 
 ## Title of your application (a unique title)
 
-<font size="20">ScholarSync</font>
+#### ScholarSync
 
 
 ## Abstract (in 300 words)
