@@ -142,8 +142,17 @@ public class PaperSubmissionE2ETest {
         step("Step 4 – Optional step", this::clickVisibleNext);
 
         step("Step 5 – Keywords & Submit", () -> {
-            page.getByText("Machine Learning").click();
-            page.getByText("Deep Learning").click();
+            // 🔥 Ensure the keywords are rendered and visible
+            Locator mlKeyword = page.getByText("Machine Learning");
+            mlKeyword.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+
+            // Scroll to it in case it's at the bottom of the form
+            mlKeyword.scrollIntoViewIfNeeded();
+
+            // 🔥 Use force click to bypass animation overlaps
+            mlKeyword.click(new Locator.ClickOptions().setForce(true));
+
+            page.getByText("Deep Learning").click(new Locator.ClickOptions().setForce(true));
 
             page.getByRole(AriaRole.BUTTON,
                     new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
