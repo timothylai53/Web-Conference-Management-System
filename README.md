@@ -394,6 +394,8 @@ Capture full size screenshot
 Our project implements a professional **CI/CD Pipeline** that automates the software lifecycle from the moment code is pushed to the `testing` branch.
 
 ### 1. Pipeline Stages (Build #93)
+
+
 <img width="1858" height="944" alt="image" src="https://github.com/user-attachments/assets/6f827891-8de3-49fb-bc6f-b4e5d187fc85" />
 
 | Stage              | Action                                            | Result    |
@@ -406,12 +408,15 @@ Our project implements a professional **CI/CD Pipeline** that automates the soft
 | Push to Docker Hub | Tags and pushes images (v1.0.0 & build-93).       | ✅ Success |
 
 ### 2. Automated E2E Testing (Playwright + Allure)
+
 We prioritize system-level reliability. Instead of basic unit tests, we use Playwright to simulate real user journeys.
+
 | Metric           | Details                                           |
 |-----------------|--------------------------------------------------|
 | Total Test Cases | 4 (Authentication & Paper Submission flow)      |
 | Pass Rate        | 100% ✅                                           |
 | Tooling          | Integrated with Allure Report for visual trend analysis and debugging |
+
 
 <img width="1872" height="946" alt="image" src="https://github.com/user-attachments/assets/2bcc6418-814f-4b76-b54d-4af521ba81dc" />
 
@@ -422,8 +427,10 @@ After passing all tests, the images are pushed to our Docker Hub repository with
 **Repository:** 
 - Frontend: `sinrou0410/confease-frontend`  
 - Backend: `sinrou0410/confease-backend`
+
   
 <img width="1896" height="740" alt="image" src="https://github.com/user-attachments/assets/ddea21a7-f3ad-4845-8c11-b16899fe46c8" />
+
 
 **Strategy:** 
 We use a **Dual-Tagging Strategy** for our Docker images:
