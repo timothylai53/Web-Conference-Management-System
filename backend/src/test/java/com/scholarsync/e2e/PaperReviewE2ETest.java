@@ -71,14 +71,10 @@ public class PaperReviewE2ETest {
 
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
 
-            // ✅ FIXED: Declared the 'confSelect' variable properly
             Locator confSelect = page.locator("select[name='conference_id']");
-
-            // ✅ FIXED: Using ATTACHED state to handle hidden elements
             confSelect.locator("option[value='1']").waitFor(new Locator.WaitForOptions()
                     .setState(WaitForSelectorState.ATTACHED)
                     .setTimeout(15000));
-
             confSelect.selectOption("1");
 
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
@@ -102,9 +98,12 @@ public class PaperReviewE2ETest {
             page.waitForTimeout(500);
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
 
-            getByText("Machine Learning").waitFor(new Locator.WaitForOptions()
+            // Fixed 'page.' prefix and wait logic
+            page.getByText("Machine Learning").waitFor(new Locator.WaitForOptions()
                     .setState(WaitForSelectorState.ATTACHED));
-            page.getByText("Machine Learning").click(new Locator.ClickOptions().setForce(true));            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
+            page.getByText("Machine Learning").click(new Locator.ClickOptions().setForce(true));
+
+            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("➜")).click();
         });
 
@@ -135,7 +134,6 @@ public class PaperReviewE2ETest {
 
             Locator row = page.locator("tr").filter(new Locator.FilterOptions().setHasText(randomReviewerEmail));
             try {
-                // ✅ Using the correct WaitForSelectorState for Java
                 row.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(10000));
             } catch (Exception e) {
                 System.out.println("Reviewer not found, reloading page...");
