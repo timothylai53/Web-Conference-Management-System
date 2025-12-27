@@ -20,7 +20,7 @@ public class PaperSubmissionE2ETest {
     private BrowserContext context;
     private Page page;
 
-    // 🔥 适配 Jenkins：必须通过 host.docker.internal 访问宿主机端口
+    // 🔥 For Jenkins/Docker: host.docker.internal points to the host machine
     private static final String BASE_URL = "http://host.docker.internal:4200";
 
     @BeforeAll
@@ -29,7 +29,7 @@ public class PaperSubmissionE2ETest {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(true) // 🔥 适配 Jenkins 容器环境
+                        .setHeadless(true)
                         .setSlowMo(100)
         );
     }
@@ -43,10 +43,9 @@ public class PaperSubmissionE2ETest {
     void createContext() {
         context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1280, 800));
         page = context.newPage();
-        // 自动处理所有对话框/弹窗
         page.onDialog(Dialog::accept);
-        // 打印控制台日志以便调试
-        page.onConsoleMessage(msg -> System.out.println("浏览器日志 >> [" + msg.type() + "] " + msg.text()));
+        // Print browser logs to Jenkins console for network debugging
+        page.onConsoleMessage(msg -> System.out.println("Browser Log >> [" + msg.type() + "] " + msg.text()));
     }
 
     @AfterEach
@@ -58,8 +57,6 @@ public class PaperSubmissionE2ETest {
 
     @Test
     @Severity(SeverityLevel.CRITICAL)
-    @Story("Author Submission Journey")
-    @Description("验证已注册作者能否成功登录并完成论文提交向导")
     public void testSuccessfulPaperSubmission() {
 
         step("Login as Author", () -> {
@@ -69,35 +66,37 @@ public class PaperSubmissionE2ETest {
             page.locator("input[name='email']").fill("author@scholarsync.com");
             page.locator("input[name='password']").fill("author123");
 
-            // 点击登录并显式等待 URL 跳转
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
 
-            // 🔥 核心修复：等待 Angular 路由完成跳转
+            // Wait for Angular routing
             page.waitForURL("**/paper-submission", new Page.WaitForURLOptions().setTimeout(15000));
 
-            // 等待主页面元素可见
             Locator dashboardBtn = page.locator("button:has-text('Submit New Paper')");
             dashboardBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
-            Assertions.assertTrue(dashboardBtn.isVisible(), "登录失败：未能进入论文提交页面");
+            Assertions.assertTrue(dashboardBtn.isVisible(), "Login failed: Dashboard button not visible.");
         });
 
         step("Navigate to Submission Form & Select Conference", () -> {
             page.click("button:has-text('Submit New Paper')");
 
-            // 🔥 核心修复：等待下拉框 API 数据加载完成
             Locator confSelect = page.locator("select[name='conference_id']");
-            confSelect.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+            confSelect.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
 
-            // 等待直到下拉框内有超过 1 个选项（排除默认占位符）
-            page.waitForCondition(() -> (int) confSelect.locator("option").count() > 1,
-                    new Page.WaitForConditionOptions().setTimeout(15000));
+            try {
+                // Wait for the API to populate the dropdown (ignoring the placeholder)
+                page.waitForCondition(() -> (int) confSelect.locator("option").count() > 1,
+                        new Page.WaitForConditionOptions().setTimeout(15000));
+            } catch (TimeoutError e) {
+                System.err.println("TIMEOUT: Dropdown did not load options. HTML: " + confSelect.innerHTML());
+                throw e;
+            }
 
-            // 尝试选择 ID=1，如果失败则选择第一个可用会议
+            // Attempt to select ID 1, fallback to the first available if not found
             try {
                 confSelect.selectOption("1");
             } catch (Exception e) {
-                System.out.println("Warning: Conference ID 1 not found, selecting first available.");
+                System.out.println("ID 1 not found. Selecting index 1 as fallback.");
                 confSelect.selectOption(new SelectOption().setIndex(1));
             }
 
@@ -108,23 +107,21 @@ public class PaperSubmissionE2ETest {
             page.waitForSelector("input[placeholder*='title']");
             page.fill("input[placeholder*='title']", "AI Research Paper v1");
 
-            // 等待 Track 下拉框加载并选择
             Locator trackSelect = page.locator("select").filter(new Locator.FilterOptions().setHasText("Select a track"));
             trackSelect.waitFor();
 
-            // 使用 evaluateAll 确保获取到最新的 Track 数据
+            // Ensure tracks are loaded
             page.waitForCondition(() -> (int) trackSelect.locator("option").count() > 1);
             trackSelect.selectOption(new SelectOption().setLabel("Artificial Intelligence"));
 
-            page.fill("textarea[placeholder*='abstract']", "This abstract discusses AI advancements in conference management.");
+            page.fill("textarea[placeholder*='abstract']", "This abstract discusses AI advancements.");
 
-            // 使用 visible.first 避免 Strict Mode 错误
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
         });
 
         step("Enter Author Information", () -> {
             page.waitForSelector("input[type='email']");
-            // 填充作者信息
+            // Use generic textboxes to be more robust against changing name attributes
             page.getByRole(AriaRole.TEXTBOX).first().fill("Test");
             page.getByRole(AriaRole.TEXTBOX).nth(1).fill("User");
             page.locator("input[type='email']").fill("testauthor@example.com");
@@ -133,20 +130,17 @@ public class PaperSubmissionE2ETest {
         });
 
         step("Upload File and Submit", () -> {
-            // 跳过关键词或进入文件上传步骤
+            // Proceed to upload section
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
 
-            // 自动上传 PDF
             Path pdfPath = Paths.get("src/test/resources/sample.pdf");
             page.setInputFiles("input[type='file']", pdfPath);
 
-            // 点击最后两个 Next/Submit
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
 
-            // 点击最终提交
+            // Final submit
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
-
-            System.out.println("✅ 论文提交流程端到端测试成功！");
+            System.out.println("✅ Paper submission E2E test passed successfully!");
         });
     }
 
