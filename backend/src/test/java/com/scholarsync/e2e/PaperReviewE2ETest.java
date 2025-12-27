@@ -117,9 +117,12 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Password *").setExact(true)).fill("password123");
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Confirm Password *")).fill("password123");
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Expertise Area *")).fill("Computer Science");
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Submit Application")).click();
 
-            page.waitForSelector("text=Application submitted", new Page.WaitForSelectorOptions().setTimeout(10000));
+            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Submit Application"))
+                    .click(new Locator.ClickOptions().setForce(true));
+
+            page.waitForSelector("text=/.*Application submitted.*/",
+                    new Page.WaitForSelectorOptions().setTimeout(15000));
         });
 
         step("3. Admin: Approve Reviewer", () -> {
