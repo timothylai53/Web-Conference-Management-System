@@ -398,6 +398,7 @@ Our project implements a professional **CI/CD Pipeline** that automates the soft
 
 <img width="1858" height="944" alt="image" src="https://github.com/user-attachments/assets/6f827891-8de3-49fb-bc6f-b4e5d187fc85" />
 
+
 | Stage              | Action                                            | Result    |
 | ------------------ | ------------------------------------------------- | --------- |
 | Checkout SCM       | Pulls the latest code from GitHub.                | ✅ Success |
@@ -432,10 +433,8 @@ After passing all tests, the images are pushed to our Docker Hub repository with
 <img width="1896" height="740" alt="image" src="https://github.com/user-attachments/assets/ddea21a7-f3ad-4845-8c11-b16899fe46c8" />
 
 
-**Strategy:** 
-We use a **Dual-Tagging Strategy** for our Docker images:
-* **`latest`**: Always points to the most recent stable build.
-* **`build-${BUILD_NUMBER}`**: Unique tags (e.g., `build-93`) for full audit traceability.
+**Strategy:** Dual-tagging with `latest` and `v1.0.0` (or `build-93`) for full traceability.
+
 
 **How to pull our latest verified build:**
 
