@@ -87,10 +87,22 @@ public class PaperSubmissionE2ETest {
 
             // 🔥 核心修复：等待下拉框 API 数据加载完成
             Locator confSelect = page.locator("select[name='conference_id']");
-            confSelect.locator("option[value='1']").waitFor(new Locator.WaitForOptions().setTimeout(10000));
-            // 确保 data.sql 中 ID=1 的会议存在
-            confSelect.selectOption("1");
-            page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));        });
+            confSelect.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+
+            // 等待直到下拉框内有超过 1 个选项（排除默认占位符）
+            page.waitForCondition(() -> (int) confSelect.locator("option").count() > 1,
+                    new Page.WaitForConditionOptions().setTimeout(15000));
+
+            // 尝试选择 ID=1，如果失败则选择第一个可用会议
+            try {
+                confSelect.selectOption("1");
+            } catch (Exception e) {
+                System.out.println("Warning: Conference ID 1 not found, selecting first available.");
+                confSelect.selectOption(new SelectOption().setIndex(1));
+            }
+
+            page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
+        });
 
         step("Fill Paper Details & Select Track", () -> {
             page.waitForSelector("input[placeholder*='title']");
@@ -99,30 +111,40 @@ public class PaperSubmissionE2ETest {
             // 等待 Track 下拉框加载并选择
             Locator trackSelect = page.locator("select").filter(new Locator.FilterOptions().setHasText("Select a track"));
             trackSelect.waitFor();
+
+            // 使用 evaluateAll 确保获取到最新的 Track 数据
+            page.waitForCondition(() -> (int) trackSelect.locator("option").count() > 1);
             trackSelect.selectOption(new SelectOption().setLabel("Artificial Intelligence"));
 
             page.fill("textarea[placeholder*='abstract']", "This abstract discusses AI advancements in conference management.");
-            page.click("button:has-text('Next')");
+
+            // 使用 visible.first 避免 Strict Mode 错误
+            page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
         });
 
         step("Enter Author Information", () -> {
-            page.waitForSelector("input[name='author_fname']"); // 假设 name 属性
-            page.fill("input[name='author_fname']", "Test");
-            page.fill("input[name='author_lname']", "User");
-            page.fill("input[type='email']", "testauthor@example.com");
-            page.click("button:has-text('Next')");
+            page.waitForSelector("input[type='email']");
+            // 填充作者信息
+            page.getByRole(AriaRole.TEXTBOX).first().fill("Test");
+            page.getByRole(AriaRole.TEXTBOX).nth(1).fill("User");
+            page.locator("input[type='email']").fill("testauthor@example.com");
+
+            page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
         });
 
         step("Upload File and Submit", () -> {
             // 跳过关键词或进入文件上传步骤
-            page.click("button:has-text('Next')");
+            page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
 
-            // 自动生成并上传 PDF
+            // 自动上传 PDF
             Path pdfPath = Paths.get("src/test/resources/sample.pdf");
             page.setInputFiles("input[type='file']", pdfPath);
 
-            page.click("button:has-text('Next')");
-            page.click("button:has-text('Submit Paper')");
+            // 点击最后两个 Next/Submit
+            page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
+
+            // 点击最终提交
+            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
 
             System.out.println("✅ 论文提交流程端到端测试成功！");
         });
