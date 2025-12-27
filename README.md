@@ -40,14 +40,14 @@
       
    4. Methodology
       
-      Requirement Analysis – Identified core features (user management, conference events, paper submission).
-      Database Design – MySQL schema created with normalized tables.
-      Backend Development – Spring Boot REST APIs for CRUD operations using JPA and MySQL.
-      Frontend Development – Angular components, services, routing, and Bootstrap styling.
-      Integration – Connected frontend to backend APIs using HttpClient.
-      Containerization – Created Dockerfiles for frontend and backend; used Docker Compose for multi-container environment.
-      Cloud Deployment – Uploaded Docker images to Docker Hub and deployed via cloud provider.
-      Documentation – Created README, references, and video demonstration.
+      a. Requirement Analysis – Identified core features (user management, conference events, paper submission).
+      b. Database Design – MySQL schema created with normalized tables.
+      c. Backend Development – Spring Boot REST APIs for CRUD operations using JPA and MySQL.
+      d. Frontend Development – Angular components, services, routing, and Bootstrap styling.
+      e. Integration – Connected frontend to backend APIs using HttpClient.
+      f. Containerization – Created Dockerfiles for frontend and backend; used Docker Compose for multi-container environment.
+      g. Cloud Deployment – Uploaded Docker images to Docker Hub and deployed via cloud provider.
+      h. Documentation – Created README, references, and video demonstration.
       
    5. Result
        
