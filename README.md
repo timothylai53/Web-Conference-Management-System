@@ -357,13 +357,13 @@ ScholarSync
 | 19 | <img width="700" src="https://github.com/user-attachments/assets/967d474b-001d-40ad-bbb9-d0893a476427" /> |  Paper-submission (submit new paper-Author details)   |
 | 20 | <img width="700" src="https://github.com/user-attachments/assets/3a9c73d7-9350-4b95-8a93-ea601acc49db" /> |  Paper-submission (submit new paper-upload paper)   |
 | 21 | <img width="700" src="https://github.com/user-attachments/assets/fca7855a-397a-4b86-9c8d-b9d233597fae" /> |  Paper-submission (submit new paper-add keywords)   |
-| 22 | <img width="700" src="https://github.com/user-attachments/assets/7b78b457-45b6-472c-a47b-41e75520268a" /> |  Review setup                          |
-| 23 | <img width="700" src="https://github.com/user-attachments/assets/0b1d27de-03d3-42da-a745-dff78f2b5899" /> |  Conference Schedule  |
-| 24 | <img width="700" src="https://github.com/user-attachments/assets/7bfae0e6-f9a3-4a22-8620-fe82e6b3d0b7" /> |   Session Management  |
-| 25  | <img width="700" src="https://github.com/user-attachments/assets/325337d1-893c-4818-ad56-deab0f706fd3" /> |     Room Management                      |
-| 26 | <img width="700" src="https://github.com/user-attachments/assets/cd855bce-5a24-458a-b350-d886b37e3cde" /> |   Reviewer Dashboard(Before accepting) |
-| 27 | <img width="700" src="https://github.com/user-attachments/assets/640b159f-efa0-44e3-bb99-6d3ef6f22a8e" /> |   Review Paper |
-| 28  | <img width="700" src="https://github.com/user-attachments/assets/a903ad1d-cfd7-4598-9bff-4a8e101fe1eb" /> |    Reviewer Dashboard(Accepted)    |
+| 22 | <img width="700" src="https://github.com/user-attachments/assets/0b1d27de-03d3-42da-a745-dff78f2b5899" /> |  Conference Schedule  |
+| 23 | <img width="700" src="https://github.com/user-attachments/assets/7bfae0e6-f9a3-4a22-8620-fe82e6b3d0b7" /> |   Session Management  |
+| 24  | <img width="700" src="https://github.com/user-attachments/assets/325337d1-893c-4818-ad56-deab0f706fd3" /> |     Room Management                      |
+| 25 | <img width="700" src="https://github.com/user-attachments/assets/cd855bce-5a24-458a-b350-d886b37e3cde" /> |   Reviewer Dashboard(Before accepting) |
+| 26 | <img width="700" src="https://github.com/user-attachments/assets/640b159f-efa0-44e3-bb99-6d3ef6f22a8e" /> |   Review Paper |
+| 27  | <img width="700" src="https://github.com/user-attachments/assets/a903ad1d-cfd7-4598-9bff-4a8e101fe1eb" /> |    Reviewer Dashboard(Accepted)    |
+| 28 | <img width="700" src="https://github.com/user-attachments/assets/9c8a67d0-ec05-40e7-a4bd-04ec33130975" /> |  Review setup                          |
 
 
 Capture full size screenshot
