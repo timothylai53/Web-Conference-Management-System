@@ -98,11 +98,11 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("➜")).click();
         });
 
+        // Step 2: Registration
         step("2. Register Random Reviewer", () -> {
             page.navigate(BASE_URL);
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("🎓 Become a Reviewer")).click();
 
-            // 🔥 Now using the variables initialized in setup()
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("First Name *")).fill(randomFirstName);
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Last Name *")).fill(randomLastName);
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Email *")).fill(randomReviewerEmail);
@@ -110,8 +110,12 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Confirm Password *")).fill("password123");
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Expertise Area *")).fill("Computer Science");
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Submit Application")).click();
+
+            // Ensures the backend has saved the data before moving to Admin step
+            page.waitForSelector("text=Application submitted", new Page.WaitForSelectorOptions().setTimeout(10000));
         });
 
+        // Step 3: Approval
         step("3. Admin: Approve Reviewer", () -> {
             page.navigate(BASE_URL);
             page.click("button:has-text('Get Started')");
@@ -120,9 +124,21 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
 
             page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Admin Panel")).click();
+
+            // Wait for the table to at least render its first data row
+            page.locator("table tr").nth(1).waitFor();
+
             Locator row = page.locator("tr").filter(new Locator.FilterOptions().setHasText(randomReviewerEmail));
-            row.waitFor();
+            try {
+                row.waitFor(new Locator.WaitForOptions().setState(ElementState.VISIBLE).setTimeout(10000));
+            } catch (Exception e) {
+                System.out.println("Data not found on first load, reloading page...");
+                page.reload();
+                row.waitFor(new Locator.WaitForOptions().setState(ElementState.VISIBLE).setTimeout(10000));
+            }
+
             row.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("Approve")).click();
+            // Clicking the confirmation checkmark/button
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("➜")).click();
         });
 

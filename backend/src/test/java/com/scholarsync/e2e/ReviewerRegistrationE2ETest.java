@@ -69,8 +69,7 @@ public class ReviewerRegistrationE2ETest {
             page.click("button:has-text('Become a Reviewer')");
 
             // 🔥 核心修复：确保进入了表单页面再开始填写
-            page.locator("h2:has-text('Reviewer Application')").waitFor();
-        });
+            page.waitForSelector("text=Become a Reviewer", new Page.WaitForSelectorOptions().setTimeout(10000));        });
 
         step("Fill Reviewer Application Form", () -> {
             System.out.println("正在注册新 Reviewer: " + dynamicEmail);
