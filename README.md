@@ -484,7 +484,10 @@ docker pull sinrou0410/confease-backend:v1.0.0
 ## Deployment & Hosting Documentation
 This project is successfully hosted on a DigitalOcean Droplet and containerized using Docker.
 Live Demo
-URL: ```bash http://129.212.231.197 ```
+URL: 
+```bash 
+http://129.212.231.197 
+```
 
 <img width="1892" height="967" alt="image" src="https://github.com/user-attachments/assets/28be5e88-38e3-49a2-aa96-1d545f2c6ba4" />
 
