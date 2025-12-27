@@ -75,7 +75,7 @@ pipeline {
             allure includeProperties: false, results: [[path: 'backend/target/allure-results']]
 
             // 停止容器以节省服务器资源
-            //sh 'docker compose down || true'
+            sh 'docker compose down || true'
         }
         success {
             echo '✅ MISSION ACCOMPLISHED: All tests passed and images are on Docker Hub!'

@@ -87,12 +87,10 @@ public class PaperSubmissionE2ETest {
 
             // 🔥 核心修复：等待下拉框 API 数据加载完成
             Locator confSelect = page.locator("select[name='conference_id']");
-            page.waitForCondition(() -> confSelect.locator("option").count() > 1);
-
+            confSelect.locator("option[value='1']").waitFor(new Locator.WaitForOptions().setTimeout(10000));
             // 确保 data.sql 中 ID=1 的会议存在
             confSelect.selectOption("1");
-            page.click("button:has-text('Next')");
-        });
+            page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));        });
 
         step("Fill Paper Details & Select Track", () -> {
             page.waitForSelector("input[placeholder*='title']");
