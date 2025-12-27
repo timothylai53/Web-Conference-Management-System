@@ -356,6 +356,7 @@ ScholarSync
 | 19 | <img width="700" src="https://github.com/user-attachments/assets/967d474b-001d-40ad-bbb9-d0893a476427" /> |  Paper-submission (submit new paper)   |
 | 20 | <img width="700" src="https://github.com/user-attachments/assets/3a9c73d7-9350-4b95-8a93-ea601acc49db" /> |  Paper-submission (submit new paper)   |
 | 21 | <img width="700" src="https://github.com/user-attachments/assets/fca7855a-397a-4b86-9c8d-b9d233597fae" /> |  Paper-submission (submit new paper)   |
+| 22 | <img width="700" src="https://github.com/user-attachments/assets/7b78b457-45b6-472c-a47b-41e75520268a" /> |  Review setup                          |
 
 Capture full size screenshot
 
