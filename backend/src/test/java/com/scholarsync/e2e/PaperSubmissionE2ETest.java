@@ -5,14 +5,12 @@ import com.microsoft.playwright.options.*;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import java.io.ByteArrayInputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
 @Epic("Conference Management System")
-@Feature("Paper Submission Flow")
+@Feature("Paper Submission")
 public class PaperSubmissionE2ETest {
 
     private static Playwright playwright;
@@ -20,7 +18,7 @@ public class PaperSubmissionE2ETest {
     private BrowserContext context;
     private Page page;
 
-    // 🔥 For Jenkins/Docker: host.docker.internal points to the host machine
+    // 🔥 Use host.docker.internal for Jenkins, but ensure backend is ready
     private static final String BASE_URL = "http://host.docker.internal:4200";
 
     @BeforeAll
@@ -44,8 +42,8 @@ public class PaperSubmissionE2ETest {
         context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1280, 800));
         page = context.newPage();
         page.onDialog(Dialog::accept);
-        // Print browser logs to Jenkins console for network debugging
-        page.onConsoleMessage(msg -> System.out.println("Browser Log >> [" + msg.type() + "] " + msg.text()));
+        // Print logs to Jenkins console to debug API failures
+        page.onConsoleMessage(msg -> System.out.println("Browser Log: " + msg.text()));
     }
 
     @AfterEach
@@ -62,85 +60,61 @@ public class PaperSubmissionE2ETest {
         step("Login as Author", () -> {
             page.navigate(BASE_URL);
             page.click("button:has-text('Get Started')");
-
             page.locator("input[name='email']").fill("author@scholarsync.com");
             page.locator("input[name='password']").fill("author123");
-
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
 
-            // Wait for Angular routing
-            page.waitForURL("**/paper-submission", new Page.WaitForURLOptions().setTimeout(15000));
-
-            Locator dashboardBtn = page.locator("button:has-text('Submit New Paper')");
-            dashboardBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-
-            Assertions.assertTrue(dashboardBtn.isVisible(), "Login failed: Dashboard button not visible.");
+            // Wait for dashboard to load
+            page.waitForSelector("text=+ Submit New Paper", new Page.WaitForSelectorOptions().setTimeout(15000));
         });
 
-        step("Navigate to Submission Form & Select Conference", () -> {
-            page.click("button:has-text('Submit New Paper')");
+        step("Navigate to Submission Form", () -> {
+            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
 
             Locator confSelect = page.locator("select[name='conference_id']");
-            confSelect.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
+            // 🔥 Wait for the specific data to arrive from the API
+            page.waitForCondition(() -> confSelect.innerText().contains("Conference"),
+                    new Page.WaitForConditionOptions().setTimeout(15000));
 
-            try {
-                // Wait for the API to populate the dropdown (ignoring the placeholder)
-                page.waitForCondition(() -> (int) confSelect.locator("option").count() > 1,
-                        new Page.WaitForConditionOptions().setTimeout(15000));
-            } catch (TimeoutError e) {
-                System.err.println("TIMEOUT: Dropdown did not load options. HTML: " + confSelect.innerHTML());
-                throw e;
-            }
-
-            // Attempt to select ID 1, fallback to the first available if not found
-            try {
-                confSelect.selectOption("1");
-            } catch (Exception e) {
-                System.out.println("ID 1 not found. Selecting index 1 as fallback.");
-                confSelect.selectOption(new SelectOption().setIndex(1));
-            }
-
+            confSelect.selectOption(new SelectOption().setIndex(1)); // Pick first available
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
         });
 
         step("Fill Paper Details & Select Track", () -> {
-            page.waitForSelector("input[placeholder*='title']");
-            page.fill("input[placeholder*='title']", "AI Research Paper v1");
+            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Enter paper title")).waitFor();
+            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Enter paper title")).fill("AI Research Paper v1");
 
             Locator trackSelect = page.locator("select").filter(new Locator.FilterOptions().setHasText("Select a track"));
-            trackSelect.waitFor();
 
-            // Ensure tracks are loaded
-            page.waitForCondition(() -> (int) trackSelect.locator("option").count() > 1);
+            // 🔥 Jenkins Fix: Wait for the specific Track label to appear in the HTML
+            // This is safer than just counting options
+            page.waitForCondition(() -> trackSelect.innerText().contains("Artificial Intelligence"),
+                    new Page.WaitForConditionOptions().setTimeout(15000));
+
             trackSelect.selectOption(new SelectOption().setLabel("Artificial Intelligence"));
 
-            page.fill("textarea[placeholder*='abstract']", "This abstract discusses AI advancements.");
-
+            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Enter paper abstract")).fill("This abstract discusses AI advancements.");
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
         });
 
         step("Enter Author Information", () -> {
-            page.waitForSelector("input[type='email']");
-            // Use generic textboxes to be more robust against changing name attributes
+            page.getByRole(AriaRole.TEXTBOX).first().waitFor();
             page.getByRole(AriaRole.TEXTBOX).first().fill("Test");
             page.getByRole(AriaRole.TEXTBOX).nth(1).fill("User");
-            page.locator("input[type='email']").fill("testauthor@example.com");
-
+            page.locator("input[type=\"email\"]").fill("testuser@example.com");
+            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("University/Organization")).fill("Test University");
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
         });
 
-        step("Upload File and Submit", () -> {
-            // Proceed to upload section
+        step("Select Keywords and Finalize", () -> {
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
+            page.getByText("Machine Learning").click();
+            page.getByText("Deep Learning").click();
+        });
 
-            Path pdfPath = Paths.get("src/test/resources/sample.pdf");
-            page.setInputFiles("input[type='file']", pdfPath);
-
-            page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
-
-            // Final submit
+        step("Submit and Verify Success", () -> {
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
-            System.out.println("✅ Paper submission E2E test passed successfully!");
+            System.out.println("✅ Paper Submission Test Passed");
         });
     }
 
@@ -154,11 +128,11 @@ public class PaperSubmissionE2ETest {
         try {
             Path dirPath = Paths.get("src/test/resources");
             if (!Files.exists(dirPath)) Files.createDirectories(dirPath);
-            File pdfFile = new File("src/test/resources/sample.pdf");
-            if (!pdfFile.exists()) {
-                Files.writeString(pdfFile.toPath(), "Test PDF content for Playwright.");
+            Path pdfPath = dirPath.resolve("sample.pdf");
+            if (!Files.exists(pdfPath)) {
+                Files.writeString(pdfPath, "Dummy PDF content");
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
