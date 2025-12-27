@@ -506,7 +506,7 @@ Memon, K. A., & Xiaoling, X. (2019). Deciphering and analyzing software requirem
 
 Pahl, C. (2015). Containerization and the PaaS Cloud. IEEE Cloud Computing, 2(3), 24–31. https://doi.org/10.1109/MCC.2015.51
 
-Puranik, B. S., et al. (2025). Containerization in web development: Docker and Kubernetes. Proceedings of the 3rd International Conference on Futuristic Technology, 163–173.
+Puranik, B. S., et al. (2025). Containerization in web development: Docker and Kubernetes. Proceedings of the 3rd International Conference on Futuristic Technology, 163–173. https://doi.org/10.5220/0013588700004664
 
 Qu, C., Calheiros, R. N., & Buyya, R. (2018). Auto-scaling web applications in clouds: A taxonomy and survey. ACM Computing Surveys, 51(4), 1–33. https://doi.org/10.1145/3148149
 
