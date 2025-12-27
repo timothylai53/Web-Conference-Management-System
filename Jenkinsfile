@@ -14,6 +14,8 @@ pipeline {
         // 确保这里的名字与你的 docker-compose.yml 中的服务名保持逻辑一致
         BACKEND_IMAGE = 'assignment-3-pipeline-backend'
         FRONTEND_IMAGE = 'assignment-3-pipeline-frontend'
+
+        RELEASE_VERSION = "${params.RELEASE_VERSION}"
     }
 
     stages {
@@ -61,8 +63,8 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                echo "Tagging and Pushing Backend & Frontend (${RELEASE_VERSION})"
-                script {
+            echo "Tagging and Pushing Backend & Frontend (${env.RELEASE_VERSION})"
+            script {
                     // Backend
                     sh """
                       docker tag ${BACKEND_IMAGE}:latest ${DOCKER_HUB_USER}/confease-backend:${RELEASE_VERSION}
