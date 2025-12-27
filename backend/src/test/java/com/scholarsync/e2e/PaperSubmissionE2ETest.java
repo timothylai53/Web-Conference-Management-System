@@ -5,6 +5,7 @@ import com.microsoft.playwright.options.*;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import java.io.ByteArrayInputStream;
+import com.microsoft.playwright.options.WaitForSelectorState;
 
 @Epic("Conference Management System")
 @Feature("Paper Submission")
@@ -35,7 +36,7 @@ public class PaperSubmissionE2ETest {
 
     @BeforeEach
     void createContext() {
-        // ✨ 统一增加高度到 1600，防止 "Outside of viewport" 报错
+        // Set a tall viewport to ensure everything is rendered
         context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1280, 1600));
         page = context.newPage();
         page.onDialog(Dialog::accept);
@@ -51,7 +52,7 @@ public class PaperSubmissionE2ETest {
 
     @Test
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Author submits a new paper successfully (Stable Version)")
+    @Description("Author submits a new paper successfully (Final Stable Version)")
     void testSuccessfulPaperSubmission() {
 
         step("Login as Author", () -> {
@@ -96,25 +97,23 @@ public class PaperSubmissionE2ETest {
         step("Step 4 – Optional step", this::clickVisibleNext);
 
         step("Step 5 – Keywords & Submit", () -> {
-            // 1. 等待元素挂载 (ATTACHED)
+            // Wait for elements to be attached (exist in DOM)
             Locator mlKeyword = page.getByText("Machine Learning");
-            mlKeyword.waitFor(new Locator.WaitForOptions()
-                    .setState(WaitForSelectorState.ATTACHED)
-                    .setTimeout(10000));
+            mlKeyword.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED).setTimeout(10000));
 
-            // 2. 🔥 修正后的 JS 点击逻辑：忽略一切坐标和可见性检查
+            // JS Click - The most stable way for checkboxes/keywords
             mlKeyword.evaluate("el => el.click()");
 
-            // 3. 对 Deep Learning 执行相同操作
-            page.getByText("Deep Learning").waitFor(new Locator.WaitForOptions()
-                    .setState(WaitForSelectorState.ATTACHED));
+            page.getByText("Deep Learning").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
             page.getByText("Deep Learning").evaluate("el => el.click()");
 
-            // 4. 提交论文
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper"))
-                    .click(new Locator.ClickOptions().setForce(true));
+            // ✨ MODIFIED SELECTOR: Avoid the special checkmark character '✓'
+            // We use a CSS selector to find any button containing 'Submit Paper'
+            Locator submitBtn = page.locator("button:has-text('Submit Paper')");
+            submitBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
+            submitBtn.click(new Locator.ClickOptions().setForce(true));
         });
-    } // ✨ 这里补齐了方法结束的括号
+    }
 
     private void clickVisibleNext() {
         Locator nextButton = page.locator("button:has-text('Next'):visible").first();
