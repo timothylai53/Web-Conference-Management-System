@@ -390,6 +390,47 @@ docker pull sinrou0410/confease-backend:v1.0.0
 
 Capture full size screenshot
 
+## CI/CD Infrastructure (Jenkins)
+Our project implements a professional **CI/CD Pipeline** that automates the software lifecycle from the moment code is pushed to the `testing` branch.
+
+### 1. Pipeline Stages (Build #93)
+| Stage              | Action                                            | Result    |
+| ------------------ | ------------------------------------------------- | --------- |
+| Checkout SCM       | Pulls the latest code from GitHub.                | ✅ Success |
+| Cleanup            | Wipes old Docker containers and volumes.          | ✅ Success |
+| Build Backend      | Packages Spring Boot into a production-ready JAR. | ✅ Success |
+| Deploy             | Spins up the full stack for testing.              | ✅ Success |
+| Test               | Runs Playwright E2E automation scripts.           | ✅ Success |
+| Push to Docker Hub | Tags and pushes images (v1.0.0 & build-93).       | ✅ Success |
+
+
+### 2. Automated E2E Testing (Playwright + Allure)
+We prioritize system-level reliability. Instead of basic unit tests, we use Playwright to simulate real user journeys.
+| Metric           | Details                                           |
+|-----------------|--------------------------------------------------|
+| Total Test Cases | 4 (Authentication & Paper Submission flow)      |
+| Pass Rate        | 100% ✅                                           |
+| Tooling          | Integrated with Allure Report for visual trend analysis and debugging |
+
+### 3. Docker Registry & Versioning
+After passing all tests, the images are pushed to our Docker Hub repository with semantic versioning and build-specific tags for full traceability.
+
+**Repository:** 
+- Frontend: `sinrou0410/confease-frontend`  
+- Backend: `sinrou0410/confease-backend` 
+
+**Strategy:** 
+We use a **Dual-Tagging Strategy** for our Docker images:
+* **`latest`**: Always points to the most recent stable build.
+* **`build-${BUILD_NUMBER}`**: Unique tags (e.g., `build-93`) for full audit traceability.
+
+**How to pull our latest verified build:**
+
+```bash
+docker pull sinrou0410/confease-frontend:v1.0.0
+docker pull sinrou0410/confease-backend:v1.0.0
+```
+
 ## References (Not less than 20)
 Amazon Web Services, Inc. (n.d.). AWS documentation. https://docs.aws.amazon.com/
 
