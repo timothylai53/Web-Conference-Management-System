@@ -338,29 +338,27 @@ ScholarSync
 | 1  | <img width="700" src="https://github.com/user-attachments/assets/48b5a242-1aef-4c96-bbf9-288d5c23961b" /> |  Auth-user-profile(sign in)        |
 | 2  | <img width="700" src="https://github.com/user-attachments/assets/a9113ba6-f58f-472f-8ea5-01bb8e97ec9b" /> |  Auth-user-profile(create account) |
 | 3  | <img width="700" src="https://github.com/user-attachments/assets/28c0f7f0-bde3-4d84-b088-66890dcd4720"/>  |  Auth-user-profile(profile)        |
-| 4  | <img width="700" src="https://github.com/user-attachments/assets/e3a77eab-591f-4cd6-8b67-11032e599357" /> |  Conference(Main Page)             |
-| 5  | <img width="700" src="https://github.com/user-attachments/assets/321ad54d-a8fb-442a-ab2a-357c6b91730b"/>  |  Conference(Main Page)             |
-| 6  | <img width="700" src="https://github.com/user-attachments/assets/54fb42ce-4321-4cbf-b7ee-2c102a203974"/>  |  Conference Details                |
-| 7  | <img width="700" src="https://github.com/user-attachments/assets/6d570411-f734-4abe-b975-02f3c9c753ad" /> |  Conference(Main Page)             |
-| 8  | <img width="700" src="https://github.com/user-attachments/assets/b32a2bc8-89e1-4b1f-bd3a-f6079d256886"/>  |  Conference(Main Page)             |
-| 9  | <img width="700" src="https://github.com/user-attachments/assets/ff693ebc-208a-48b2-909f-e66e5b286e38" /> |  Conference(Explore events)        |
-| 10 | <img width="700" src="https://github.com/user-attachments/assets/c74ccaff-dc71-46b0-9709-a17f75633a78"/>  |  Conference(View Tracks)           |
-| 11 | <img width="700" src="https://github.com/user-attachments/assets/69d40dc5-3e3b-46fb-b30b-884ee63a48b7"/>  |  Conference (Create New Tracks)    |
-| 12 | <img width="700"  src="https://github.com/user-attachments/assets/3613877f-e0dd-4e45-8422-e50a73c974a7"/> |  Conference(Edit Conference)       |
-| 13 | <img width="700" src="https://github.com/user-attachments/assets/4b53c386-3ff6-4bb3-bc79-7a351e954883"/>  |  Conference(Edit Conference)       |
-| 14 | <img width="700" src="https://github.com/user-attachments/assets/a6605d87-d96f-43b9-8425-b16a30b2e6c0" /> |  Conference(Edit Conference)       |
-| 15 | <img width="700" src="https://github.com/user-attachments/assets/4945ffa5-2c7d-45ae-8427-79232b6bd1b7" /> |  Conference(Create New Conference) |
-| 16 | <img width="700" src="https://github.com/user-attachments/assets/4d28e09e-c277-441b-812e-c7154aeb2a16"/>  |  Conference(Create New Conference) |
-| 17 | <img width="700" src="https://github.com/user-attachments/assets/b4346544-2d4f-4e76-9e69-6fdf427d1ea6"/>  |  Conference(Create New Conference) |
-| 18 | <img width="700" src="https://github.com/user-attachments/assets/e727092e-7ed8-489b-be86-8d38ba9e38ad"/>  |  Conference Registration           |
-| 19 | <img width="700" src="https://github.com/user-attachments/assets/a35ede1a-2624-45ac-8fdc-ad19b2ff688a"/>  |  Comference Registration (Payment) |
-| 20 | <img width="700" src="https://github.com/user-attachments/assets/7358feeb-dc30-4124-9e85-8573ad054e11" /> |  Admin-dashboard                       |
-| 21 | <img width="700" src="https://github.com/user-attachments/assets/dbc4e898-071f-428c-a713-06895671cec6" /> |  Paper-submission (main page)          |
-| 22 | <img width="700" src="https://github.com/user-attachments/assets/553694c4-d8fb-4bc4-a462-1d4306a42291" /> |  Paper-submission (view paper details) |
-| 23 | <img width="700" src="https://github.com/user-attachments/assets/508f8738-a8cc-46ca-be3e-74a4c6703295" /> |  Paper-submission (submit new paper)   |
-| 24 | <img width="700" src="https://github.com/user-attachments/assets/967d474b-001d-40ad-bbb9-d0893a476427" /> |  Paper-submission (submit new paper)   |
-| 25 | <img width="700" src="https://github.com/user-attachments/assets/3a9c73d7-9350-4b95-8a93-ea601acc49db" /> |  Paper-submission (submit new paper)   |
-| 26 | <img width="700" src="https://github.com/user-attachments/assets/fca7855a-397a-4b86-9c8d-b9d233597fae" /> |  Paper-submission (submit new paper)   |
+| 4  | <img width="700" src="https://github.com/user-attachments/assets/7358feeb-dc30-4124-9e85-8573ad054e11" /> |  Admin-dashboard                       |
+| 5  | <img width="700" src="https://github.com/user-attachments/assets/f7f30528-54c6-43d6-9315-f07defd13aa3" /> |  Conference(Main Page)                 |
+| 6  | <img width="700" src="https://github.com/user-attachments/assets/3dfa202b-d45b-45a4-8ea2-4b5bd94efc5d"/>  |  Conference Details (Main Page)        |
+| 7  | <img width="700" src="https://github.com/user-attachments/assets/9647b863-e7cb-4519-80e1-9a869a53e9fc" /> |  Conference(Explore events)        |
+| 8  | <img width="700" src="https://github.com/user-attachments/assets/e027db1f-60d2-4e62-b6de-895c2fa84f69" /> |  Conference Information (Explore events)  |
+| 9  | <img width="700" src="https://github.com/user-attachments/assets/619bc99b-eaff-48ae-b86c-61b45ad27b75" /> |  Conference(Edit Conference)  |
+| 10 | <img width="700"  src="https://github.com/user-attachments/assets/53d7a3e3-df61-4746-9745-0d49ac4f6fa6"/> |   Conference(Create New Conference)   | 
+| 11 | <img width="700" src="https://github.com/user-attachments/assets/e23cfbc9-ca3a-4230-b523-84d567a412e2"/>  |  Conference(View Tracks)           |
+| 12 | <img width="700" src="https://github.com/user-attachments/assets/241181ba-3423-4bf2-b10c-d285d73566f6"/>  |  Conference(Edit Tracks)           |
+| 13 | <img width="700" src="https://github.com/user-attachments/assets/37ce80b8-8ab7-44a0-970f-10f54b4734a8"/>  |  Conference (Create New Tracks)    |    
+| 14 | <img width="700" src="https://github.com/user-attachments/assets/e727092e-7ed8-489b-be86-8d38ba9e38ad"/>  |  Conference Registration           |
+| 15 | <img width="700" src="https://github.com/user-attachments/assets/a35ede1a-2624-45ac-8fdc-ad19b2ff688a"/>  |  Comference Registration (Payment) |
+| 16 | <img width="700" src="https://github.com/user-attachments/assets/dbc4e898-071f-428c-a713-06895671cec6" /> |  Paper-submission (main page)          |
+| 17 | <img width="700" src="https://github.com/user-attachments/assets/553694c4-d8fb-4bc4-a462-1d4306a42291" /> |  Paper-submission (view paper details) |
+| 18 | <img width="700" src="https://github.com/user-attachments/assets/508f8738-a8cc-46ca-be3e-74a4c6703295" /> |  Paper-submission (submit new paper)   |
+| 19 | <img width="700" src="https://github.com/user-attachments/assets/967d474b-001d-40ad-bbb9-d0893a476427" /> |  Paper-submission (submit new paper)   |
+| 20 | <img width="700" src="https://github.com/user-attachments/assets/3a9c73d7-9350-4b95-8a93-ea601acc49db" /> |  Paper-submission (submit new paper)   |
+| 21 | <img width="700" src="https://github.com/user-attachments/assets/fca7855a-397a-4b86-9c8d-b9d233597fae" /> |  Paper-submission (submit new paper)   |
+
+
+Capture full size screenshot
 
 ## References (Not less than 20)
 Amazon Web Services, Inc. (n.d.). AWS documentation. https://docs.aws.amazon.com/
