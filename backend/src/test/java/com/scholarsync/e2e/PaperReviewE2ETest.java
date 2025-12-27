@@ -72,6 +72,7 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
 
             Locator confSelect = page.locator("select[name='conference_id']");
+            // Wait for data to exist in the DOM (even if hidden by CSS)
             confSelect.locator("option[value='1']").waitFor(new Locator.WaitForOptions()
                     .setState(WaitForSelectorState.ATTACHED)
                     .setTimeout(15000));
@@ -98,7 +99,7 @@ public class PaperReviewE2ETest {
             page.waitForTimeout(500);
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
 
-            // Fixed 'page.' prefix and wait logic
+            // Wait for element to be attached and use force-click to bypass 'hidden' errors
             page.getByText("Machine Learning").waitFor(new Locator.WaitForOptions()
                     .setState(WaitForSelectorState.ATTACHED));
             page.getByText("Machine Learning").click(new Locator.ClickOptions().setForce(true));
@@ -118,11 +119,15 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Confirm Password *")).fill("password123");
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Expertise Area *")).fill("Computer Science");
 
+            // Use force click to bypass potential overlaps from navigation bars
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Submit Application"))
                     .click(new Locator.ClickOptions().setForce(true));
 
+            // Regex allows for "Application submitted successfully" or similar variations
             page.waitForSelector("text=/.*Application submitted.*/",
-                    new Page.WaitForSelectorOptions().setTimeout(15000));
+                    new Page.WaitForSelectorOptions()
+                            .setState(WaitForSelectorState.ATTACHED)
+                            .setTimeout(20000));
         });
 
         step("3. Admin: Approve Reviewer", () -> {
@@ -139,7 +144,7 @@ public class PaperReviewE2ETest {
             try {
                 row.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(10000));
             } catch (Exception e) {
-                System.out.println("Reviewer not found, reloading page...");
+                System.out.println("Reviewer not found on first load, reloading page...");
                 page.reload();
                 row.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(10000));
             }

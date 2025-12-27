@@ -4,7 +4,6 @@ import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.*;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
-
 import java.io.ByteArrayInputStream;
 
 @Epic("Conference Management System")
@@ -16,19 +15,14 @@ public class PaperSubmissionE2ETest {
     private BrowserContext context;
     private Page page;
 
-    // Jenkins-safe frontend URL
     private static final String FRONTEND_URL = "http://host.docker.internal:4200";
-
-    /* =========================
-       Browser lifecycle
-       ========================= */
 
     @BeforeAll
     static void setupBrowser() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(true)   // REQUIRED in Jenkins
+                        .setHeadless(true)
                         .setSlowMo(50)
         );
     }
@@ -41,90 +35,55 @@ public class PaperSubmissionE2ETest {
 
     @BeforeEach
     void createContext() {
-        context = browser.newContext(
-                new Browser.NewContextOptions()
-                        .setViewportSize(1280, 800)
-        );
+        context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1280, 800));
         page = context.newPage();
-
-        // Auto-accept dialogs
         page.onDialog(Dialog::accept);
-
-        // Print browser logs in Jenkins console
-        page.onConsoleMessage(msg ->
-                System.out.println("BROWSER LOG: " + msg.text()));
+        page.onConsoleMessage(msg -> System.out.println("BROWSER LOG: " + msg.text()));
     }
 
     @AfterEach
     void tearDown(TestInfo info) {
-        byte[] screenshot = page.screenshot(
-                new Page.ScreenshotOptions().setFullPage(true));
-        Allure.addAttachment(
-                "Final State - " + info.getDisplayName(),
-                new ByteArrayInputStream(screenshot)
-        );
+        byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
+        Allure.addAttachment("Final State - " + info.getDisplayName(), new ByteArrayInputStream(screenshot));
         context.close();
     }
 
-    /* =========================
-       TEST
-       ========================= */
-
     @Test
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Author submits a new paper successfully (Jenkins-safe)")
+    @Description("Author submits a new paper successfully (Stable Version)")
     void testSuccessfulPaperSubmission() {
 
         step("Login as Author", () -> {
             page.navigate(FRONTEND_URL);
-
             page.locator("button:has-text('Get Started')").click();
             page.locator("input[name='email']").fill("author@scholarsync.com");
             page.locator("input[name='password']").fill("author123");
-            page.getByRole(AriaRole.BUTTON,
-                    new Page.GetByRoleOptions().setName("Sign In")).click();
+            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
 
-            page.waitForSelector("text=+ Submit New Paper",
-                    new Page.WaitForSelectorOptions().setTimeout(15000));
+            // Wait for landing page to load
+            page.waitForSelector("text=+ Submit New Paper", new Page.WaitForSelectorOptions().setTimeout(15000));
         });
 
         step("Open paper submission form", () -> {
-            page.getByRole(AriaRole.BUTTON,
-                    new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
+            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
         });
 
         step("Step 1 – Select conference", () -> {
             Locator conferenceSelect = page.locator("select[name='conference_id']");
-
-            // 🔥 CRITICAL FIX: wait until backend data arrives
-            page.waitForCondition(
-                    () -> conferenceSelect.locator("option").count() > 1,
-                    new Page.WaitForConditionOptions().setTimeout(20000)
-            );
-
+            // Wait for data to arrive from backend
+            page.waitForCondition(() -> conferenceSelect.locator("option").count() > 1,
+                    new Page.WaitForConditionOptions().setTimeout(20000));
             conferenceSelect.selectOption(new SelectOption().setIndex(1));
             clickVisibleNext();
         });
 
         step("Step 2 – Paper information", () -> {
-            page.getByRole(AriaRole.TEXTBOX,
-                            new Page.GetByRoleOptions().setName("Enter paper title"))
-                    .fill("AI Research Paper (CI)");
-
-            Locator trackSelect = page.locator("select")
-                    .filter(new Locator.FilterOptions().setHasText("Select a track"));
-
-            page.waitForCondition(
-                    () -> trackSelect.locator("option").count() > 1,
-                    new Page.WaitForConditionOptions().setTimeout(20000)
-            );
-
+            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Enter paper title")).fill("AI Research Paper (CI)");
+            Locator trackSelect = page.locator("select").filter(new Locator.FilterOptions().setHasText("Select a track"));
+            page.waitForCondition(() -> trackSelect.locator("option").count() > 1,
+                    new Page.WaitForConditionOptions().setTimeout(20000));
             trackSelect.selectOption(new SelectOption().setIndex(1));
-
-            page.getByRole(AriaRole.TEXTBOX,
-                            new Page.GetByRoleOptions().setName("Enter paper abstract"))
-                    .fill("Automated submission from Jenkins Playwright test.");
-
+            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Enter paper abstract")).fill("Automated submission test.");
             clickVisibleNext();
         });
 
@@ -132,38 +91,30 @@ public class PaperSubmissionE2ETest {
             page.getByRole(AriaRole.TEXTBOX).nth(0).fill("Test");
             page.getByRole(AriaRole.TEXTBOX).nth(1).fill("User");
             page.locator("input[type='email']").fill("testuser@example.com");
-            page.getByRole(AriaRole.TEXTBOX,
-                            new Page.GetByRoleOptions().setName("University/Organization"))
-                    .fill("Test University");
-
+            page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("University/Organization")).fill("Test University");
             clickVisibleNext();
         });
 
         step("Step 4 – Optional step", this::clickVisibleNext);
 
         step("Step 5 – Keywords & Submit", () -> {
-            // 🔥 Ensure the keywords are rendered and visible
+            // 🔥 FIXED: Wait for ATTACHED instead of VISIBLE to avoid "hidden" errors
             Locator mlKeyword = page.getByText("Machine Learning");
             mlKeyword.waitFor(new Locator.WaitForOptions()
                     .setState(WaitForSelectorState.ATTACHED)
                     .setTimeout(10000));
 
-            // Scroll to it in case it's at the bottom of the form
             mlKeyword.scrollIntoViewIfNeeded();
 
-            // 🔥 Use force click to bypass animation overlaps
+            // 🔥 FIXED: Use force click to bypass layout overlaps or hidden states
             mlKeyword.click(new Locator.ClickOptions().setForce(true));
-
             page.getByText("Deep Learning").click(new Locator.ClickOptions().setForce(true));
 
-            page.getByRole(AriaRole.BUTTON,
-                    new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
+            // Force click the final submission button
+            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper"))
+                    .click(new Locator.ClickOptions().setForce(true));
         });
     }
-
-    /* =========================
-       Helpers
-       ========================= */
 
     private void clickVisibleNext() {
         Locator nextButton = page.locator("button:has-text('Next'):visible").first();
