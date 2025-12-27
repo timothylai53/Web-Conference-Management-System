@@ -338,7 +338,7 @@ ScholarSync
 |----|------------|-------------|
 | 1  | <img width="700" src="https://github.com/user-attachments/assets/48b5a242-1aef-4c96-bbf9-288d5c23961b" /> |  Auth-user-profile(sign in)        |
 | 2  | <img width="700" src="https://github.com/user-attachments/assets/a9113ba6-f58f-472f-8ea5-01bb8e97ec9b" /> |  Auth-user-profile(create account) |
-| 3  | <img width="700" src="https://github.com/user-attachments/assets/28c0f7f0-bde3-4d84-b088-66890dcd4720"/>  |  Auth-user-profile(profile)        |
+| 3  | <img width="700" src="https://github.com/user-attachments/assets/28c0f7f0-bde3-4d84-b088-66890dcd4720"/>  |  Auth-user-profile(view & update profile)        |
 | 4  | <img width="700" src="https://github.com/user-attachments/assets/7358feeb-dc30-4124-9e85-8573ad054e11" /> |  Admin-dashboard                       |
 | 5  | <img width="700" src="https://github.com/user-attachments/assets/15004cb7-fcf7-4aba-a588-d57d69190e0c" /> |  Conference(Main Page)                 |
 | 6  | <img width="700" src="https://github.com/user-attachments/assets/3dfa202b-d45b-45a4-8ea2-4b5bd94efc5d"/>  |  Conference Details (Main Page)        |
@@ -354,10 +354,13 @@ ScholarSync
 | 16 | <img width="700" src="https://github.com/user-attachments/assets/dbc4e898-071f-428c-a713-06895671cec6" /> |  Paper-submission (main page)          |
 | 17 | <img width="700" src="https://github.com/user-attachments/assets/553694c4-d8fb-4bc4-a462-1d4306a42291" /> |  Paper-submission (view paper details) |
 | 18 | <img width="700" src="https://github.com/user-attachments/assets/508f8738-a8cc-46ca-be3e-74a4c6703295" /> |  Paper-submission (submit new paper)   |
-| 19 | <img width="700" src="https://github.com/user-attachments/assets/967d474b-001d-40ad-bbb9-d0893a476427" /> |  Paper-submission (submit new paper)   |
-| 20 | <img width="700" src="https://github.com/user-attachments/assets/3a9c73d7-9350-4b95-8a93-ea601acc49db" /> |  Paper-submission (submit new paper)   |
-| 21 | <img width="700" src="https://github.com/user-attachments/assets/fca7855a-397a-4b86-9c8d-b9d233597fae" /> |  Paper-submission (submit new paper)   |
-| *  | <img width="700" src="https://github.com/user-attachments/assets/7b78b457-45b6-472c-a47b-41e75520268a" /> |  Review setup                          |
+| 19 | <img width="700" src="https://github.com/user-attachments/assets/967d474b-001d-40ad-bbb9-d0893a476427" /> |  Paper-submission (submit new paper-Author details)   |
+| 20 | <img width="700" src="https://github.com/user-attachments/assets/3a9c73d7-9350-4b95-8a93-ea601acc49db" /> |  Paper-submission (submit new paper-upload paper)   |
+| 21 | <img width="700" src="https://github.com/user-attachments/assets/fca7855a-397a-4b86-9c8d-b9d233597fae" /> |  Paper-submission (submit new paper-add keywords)   |
+| 22 | <img width="700" src="https://github.com/user-attachments/assets/7b78b457-45b6-472c-a47b-41e75520268a" /> |  Review setup                          |
+| 23 | <img width="700" src="https://github.com/user-attachments/assets/0b1d27de-03d3-42da-a745-dff78f2b5899" /> |  Conference Schedule  |
+| 24 | <img width="700" src="https://github.com/user-attachments/assets/7bfae0e6-f9a3-4a22-8620-fe82e6b3d0b7" /> |   Session Management  |
+| *  | <img width="700" src="https://github.com/user-attachments/assets/325337d1-893c-4818-ad56-deab0f706fd3" /> |     Room Management                      |
 
 
 Capture full size screenshot
