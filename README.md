@@ -482,45 +482,45 @@ docker pull sinrou0410/confease-backend:v1.0.0
 ```
 
 ## References (Not less than 20)
-Aborujilah, A., & Musa, S. (2017). Cloud computing security challenges and rewards for applications. International Journal of Advanced and Applied Sciences, 4(1), 108–114. https://doi.org/10.21833/ijaas.2017.01.015 
+Assad, M., Meiklejohn, C. S., Miller, H., & Krusche, S. (2024). Can my microservice tolerate an unreliable database? Resilience testing with fault injection and visualization. Proceedings of the 2024 IEEE/ACM 46th International Conference on Software Engineering, 54–58. https://doi.org/10.1145/3639478.3640030
 
-Assad, M., Meiklejohn, C. S., Miller, H., & Krusche, S. (2024). Can my microservice tolerate an unreliable database? Resilience testing with fault injection and visualization. Proceedings of the 2024 IEEE/ACM 46th International Conference on Software Engineering: Companion Proceedings, 54–58. https://doi.org/10.1145/3639478.3640030
-
-Belkhiri, A., Shahnejat Bushehri, A., Gohring de Magalhaes, F., & Nicolescu, G. (2023). Transparent trace annotation for performance debugging in microservice-oriented systems. Companion of the 2023 ACM/SPEC International Conference on Performance Engineering, 25–32. https://doi.org/10.1145/3578245.3584936
-
-Biel, B., Book, M., Gruhn, V., Peters, D., & Schäfer, C. (2004). Handling backtracking in web applications: A case study of a conference management system. Conference Proceedings of the 30th EUROMICRO Conference, 388–395. https://doi.org/10.1109/EURMIC.2004.1333394
+Biel, B., Book, M., Gruhn, V., Peters, D., & Schäfer, C. (2004). Handling backtracking in web applications: A case study of a conference management system. Proceedings of the 30th EUROMICRO Conference, 388–395. https://doi.org/10.1109/EURMIC.2004.1333394
 
 Camilli, M., Guerriero, A., Janes, A., Russo, B., & Russo, S. (2022). Microservices integrated performance and reliability testing. Proceedings of the 3rd ACM/IEEE International Conference on Automation of Software Test, 29–39. https://doi.org/10.1145/3524481.3527233
 
 Di Francesco, P., Lago, P., & Malavolta, I. (2019). Architecting microservices: A systematic mapping study. Journal of Systems and Software, 150, 77–97. https://doi.org/10.1016/j.jss.2019.01.001
 
-Dragoni, N., Giallorenzo, S., Lafuente, A. L., Mazzara, M., Montesi, F., Mustafin, R., & Safina, L. (2017). Microservices: Yesterday, today, and tomorrow. Present and Ulterior Software Engineering, 195–216. https://doi.org/10.1007/978-3-319-67425-4_12
+Dragoni, N., et al. (2017). Microservices: Yesterday, today, and tomorrow. Present and Ulterior Software Engineering, 195–216. https://doi.org/10.1007/978-3-319-67425-4_12
 
-Eismann, S., Scheuner, J., Van Eyk, E., Kistowski, M., & Kounev, S. (2020). A review of serverless and microservices research. Proceedings of the ACM/SPEC International Conference on Performance Engineering, 165–176. https://doi.org/10.1145/3358960.3379123 
+Eismann, S., et al. (2020). A review of serverless and microservices research. Proceedings of the ACM/SPEC International Conference on Performance Engineering, 165–176. https://doi.org/10.1145/3358960.3379123
 
-Grohmann, J., Straesser, M., Chalbani, A., Eismann, S., Arian, Y., Herbst, N., & Kounev, S. (2021). Suanming: Explainable prediction of performance degradations in microservice applications. Proceedings of the ACM/SPEC International Conference on Performance Engineering, 165–176. https://doi.org/10.1145/3427921.3450239
+Grohmann, J., et al. (2021). Suanming: Explainable prediction of performance degradations in microservice applications. Proceedings of the ACM/SPEC International Conference on Performance Engineering, 165–176. https://doi.org/10.1145/3427921.3450239 
 
-Hatma, S., Puji, J. D., & Aris, T. (2017). Design and development of backend application for public complaint systems using microservice Spring Boot. Procedia Computer Science, 124, 736–743. https://doi.org/10.1016/j.procs.2017.12.212
+Hatma Suryotrisongko, Jayanto, D. P., & Tjahyanto, A. (2017). Design and development of backend application for public complaint systems using microservice Spring Boot. Procedia Computer Science, 124, 736–743. https://doi.org/10.1016/j.procs.2017.12.212 
 
 Kozak, M. (2023). Analysis of the Spring Boot and Spring Cloud in developing Java cloud applications. Journal of Computer Sciences Institute, 27, 112–120. https://doi.org/10.35784/jcsi.3130
 
-Memon, K. A., & Xiaoling, X. (2019). Deciphering and analyzing software requirements employing the techniques of natural language processing. ACM International Conference Proceeding Series, 153–156. https://doi.org/10.1145/3325730.3325757 
+Lafuente, A. L. (2016). Multi-party choreography propagation in RESTful services. Proceedings of the 31st Annual ACM Symposium on Applied Computing, 763–770. https://doi.org/10.1145/2851613.2851619
 
-Mishra, A., & Srivastava, D. (2023). Evolution of popularity and multiaspectual comparison of widely used web development frameworks. Electronics, 12(17), 3563. https://doi.org/10.3390/electronics12173563 
+Memon, K. A., & Xiaoling, X. (2019). Deciphering and analyzing software requirements employing the techniques of natural language processing. ACM International Conference Proceeding Series, 153–156. https://doi.org/10.1145/3325730.3325757
 
-Pahl, C. (2015). Containerization and the PaaS Cloud. IEEE Cloud Computing, 2(3), 24–31. https://doi.org/10.1109/MCC.2015.51 
+Pahl, C. (2015). Containerization and the PaaS Cloud. IEEE Cloud Computing, 2(3), 24–31. https://doi.org/10.1109/MCC.2015.51
 
-Puranik, B. S., Sonawane, A., Rasal, R., Renakale, P., & Kakad, D. (2025). Containerization in web development: Docker and Kubernetes. Proceedings of the 3rd International Conference on Futuristic Technology, 2, 163–173.
+Puranik, B. S., et al. (2025). Containerization in web development: Docker and Kubernetes. Proceedings of the 3rd International Conference on Futuristic Technology, 163–173.
 
 Qu, C., Calheiros, R. N., & Buyya, R. (2018). Auto-scaling web applications in clouds: A taxonomy and survey. ACM Computing Surveys, 51(4), 1–33. https://doi.org/10.1145/3148149
 
 Rodzik, P. (2023). Comparative analysis of selected programming frameworks in terms of their suitability for user authentication and authorization. Journal of Computer Sciences Institute, 27, 104–111. https://doi.org/10.35784/jcsi.3129
 
-Salas-Zárate, M. P., Alor-Hernández, G., Paredes-Valverde, M. A., Rodriguez-Mazahua, L., Sanchez-Cervantes, J. L., & Gomez-Berbis, J. M. (2015). A systematic mapping study of ontologies for conference management. Journal of Systems and Software, 111, 235–248. https://doi.org/10.1016/j.jss.2015.08.051
+Salas-Zárate, M. P., et al. (2015). A systematic mapping study of ontologies for conference management. Journal of Systems and Software, 111, 235–248. https://doi.org/10.1016/j.jss.2015.08.051
 
-Smith, J., & Johnson, A. (2018). Performance implications of inter-service communication in microservices architecture. Proceedings of the 9th ACM/SPEC International Conference on Performance Engineering, 120–125.
+Shon, S., et al. (2017). A microservice-based system architecture for a mobile conference application. International Conference on Information Networking (ICOIN), 615–617. https://doi.org/10.1109/ICOIN.2017.7899580 
 
-Vögler, M., Schleicher, J. M., Inzinger, C., & Dustdar, S. (2016). DIANE: Dynamic IoT application deployment in edge and cloud environments. Proceedings of the 2016 IEEE International Conference on Mobile Service, 113–120. https://doi.org/10.1109/MobServ.2016.27
+Swacha, J., & Kulpa, A. (2023). Evolution of popularity and multiaspectual comparison of widely used web development frameworks. Electronics, 12(17), 3563. https://doi.org/10.3390/electronics12173563
+
+Vögler, M., et al. (2016). DIANE: Dynamic IoT application deployment in edge and cloud environments. Proceedings of the 2016 IEEE International Conference on Mobile Service, 113–120. https://doi.org/10.1109/MobServ.2016.27
+
+Wettinger, J., et al. (2014). Integrating cloud application topologies with cloud machine images. Proceedings of the 2014 IEEE/ACM 7th International Conference on Utility and Cloud Computing, 148–155. https://doi.org/10.1109/UCC.2014.23 
 
 ## Link for the YouTube Presentation
 https://youtu.be/WaxjA6QSSKw
