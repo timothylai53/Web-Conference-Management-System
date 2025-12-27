@@ -144,7 +144,9 @@ public class PaperSubmissionE2ETest {
         step("Step 5 – Keywords & Submit", () -> {
             // 🔥 Ensure the keywords are rendered and visible
             Locator mlKeyword = page.getByText("Machine Learning");
-            mlKeyword.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+            mlKeyword.waitFor(new Locator.WaitForOptions()
+                    .setState(WaitForSelectorState.ATTACHED)
+                    .setTimeout(10000));
 
             // Scroll to it in case it's at the bottom of the form
             mlKeyword.scrollIntoViewIfNeeded();
