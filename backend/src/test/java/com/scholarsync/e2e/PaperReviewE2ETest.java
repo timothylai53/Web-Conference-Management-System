@@ -102,8 +102,9 @@ public class PaperReviewE2ETest {
             page.waitForTimeout(500);
             page.locator("button:has-text('Next'):visible").first().click(new Locator.ClickOptions().setForce(true));
 
-            page.getByText("Machine Learning").click();
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
+            getByText("Machine Learning").waitFor(new Locator.WaitForOptions()
+                    .setState(WaitForSelectorState.ATTACHED));
+            page.getByText("Machine Learning").click(new Locator.ClickOptions().setForce(true));            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("➜")).click();
         });
 
