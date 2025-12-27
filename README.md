@@ -16,7 +16,7 @@
 | <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170"> | TIMOTHY | 297880   | 0136483581        | 405 |
 | <img src="https://github.com/user-attachments/assets/16101139-c497-415f-9be2-7dfd4a26e045" width="120" height="170"> | FAYADH MUHAMMAD | 297032 | 0143287087 | BiscuIT |
 | <img src="https://github.com/user-attachments/assets/c9d6aca2-20a3-480e-892b-c3634cae0b41" width="120" height="170"> | WAN NUR AZIMAH BINTI WAN RAHMAT | 297976   | 01160724726        | webcrafters |
-| <img src="https://github.com/user-attachments/assets/10b3405a-1b6a-4091-9004-538bf1d80814" width="120" height="170"> | MUHD AFIF AFIFI BIN MUSA | 299783   | 0163878419        | budaksurau |
+| <img src="https://github.com/user-attachments/assets/ed9595c8-5f6a-44d6-a637-f7200b5ffe94" width="120" height="170"> | MUHD AFIF AFIFI BIN MUSA | 299783   | 0163878419        | budaksurau |
 | <img src="https://github.com/user-attachments/assets/6b063b37-8a92-4987-b879-157bc2f03a51" width="120" height="170"> | LOH JIA PING | 297839   | 01169503383        | g2 |
 
 
