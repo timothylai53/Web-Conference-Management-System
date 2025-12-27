@@ -2,7 +2,6 @@ services:
   # --- Database Service (MySQL) ---
   db:
     image: mysql:8.1
-    container_name: assignment-2-webcrafters-db-1
     environment:
       # Root password for full database access
       MYSQL_ROOT_PASSWORD: root12345
