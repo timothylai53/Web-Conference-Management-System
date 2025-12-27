@@ -66,14 +66,14 @@ ScholarSync
 
 ## List of all the endpoints
 
-### Auth
+### 1. Auth
 
 | Operation        | HTTP Method | Endpoint        | URL                               | Description                           |
 |-----------------|------------|----------------|----------------------------------|---------------------------------------|
 | Login           | POST       | /auth/login    | http://localhost:8080/auth/login  | Authenticate a user and return user info (without password) |
 | Register        | POST       | /auth/register | http://localhost:8080/auth/register | Register a new user and assign default "Author" role         |
 
-### Author
+### 2. Author
 
 | Operation                  | HTTP Method | Endpoint            | URL                                   | Description                                  |
 |----------------------------|------------|-------------------|--------------------------------------|----------------------------------------------|
@@ -84,7 +84,7 @@ ScholarSync
 | Update Author              | PUT        | /author/{id}      | http://localhost:8080/author/{id}    | Update an existing author                     |
 | Delete Author              | DELETE     | /author/{id}      | http://localhost:8080/author/{id}    | Delete an author by ID                        |
 
-### User
+### 3. User
 | Operation       | HTTP Method | Endpoint     | URL                                | Description            |
 |-----------------|------------|-------------|------------------------------------|------------------------|
 | Create User     | POST       | /users      | http://localhost:8080/users        | Add a new user         |
@@ -93,7 +93,7 @@ ScholarSync
 | Update User     | PUT        | /users/{id} | http://localhost:8080/users/{id}   | Update a user          |
 | Delete User     | DELETE     | /users/{id} | http://localhost:8080/users/{id}   | Delete a user          |
 
-### User Roles
+### 4. User Roles
 | Operation           | HTTP Method | Endpoint           | URL                                    | Description                    |
 |--------------------|------------|------------------|----------------------------------------|--------------------------------|
 | Create User Role    | POST       | /user-roles      | http://localhost:8080/user-roles       | Add a new user role            |
@@ -102,7 +102,7 @@ ScholarSync
 | Update User Role    | PUT        | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Update an existing user role   |
 | Delete User Role    | DELETE     | /user-roles/{id} | http://localhost:8080/user-roles/{id}  | Delete a user role by ID       |
 
-###  Conference
+###  5. Conference
 | Operation            | HTTP Method | Endpoint           | URL                                 | Description                            |
 |---------------------|------------|------------------|------------------------------------|----------------------------------------|
 | Create Conference    | POST       | /conferences     | http://localhost:8080/conferences   | Add a new conference                   |
@@ -112,7 +112,7 @@ ScholarSync
 | Delete Conference    | DELETE     | /conferences/{id}| http://localhost:8080/conferences/{id}| Delete a conference by its ID          |
 
 
-### Paper
+### 6. Paper
 | Operation        | HTTP Method | Endpoint        | URL                               | Description                     |
 |-----------------|------------|----------------|----------------------------------|---------------------------------|
 | Create Paper     | POST       | /papers        | http://localhost:8080/papers      | Add a new paper                 |
@@ -122,7 +122,7 @@ ScholarSync
 | Delete Paper     | DELETE     | /papers/{id}   | http://localhost:8080/papers/{id} | Delete a paper by ID            |
 
 
-### Notification
+### 7. Notification
 | Operation               | HTTP Method | Endpoint           | URL                                 | Description                          |
 |-------------------------|------------|------------------|------------------------------------|--------------------------------------|
 | Create Notification     | POST       | /notifications   | http://localhost:8080/notifications | Add a new notification               |
@@ -132,7 +132,7 @@ ScholarSync
 | Delete Notification     | DELETE     | /notifications/{id} | http://localhost:8080/notifications/{id} | Delete a notification by ID          |
 
 
-### Schedule
+### 8. Schedule
 | Operation           | HTTP Method | Endpoint          | URL                                | Description                     |
 |--------------------|------------|-----------------|-----------------------------------|---------------------------------|
 | Create Schedule     | POST       | /schedule       | http://localhost:8080/schedule    | Add a new schedule              |
@@ -141,7 +141,7 @@ ScholarSync
 | Update Schedule     | PUT        | /schedule/{id}  | http://localhost:8080/schedule/{id}| Update existing schedule        |
 | Delete Schedule     | DELETE     | /schedule/{id}  | http://localhost:8080/schedule/{id}| Delete a schedule by ID         |
 
-### Session
+### 9. Session
 | Operation         | HTTP Method | Endpoint         | URL                               | Description                 |
 |------------------|------------|----------------|----------------------------------|-----------------------------|
 | Create Session    | POST       | /sessions      | http://localhost:8080/sessions    | Add a new session           |
@@ -150,7 +150,7 @@ ScholarSync
 | Update Session    | PUT        | /sessions/{id} | http://localhost:8080/sessions/{id}| Update a session            |
 | Delete Session    | DELETE     | /sessions/{id} | http://localhost:8080/sessions/{id}| Delete a session            |
 
-### Discussion
+### 10. Discussion
 | Operation           | HTTP Method | Endpoint         | URL                              | Description                   |
 |--------------------|------------|----------------|---------------------------------|-------------------------------|
 | Create Discussion   | POST       | /discussion    | http://localhost:8080/discussion | Add a new discussion          |
@@ -159,7 +159,7 @@ ScholarSync
 | Update Discussion   | PUT        | /discussion/{id}| http://localhost:8080/discussion/{id} | Update an existing discussion |
 | Delete Discussion   | DELETE     | /discussion/{id}| http://localhost:8080/discussion/{id} | Delete a discussion by ID     |
 
-### Room
+### 11. Room
 | Operation       | HTTP Method | Endpoint     | URL                                | Description                    |
 |-----------------|------------|-------------|------------------------------------|--------------------------------|
 | Create Room     | POST       | /rooms      | http://localhost:8080/rooms        | Add a new room                 |
@@ -168,7 +168,7 @@ ScholarSync
 | Update Room     | PUT        | /rooms/{id} | http://localhost:8080/rooms/{id}   | Update an existing room        |
 | Delete Room     | DELETE     | /rooms/{id} | http://localhost:8080/rooms/{id}   | Delete a room by ID            |
 
-### Email Logs
+### 12. Email Logs
 
 | Operation            | HTTP Method | Endpoint          | URL                                  | Description                     |
 |---------------------|------------|-----------------|-------------------------------------|---------------------------------|
@@ -178,7 +178,7 @@ ScholarSync
 | Update Email Log     | PUT        | /email-logs/{id}| http://localhost:8080/email-logs/{id}| Update an existing email log    |
 | Delete Email Log     | DELETE     | /email-logs/{id}| http://localhost:8080/email-logs/{id}| Delete an email log by ID       |
 
-### Events
+### 13. Events
 
 | Operation        | HTTP Method | Endpoint       | URL                                  | Description                     |
 |-----------------|------------|---------------|-------------------------------------|---------------------------------|
@@ -188,7 +188,7 @@ ScholarSync
 | Update Event     | PUT        | /events/{id}  | http://localhost:8080/events/{id}   | Update an existing event        |
 | Delete Event     | DELETE     | /events/{id}  | http://localhost:8080/events/{id}   | Delete an event by ID           |
 
-### Files
+### 14. Files
 
 | Operation      | HTTP Method | Endpoint         | URL                                 | Description                     |
 |---------------|------------|-----------------|------------------------------------|---------------------------------|
@@ -196,7 +196,7 @@ ScholarSync
 | Serve File     | GET        | /files/{filename}| http://localhost:8080/files/{filename} | Serve/download a file by filename |
 | Delete File    | DELETE     | /files/{filename}| http://localhost:8080/files/{filename} | Delete a file                  |
 
-### Keywords
+### 15. Keywords
 
 | Operation         | HTTP Method | Endpoint       | URL                                  | Description                  |
 |------------------|------------|---------------|-------------------------------------|------------------------------|
@@ -206,7 +206,7 @@ ScholarSync
 | Update Keyword    | PUT        | /keywords/{id}| http://localhost:8080/keywords/{id} | Update an existing keyword   |
 | Delete Keyword    | DELETE     | /keywords/{id}| http://localhost:8080/keywords/{id} | Delete a keyword by ID       |
 
-### Log Activities
+### 16. Log Activities
 
 | Operation             | HTTP Method | Endpoint            | URL                                         | Description                     |
 |----------------------|------------|-------------------|--------------------------------------------|---------------------------------|
@@ -216,7 +216,7 @@ ScholarSync
 | Update Log Activity   | PUT        | /log-activities/{id}| http://localhost:8080/log-activities/{id} | Update an existing log activity |
 | Delete Log Activity   | DELETE     | /log-activities/{id}| http://localhost:8080/log-activities/{id} | Delete a log activity by ID     |
 
-### Paper Keywords
+### 17. Paper Keywords
 
 | Operation               | HTTP Method | Endpoint                   | URL                                            | Description                           |
 |------------------------|------------|----------------------------|------------------------------------------------|---------------------------------------|
@@ -226,7 +226,7 @@ ScholarSync
 | Update Paper Keyword    | PUT        | /paper-keywords/{paperId}/{keywordId} | http://localhost:8080/paper-keywords/{paperId}/{keywordId} | Update an existing paper keyword      |
 | Delete Paper Keyword    | DELETE     | /paper-keywords/{paperId}/{keywordId} | http://localhost:8080/paper-keywords/{paperId}/{keywordId} | Delete a paper keyword by composite ID |
 
-### Payments
+### 18. Payments
 
 | Operation           | HTTP Method | Endpoint            | URL                                      | Description                     |
 |--------------------|------------|-------------------|-----------------------------------------|---------------------------------|
@@ -236,7 +236,7 @@ ScholarSync
 | Update Payment      | PUT        | /payments/{id}    | http://localhost:8080/payments/{id}     | Update an existing payment      |
 | Delete Payment      | DELETE     | /payments/{id}    | http://localhost:8080/payments/{id}     | Delete a payment by ID          |
 
-### Rebuttals
+### 19. Rebuttals
 
 | Operation           | HTTP Method | Endpoint          | URL                                      | Description                     |
 |--------------------|------------|-----------------|-----------------------------------------|---------------------------------|
@@ -246,7 +246,7 @@ ScholarSync
 | Update Rebuttal     | PUT        | /rebuttals/{id} | http://localhost:8080/rebuttals/{id}    | Update an existing rebuttal     |
 | Delete Rebuttal     | DELETE     | /rebuttals/{id} | http://localhost:8080/rebuttals/{id}    | Delete a rebuttal by ID         |
 
-### Registrations
+### 20. Registrations
 
 | Operation                     | HTTP Method | Endpoint              | URL                                              | Description                          |
 |-------------------------------|------------|----------------------|-------------------------------------------------|--------------------------------------|
@@ -258,7 +258,7 @@ ScholarSync
 | Delete Registration           | DELETE     | /registrations/{id}  | http://localhost:8080/registrations/{id}       | Delete a registration by ID          |
 
 
-### Reviews
+### 21. Reviews
 
 | Operation       | HTTP Method | Endpoint     | URL                                | Description                                                                 |
 |-----------------|------------|-------------|------------------------------------|-----------------------------------------------------------------------------|
@@ -268,7 +268,7 @@ ScholarSync
 | Update Review   | PUT        | /reviews/{id}| http://localhost:8080/reviews/{id} | Update an existing review                                                   |
 | Delete Review   | DELETE     | /reviews/{id}| http://localhost:8080/reviews/{id} | Delete a review by ID                                                       |
 
-### Review Assignments
+### 22. Review Assignments
 
 | Operation                        | HTTP Method | Endpoint                     | URL                                              | Description                                 |
 |----------------------------------|------------|------------------------------|-------------------------------------------------|---------------------------------------------|
@@ -279,7 +279,7 @@ ScholarSync
 | Update Review Assignment          | PUT        | /review-assignments/{id}     | http://localhost:8080/review-assignments/{id}  | Update an existing review assignment       |
 | Delete Review Assignment          | DELETE     | /review-assignments/{id}     | http://localhost:8080/review-assignments/{id}  | Delete a review assignment by ID           |
 
-### Reviewer Applications
+### 23. Reviewer Applications
 
 | Operation                        | HTTP Method | Endpoint                         | URL                                              | Description                                 |
 |----------------------------------|------------|----------------------------------|-------------------------------------------------|---------------------------------------------|
@@ -289,7 +289,7 @@ ScholarSync
 | Approve Application              | POST       | /reviewer-applications/approve/{id} | http://localhost:8080/reviewer-applications/approve/{id}?adminUserId={adminUserId} | Approve a pending application and create user account |
 | Reject Application               | POST       | /reviewer-applications/reject/{id} | http://localhost:8080/reviewer-applications/reject/{id}?adminUserId={adminUserId} | Reject a pending application with reason   |
 
-### Review Scores
+### 24. Review Scores
 
 | Operation                        | HTTP Method | Endpoint                     | URL                                              | Description                                 |
 |----------------------------------|------------|------------------------------|-------------------------------------------------|---------------------------------------------|
@@ -299,7 +299,7 @@ ScholarSync
 | Update Review Score              | PUT        | /review-scores/{reviewId}/{criterionId} | http://localhost:8080/review-scores/{reviewId}/{criterionId} | Update an existing review score            |
 | Delete Review Score              | DELETE     | /review-scores/{reviewId}/{criterionId} | http://localhost:8080/review-scores/{reviewId}/{criterionId} | Delete a review score by composite ID      |
 
-### Score Criteria
+### 25. Score Criteria
 
 | Operation                   | HTTP Method | Endpoint            | URL                                      | Description                          |
 |------------------------------|------------|-------------------|-----------------------------------------|--------------------------------------|
@@ -309,7 +309,7 @@ ScholarSync
 | Update Score Criterion       | PUT        | /score-criteria/{id} | http://localhost:8080/score-criteria/{id} | Update an existing score criterion   |
 | Delete Score Criterion       | DELETE     | /score-criteria/{id} | http://localhost:8080/score-criteria/{id} | Delete a score criterion by ID       |
 
-### Roles
+### 26. Roles
 
 | Operation        | HTTP Method | Endpoint   | URL                           | Description                  |
 |-----------------|------------|------------|-------------------------------|------------------------------|
@@ -319,7 +319,7 @@ ScholarSync
 | Update Role      | PUT        | /roles/{id} | http://localhost:8080/roles/{id} | Update an existing role     |
 | Delete Role      | DELETE     | /roles/{id} | http://localhost:8080/roles/{id} | Delete a role by ID         |
 
-### Tracks
+### 27. Tracks
 
 | Operation           | HTTP Method | Endpoint      | URL                              | Description                       |
 |--------------------|------------|---------------|---------------------------------|-----------------------------------|
