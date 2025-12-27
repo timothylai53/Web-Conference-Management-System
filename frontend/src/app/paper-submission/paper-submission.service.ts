@@ -70,7 +70,7 @@ export interface Rebuttal {
   providedIn: 'root'
 })
 export class PaperSubmissionService {
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = 'http://host.docker.internal:8080/api';
 
   constructor(public http: HttpClient) {}
 

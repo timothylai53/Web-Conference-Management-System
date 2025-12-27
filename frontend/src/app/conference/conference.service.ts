@@ -7,7 +7,7 @@ import { Conference } from './conference.model';
   providedIn: 'root'
 })
 export class ConferenceService {
-  private apiUrl = 'http://localhost:8080/api/conferences';
+  private apiUrl = 'http://host.docker.internal:8080/api/conferences';
 
   constructor(private http: HttpClient) { }
 
