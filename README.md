@@ -1,4 +1,4 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/j93TiVAg)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/57c7f0b4-77df-45f1-8aa6-408fde3802b5" />[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/j93TiVAg)
 ## Requirements for Assignment-3
 [Read the instruction](https://github.com/STIWK2124-A251/class-activity-stiwk2124/blob/main/Assignment-3.md)
 
@@ -13,7 +13,7 @@
 | <img src="https://github.com/user-attachments/assets/b1d916b4-89e2-46fa-aaf5-fe7d11ec5729" width="120" height="170"> | ADTHIE CHARD A/L BOON | 299967 | 01131810149 | Webboys |
 | <img src="https://github.com/user-attachments/assets/47ff88ef-b27e-4b84-9207-48331fa57235" width="120" height="170"/> | GEE SIN ROU | 298556 | 0142693893 | hi5 |
 | <img src="https://github.com/user-attachments/assets/d374f289-afb1-48c4-ad0b-f517e122c18b" width="120" height="170"/> | ALIA | 2222   | 0128700384        | syntaxerror |
-| <img src="https://github.com/user-attachments/assets/379d4607-3ddc-4644-8efb-ec917c5d2e70" width="120" height="170"/> | TIMOTHY LAI JUN HONG | 297880 | 0136483581 | 405 |
+| <img src="https://github.com/user-attachments/assets/379d4607-3ddc-4644-8efb-ec917c5d2e70" width="120" height="170"/> | TIMOTHY LAI JUN HONG (Leader) | 297880 | 0136483581 | 405 |
 | <img src="https://github.com/user-attachments/assets/16101139-c497-415f-9be2-7dfd4a26e045" width="120" height="170"> | FAYADH MUHAMMAD | 297032 | 0143287087 | BiscuIT |
 | <img src="https://github.com/user-attachments/assets/c9d6aca2-20a3-480e-892b-c3634cae0b41" width="120" height="170"> | WAN NUR AZIMAH BINTI WAN RAHMAT | 297976   | 01160724726        | webcrafters |
 | <img src="https://github.com/user-attachments/assets/ed9595c8-5f6a-44d6-a637-f7200b5ffe94" width="120" height="170"> | MUHD AFIF AFIFI BIN MUSA | 299783   | 0163878419        | budaksurau |
@@ -523,4 +523,5 @@ Smith, J., & Johnson, A. (2018). Performance implications of inter-service commu
 Vögler, M., Schleicher, J. M., Inzinger, C., & Dustdar, S. (2016). DIANE: Dynamic IoT application deployment in edge and cloud environments. Proceedings of the 2016 IEEE International Conference on Mobile Service, 113–120. https://doi.org/10.1109/MobServ.2016.27
 
 ## Link for the YouTube Presentation
+https://youtu.be/WaxjA6QSSKw
 
