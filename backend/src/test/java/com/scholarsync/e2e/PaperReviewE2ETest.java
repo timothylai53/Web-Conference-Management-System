@@ -5,7 +5,6 @@ import com.microsoft.playwright.options.*;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import java.io.ByteArrayInputStream;
-import java.nio.file.Paths;
 import java.util.UUID;
 import com.microsoft.playwright.options.WaitForSelectorState;
 
@@ -72,7 +71,10 @@ public class PaperReviewE2ETest {
 
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
 
-            // Wait for backend data to populate the dropdown (handling slow startup)
+            // ✅ FIXED: Declared the 'confSelect' variable properly
+            Locator confSelect = page.locator("select[name='conference_id']");
+
+            // ✅ FIXED: Using ATTACHED state to handle hidden elements
             confSelect.locator("option[value='1']").waitFor(new Locator.WaitForOptions()
                     .setState(WaitForSelectorState.ATTACHED)
                     .setTimeout(15000));
@@ -117,7 +119,6 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Expertise Area *")).fill("Computer Science");
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Submit Application")).click();
 
-            // Explicitly wait for success to ensure DB persistence before Admin checks
             page.waitForSelector("text=Application submitted", new Page.WaitForSelectorOptions().setTimeout(10000));
         });
 
@@ -129,13 +130,11 @@ public class PaperReviewE2ETest {
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
 
             page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Admin Panel")).click();
-
-            // Wait for the table to render initial rows
             page.locator("table tr").nth(1).waitFor();
 
             Locator row = page.locator("tr").filter(new Locator.FilterOptions().setHasText(randomReviewerEmail));
             try {
-                // FIXED: Used WaitForSelectorState.VISIBLE to match Playwright Java API requirements
+                // ✅ Using the correct WaitForSelectorState for Java
                 row.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(10000));
             } catch (Exception e) {
                 System.out.println("Reviewer not found, reloading page...");
