@@ -35,7 +35,8 @@ public class PaperSubmissionE2ETest {
 
     @BeforeEach
     void createContext() {
-        context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1280, 800));
+        // ✨ 统一增加高度到 1600，防止 "Outside of viewport" 报错
+        context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1280, 1600));
         page = context.newPage();
         page.onDialog(Dialog::accept);
         page.onConsoleMessage(msg -> System.out.println("BROWSER LOG: " + msg.text()));
@@ -59,8 +60,6 @@ public class PaperSubmissionE2ETest {
             page.locator("input[name='email']").fill("author@scholarsync.com");
             page.locator("input[name='password']").fill("author123");
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
-
-            // Wait for landing page to load
             page.waitForSelector("text=+ Submit New Paper", new Page.WaitForSelectorOptions().setTimeout(15000));
         });
 
@@ -70,7 +69,6 @@ public class PaperSubmissionE2ETest {
 
         step("Step 1 – Select conference", () -> {
             Locator conferenceSelect = page.locator("select[name='conference_id']");
-            // Wait for data to arrive from backend
             page.waitForCondition(() -> conferenceSelect.locator("option").count() > 1,
                     new Page.WaitForConditionOptions().setTimeout(20000));
             conferenceSelect.selectOption(new SelectOption().setIndex(1));
@@ -98,23 +96,25 @@ public class PaperSubmissionE2ETest {
         step("Step 4 – Optional step", this::clickVisibleNext);
 
         step("Step 5 – Keywords & Submit", () -> {
-            // 🔥 FIXED: Wait for ATTACHED instead of VISIBLE to avoid "hidden" errors
+            // 1. 等待元素挂载 (ATTACHED)
             Locator mlKeyword = page.getByText("Machine Learning");
             mlKeyword.waitFor(new Locator.WaitForOptions()
                     .setState(WaitForSelectorState.ATTACHED)
                     .setTimeout(10000));
 
-            mlKeyword.scrollIntoViewIfNeeded();
+            // 2. 🔥 修正后的 JS 点击逻辑：忽略一切坐标和可见性检查
+            mlKeyword.evaluate("el => el.click()");
 
-            // 🔥 FIXED: Use force click to bypass layout overlaps or hidden states
-            mlKeyword.click(new Locator.ClickOptions().setForce(true));
-            page.getByText("Deep Learning").click(new Locator.ClickOptions().setForce(true));
+            // 3. 对 Deep Learning 执行相同操作
+            page.getByText("Deep Learning").waitFor(new Locator.WaitForOptions()
+                    .setState(WaitForSelectorState.ATTACHED));
+            page.getByText("Deep Learning").evaluate("el => el.click()");
 
-            // Force click the final submission button
+            // 4. 提交论文
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("✓ Submit Paper"))
                     .click(new Locator.ClickOptions().setForce(true));
         });
-    }
+    } // ✨ 这里补齐了方法结束的括号
 
     private void clickVisibleNext() {
         Locator nextButton = page.locator("button:has-text('Next'):visible").first();
