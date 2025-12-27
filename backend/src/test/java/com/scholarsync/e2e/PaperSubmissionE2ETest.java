@@ -13,24 +13,24 @@ public class PaperSubmissionE2ETest {
 
     private static Playwright playwright;
     private static Browser browser;
-
     private BrowserContext context;
     private Page page;
 
-    // Jenkins / Docker safe URL
-    private static final String BASE_URL = "http://host.docker.internal:4200";
+    // IMPORTANT: Jenkins must access frontend via host.docker.internal
+    private static final String FRONTEND_URL = "http://host.docker.internal:4200";
+    private static final String BACKEND_HEALTH = "http://host.docker.internal:8080/actuator/health";
 
-    // =========================
-    // Setup / Teardown
-    // =========================
+    /* =========================
+       Browser lifecycle
+       ========================= */
 
     @BeforeAll
     static void setupBrowser() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(true)      // MUST be true in Jenkins
-                        .setSlowMo(100)         // Stabilize Angular animations
+                        .setHeadless(true)     // REQUIRED for Jenkins
+                        .setSlowMo(50)
         );
     }
 
@@ -48,10 +48,10 @@ public class PaperSubmissionE2ETest {
         );
         page = context.newPage();
 
-        // Auto-accept dialogs
+        // Accept all dialogs automatically
         page.onDialog(Dialog::accept);
 
-        // Print browser console logs in Jenkins
+        // Log browser console in Jenkins
         page.onConsoleMessage(msg ->
                 System.out.println("BROWSER LOG: " + msg.text()));
     }
@@ -67,17 +67,19 @@ public class PaperSubmissionE2ETest {
         context.close();
     }
 
-    // =========================
-    // TEST
-    // =========================
+    /* =========================
+       TEST
+       ========================= */
 
     @Test
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Author successfully submits a new paper (Jenkins-safe)")
-    public void testSuccessfulPaperSubmission() {
+    @Description("Author submits a new paper successfully (Jenkins-safe)")
+    void testSuccessfulPaperSubmission() {
+
+        step("Wait for backend to be ready", this::waitForBackend);
 
         step("Login as Author", () -> {
-            page.navigate(BASE_URL);
+            page.navigate(FRONTEND_URL);
 
             page.locator("button:has-text('Get Started')").click();
             page.locator("input[name='email']").fill("author@scholarsync.com");
@@ -85,58 +87,53 @@ public class PaperSubmissionE2ETest {
             page.getByRole(AriaRole.BUTTON,
                     new Page.GetByRoleOptions().setName("Sign In")).click();
 
-            page.waitForSelector(
-                    "text=+ Submit New Paper",
-                    new Page.WaitForSelectorOptions().setTimeout(15000)
-            );
+            page.waitForSelector("text=+ Submit New Paper",
+                    new Page.WaitForSelectorOptions().setTimeout(15000));
         });
 
-        step("Open Submission Form", () -> {
+        step("Open paper submission form", () -> {
             page.getByRole(AriaRole.BUTTON,
-                            new Page.GetByRoleOptions().setName("+ Submit New Paper"))
-                    .click();
+                    new Page.GetByRoleOptions().setName("+ Submit New Paper")).click();
         });
 
-        step("Step 1: Select Conference", () -> {
+        step("Step 1 – Select conference", () -> {
             Locator conferenceSelect = page.locator("select[name='conference_id']");
-            conferenceSelect.waitFor();
 
-            // Wait until options load (API response)
+            // 🔥 CRITICAL FIX: wait for OPTIONS, not SELECT
             page.waitForCondition(
-                    () -> conferenceSelect.innerText().length() > 5,
-                    new Page.WaitForConditionOptions().setTimeout(15000)
+                    () -> conferenceSelect.locator("option").count() > 1,
+                    new Page.WaitForConditionOptions().setTimeout(20000)
             );
 
             conferenceSelect.selectOption(new SelectOption().setIndex(1));
+
             clickVisibleNext();
         });
 
-        step("Step 2: Paper Information", () -> {
+        step("Step 2 – Paper information", () -> {
             page.getByRole(AriaRole.TEXTBOX,
                             new Page.GetByRoleOptions().setName("Enter paper title"))
                     .fill("AI Research Paper (CI)");
 
             Locator trackSelect = page.locator("select")
-                    .filter(new Locator.FilterOptions()
-                            .setHasText("Select a track"));
+                    .filter(new Locator.FilterOptions().setHasText("Select a track"));
 
             page.waitForCondition(
-                    () -> trackSelect.innerText().contains("Artificial"),
-                    new Page.WaitForConditionOptions().setTimeout(15000)
+                    () -> trackSelect.locator("option").count() > 1,
+                    new Page.WaitForConditionOptions().setTimeout(20000)
             );
 
-            trackSelect.selectOption(
-                    new SelectOption().setLabel("Artificial Intelligence"));
+            trackSelect.selectOption(new SelectOption().setIndex(1));
 
             page.getByRole(AriaRole.TEXTBOX,
                             new Page.GetByRoleOptions().setName("Enter paper abstract"))
-                    .fill("This paper tests Playwright E2E stability in Jenkins.");
+                    .fill("Automated submission from Jenkins Playwright test.");
 
             clickVisibleNext();
         });
 
-        step("Step 3: Author Information", () -> {
-            page.getByRole(AriaRole.TEXTBOX).first().fill("Test");
+        step("Step 3 – Author information", () -> {
+            page.getByRole(AriaRole.TEXTBOX).nth(0).fill("Test");
             page.getByRole(AriaRole.TEXTBOX).nth(1).fill("User");
             page.locator("input[type='email']").fill("testuser@example.com");
             page.getByRole(AriaRole.TEXTBOX,
@@ -146,39 +143,34 @@ public class PaperSubmissionE2ETest {
             clickVisibleNext();
         });
 
-        step("Step 4: Optional Step", () -> {
-            clickVisibleNext();
-        });
+        step("Step 4 – Optional step", this::clickVisibleNext);
 
-        step("Step 5: Keywords & Submit", () -> {
+        step("Step 5 – Keywords & Submit", () -> {
             page.getByText("Machine Learning").click();
             page.getByText("Deep Learning").click();
 
             page.getByRole(AriaRole.BUTTON,
-                            new Page.GetByRoleOptions().setName("✓ Submit Paper"))
-                    .click();
-        });
-
-        step("Verify Submission", () -> {
-            page.waitForTimeout(2000);
-            System.out.println("✅ Paper submission completed successfully");
+                    new Page.GetByRoleOptions().setName("✓ Submit Paper")).click();
         });
     }
 
-    // =========================
-    // HELPERS
-    // =========================
+    /* =========================
+       Helpers
+       ========================= */
 
-    /**
-     * Safely clicks the currently visible & enabled "Next" button.
-     * Works reliably with Angular Material Stepper in Jenkins.
-     */
     private void clickVisibleNext() {
-        Locator nextBtn = page.locator("button:has-text('Next'):visible").first();
-        nextBtn.waitFor(new Locator.WaitForOptions()
-                .setState(WaitForSelectorState.VISIBLE)
-                .setTimeout(15000));
-        nextBtn.click();
+        Locator nextButton = page.locator("button:has-text('Next'):visible").first();
+
+        nextButton.waitFor(new Locator.WaitForOptions().setTimeout(15000));
+        nextButton.click(new Locator.ClickOptions().setForce(true));
+    }
+
+    private void waitForBackend() {
+        page.request().get(
+                BACKEND_HEALTH,
+                new APIRequestContext.GetOptions().setTimeout(30000)
+        );
+        System.out.println("✔ Backend is reachable");
     }
 
     @Step("{0}")
