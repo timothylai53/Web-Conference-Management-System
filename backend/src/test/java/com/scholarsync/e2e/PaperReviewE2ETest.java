@@ -16,7 +16,7 @@ public class PaperReviewE2ETest {
     private BrowserContext context;
     private Page page;
 
-    private static final String BASE_URL = "http://localhost:4200";
+    private static final String BASE_URL = "http://host.docker.internal:4200";
 
     private String uniqueID;
     private String randomPaperTitle;
@@ -29,7 +29,7 @@ public class PaperReviewE2ETest {
     static void setupBrowser() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(150)
+                new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(150)
         );
     }
 
