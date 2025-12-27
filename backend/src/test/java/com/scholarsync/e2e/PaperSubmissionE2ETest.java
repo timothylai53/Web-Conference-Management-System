@@ -16,9 +16,8 @@ public class PaperSubmissionE2ETest {
     private BrowserContext context;
     private Page page;
 
-    // IMPORTANT: Jenkins must access frontend via host.docker.internal
+    // Jenkins-safe frontend URL
     private static final String FRONTEND_URL = "http://host.docker.internal:4200";
-    private static final String BACKEND_HEALTH = "http://host.docker.internal:8080/actuator/health";
 
     /* =========================
        Browser lifecycle
@@ -29,7 +28,7 @@ public class PaperSubmissionE2ETest {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(true)     // REQUIRED for Jenkins
+                        .setHeadless(true)   // REQUIRED in Jenkins
                         .setSlowMo(50)
         );
     }
@@ -48,10 +47,10 @@ public class PaperSubmissionE2ETest {
         );
         page = context.newPage();
 
-        // Accept all dialogs automatically
+        // Auto-accept dialogs
         page.onDialog(Dialog::accept);
 
-        // Log browser console in Jenkins
+        // Print browser logs in Jenkins console
         page.onConsoleMessage(msg ->
                 System.out.println("BROWSER LOG: " + msg.text()));
     }
@@ -76,8 +75,6 @@ public class PaperSubmissionE2ETest {
     @Description("Author submits a new paper successfully (Jenkins-safe)")
     void testSuccessfulPaperSubmission() {
 
-        step("Wait for backend to be ready", this::waitForBackend);
-
         step("Login as Author", () -> {
             page.navigate(FRONTEND_URL);
 
@@ -99,14 +96,13 @@ public class PaperSubmissionE2ETest {
         step("Step 1 – Select conference", () -> {
             Locator conferenceSelect = page.locator("select[name='conference_id']");
 
-            // 🔥 CRITICAL FIX: wait for OPTIONS, not SELECT
+            // 🔥 CRITICAL FIX: wait until backend data arrives
             page.waitForCondition(
                     () -> conferenceSelect.locator("option").count() > 1,
                     new Page.WaitForConditionOptions().setTimeout(20000)
             );
 
             conferenceSelect.selectOption(new SelectOption().setIndex(1));
-
             clickVisibleNext();
         });
 
@@ -160,17 +156,8 @@ public class PaperSubmissionE2ETest {
 
     private void clickVisibleNext() {
         Locator nextButton = page.locator("button:has-text('Next'):visible").first();
-
         nextButton.waitFor(new Locator.WaitForOptions().setTimeout(15000));
         nextButton.click(new Locator.ClickOptions().setForce(true));
-    }
-
-    private void waitForBackend() {
-        page.request().get(
-                BACKEND_HEALTH,
-                new APIRequestContext.GetOptions().setTimeout(30000)
-        );
-        System.out.println("✔ Backend is reachable");
     }
 
     @Step("{0}")
