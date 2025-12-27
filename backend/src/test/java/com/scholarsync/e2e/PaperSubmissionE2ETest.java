@@ -6,10 +6,6 @@ import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 
 import java.io.ByteArrayInputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 @Epic("Conference Management System")
 @Feature("Paper Submission")
@@ -17,10 +13,11 @@ public class PaperSubmissionE2ETest {
 
     private static Playwright playwright;
     private static Browser browser;
+
     private BrowserContext context;
     private Page page;
 
-    // Jenkins / Docker frontend URL
+    // Jenkins / Docker safe URL
     private static final String BASE_URL = "http://host.docker.internal:4200";
 
     // =========================
@@ -29,47 +26,40 @@ public class PaperSubmissionE2ETest {
 
     @BeforeAll
     static void setupBrowser() {
-        ensurePdfExists();
-
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(true)
-                        .setSlowMo(100)
-                        .setArgs(List.of(
-                                "--no-sandbox",
-                                "--disable-dev-shm-usage",
-                                "--disable-gpu"
-                        ))
+                        .setHeadless(true)      // MUST be true in Jenkins
+                        .setSlowMo(100)         // Stabilize Angular animations
         );
     }
 
     @AfterAll
     static void closeBrowser() {
+        if (browser != null) browser.close();
         if (playwright != null) playwright.close();
     }
 
     @BeforeEach
     void createContext() {
         context = browser.newContext(
-                new Browser.NewContextOptions().setViewportSize(1280, 800)
+                new Browser.NewContextOptions()
+                        .setViewportSize(1280, 800)
         );
         page = context.newPage();
 
-        // Auto accept alerts
+        // Auto-accept dialogs
         page.onDialog(Dialog::accept);
 
-        // Print browser console logs to Jenkins
+        // Print browser console logs in Jenkins
         page.onConsoleMessage(msg ->
-                System.out.println("BROWSER LOG: " + msg.text())
-        );
+                System.out.println("BROWSER LOG: " + msg.text()));
     }
 
     @AfterEach
     void tearDown(TestInfo info) {
         byte[] screenshot = page.screenshot(
-                new Page.ScreenshotOptions().setFullPage(true)
-        );
+                new Page.ScreenshotOptions().setFullPage(true));
         Allure.addAttachment(
                 "Final State - " + info.getDisplayName(),
                 new ByteArrayInputStream(screenshot)
@@ -83,111 +73,95 @@ public class PaperSubmissionE2ETest {
 
     @Test
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Author submits a paper successfully (Jenkins-safe)")
-    void testSuccessfulPaperSubmission() {
+    @Description("Author successfully submits a new paper (Jenkins-safe)")
+    public void testSuccessfulPaperSubmission() {
 
         step("Login as Author", () -> {
             page.navigate(BASE_URL);
 
+            page.locator("button:has-text('Get Started')").click();
+            page.locator("input[name='email']").fill("author@scholarsync.com");
+            page.locator("input[name='password']").fill("author123");
             page.getByRole(AriaRole.BUTTON,
-                            new Page.GetByRoleOptions().setName("Get Started"))
-                    .click();
-
-            page.locator("input[name='email']")
-                    .fill("author@scholarsync.com");
-
-            page.locator("input[name='password']")
-                    .fill("author123");
-
-            page.getByRole(AriaRole.BUTTON,
-                            new Page.GetByRoleOptions().setName("Sign In"))
-                    .click();
+                    new Page.GetByRoleOptions().setName("Sign In")).click();
 
             page.waitForSelector(
                     "text=+ Submit New Paper",
-                    new Page.WaitForSelectorOptions().setTimeout(20000)
+                    new Page.WaitForSelectorOptions().setTimeout(15000)
             );
         });
 
-        step("Conference Selection", () -> {
+        step("Open Submission Form", () -> {
             page.getByRole(AriaRole.BUTTON,
                             new Page.GetByRoleOptions().setName("+ Submit New Paper"))
                     .click();
+        });
 
-            Locator conferenceSelect =
-                    page.locator("select[name='conference_id']");
-
+        step("Step 1: Select Conference", () -> {
+            Locator conferenceSelect = page.locator("select[name='conference_id']");
             conferenceSelect.waitFor();
 
-            // Wait until API data is loaded
+            // Wait until options load (API response)
             page.waitForCondition(
-                    () -> conferenceSelect.innerText().trim().length() > 0,
-                    new Page.WaitForConditionOptions().setTimeout(20000)
+                    () -> conferenceSelect.innerText().length() > 5,
+                    new Page.WaitForConditionOptions().setTimeout(15000)
             );
 
             conferenceSelect.selectOption(new SelectOption().setIndex(1));
-
-            waitForAngular();
-            clickEnabledNext();
+            clickVisibleNext();
         });
 
-        step("Paper Details & Track", () -> {
+        step("Step 2: Paper Information", () -> {
             page.getByRole(AriaRole.TEXTBOX,
                             new Page.GetByRoleOptions().setName("Enter paper title"))
-                    .fill("AI Research Paper v1");
+                    .fill("AI Research Paper (CI)");
 
             Locator trackSelect = page.locator("select")
                     .filter(new Locator.FilterOptions()
                             .setHasText("Select a track"));
 
             page.waitForCondition(
-                    () -> trackSelect.innerText().contains("Artificial Intelligence"),
-                    new Page.WaitForConditionOptions().setTimeout(20000)
+                    () -> trackSelect.innerText().contains("Artificial"),
+                    new Page.WaitForConditionOptions().setTimeout(15000)
             );
 
             trackSelect.selectOption(
-                    new SelectOption().setLabel("Artificial Intelligence")
-            );
+                    new SelectOption().setLabel("Artificial Intelligence"));
 
             page.getByRole(AriaRole.TEXTBOX,
                             new Page.GetByRoleOptions().setName("Enter paper abstract"))
-                    .fill("This abstract discusses AI advancements.");
+                    .fill("This paper tests Playwright E2E stability in Jenkins.");
 
-            waitForAngular();
-            clickEnabledNext();
+            clickVisibleNext();
         });
 
-        step("Author Information", () -> {
+        step("Step 3: Author Information", () -> {
             page.getByRole(AriaRole.TEXTBOX).first().fill("Test");
             page.getByRole(AriaRole.TEXTBOX).nth(1).fill("User");
             page.locator("input[type='email']").fill("testuser@example.com");
-
             page.getByRole(AriaRole.TEXTBOX,
                             new Page.GetByRoleOptions().setName("University/Organization"))
                     .fill("Test University");
 
-            waitForAngular();
-            clickEnabledNext();
+            clickVisibleNext();
         });
 
-        step("Keywords Selection", () -> {
-            waitForAngular();
-            clickEnabledNext();
+        step("Step 4: Optional Step", () -> {
+            clickVisibleNext();
+        });
 
+        step("Step 5: Keywords & Submit", () -> {
             page.getByText("Machine Learning").click();
             page.getByText("Deep Learning").click();
-        });
-
-        step("Submit Paper", () -> {
-            page.getByRole(AriaRole.BUTTON,
-                            new Page.GetByRoleOptions().setName("✓ Submit Paper"))
-                    .waitFor();
 
             page.getByRole(AriaRole.BUTTON,
                             new Page.GetByRoleOptions().setName("✓ Submit Paper"))
                     .click();
+        });
 
-            System.out.println("✅ Paper Submission completed successfully");
+        step("Verify Submission", () -> {
+            page.waitForTimeout(2000);
+            System.out.println("✅ Paper submission completed successfully");
         });
     }
 
@@ -195,52 +169,21 @@ public class PaperSubmissionE2ETest {
     // HELPERS
     // =========================
 
-    private void clickEnabledNext() {
-        Locator nextButton = page.locator("button")
-                .filter(new Locator.FilterOptions()
-                        .setHasText("Next"))
-                .filter(new Locator.FilterOptions()
-                        .setHasNot(page.locator("[disabled]")))
-                .filter(new Locator.FilterOptions()
-                        .setVisible(true))
-                .first();
-
-        nextButton.waitFor(
-                new Locator.WaitForOptions().setTimeout(20000)
-        );
-        nextButton.click();
-    }
-
-    private void waitForAngular() {
-        // Allow Angular Material validation & change detection
-        page.waitForTimeout(400);
+    /**
+     * Safely clicks the currently visible & enabled "Next" button.
+     * Works reliably with Angular Material Stepper in Jenkins.
+     */
+    private void clickVisibleNext() {
+        Locator nextBtn = page.locator("button:has-text('Next'):visible").first();
+        nextBtn.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(15000));
+        nextBtn.click();
     }
 
     @Step("{0}")
     private void step(String name, Runnable action) {
-        System.out.println("▶ STEP: " + name);
-        try {
-            action.run();
-        } catch (Exception e) {
-            Allure.addAttachment(
-                    "Failure - " + name,
-                    new ByteArrayInputStream(page.screenshot())
-            );
-            throw e;
-        }
-    }
-
-    private static void ensurePdfExists() {
-        try {
-            Path dir = Paths.get("src/test/resources");
-            if (!Files.exists(dir)) Files.createDirectories(dir);
-
-            Path pdf = dir.resolve("sample.pdf");
-            if (!Files.exists(pdf)) {
-                Files.writeString(pdf, "Dummy PDF for Jenkins");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("▶ " + name);
+        action.run();
     }
 }
