@@ -483,45 +483,45 @@ docker pull sinrou0410/confease-backend:v1.0.0
 ```
 
 ## References (Not less than 20)
-Amazon Web Services, Inc. (n.d.). AWS documentation. https://docs.aws.amazon.com/
+Aborujilah, A., & Musa, S. (2017). Cloud computing security challenges and rewards for applications. International Journal of Advanced and Applied Sciences, 4(1), 108–114. https://doi.org/10.21833/ijaas.2017.01.015 
 
-Angular Team. (n.d.). Angular documentation. https://angular.io/docs
+Assad, M., Meiklejohn, C. S., Miller, H., & Krusche, S. (2024). Can my microservice tolerate an unreliable database? Resilience testing with fault injection and visualization. Proceedings of the 2024 IEEE/ACM 46th International Conference on Software Engineering: Companion Proceedings, 54–58. https://doi.org/10.1145/3639478.3640030
 
-AWS Blog. (2016, November 9). Deploying a Spring Boot application on AWS using AWS Elastic Beanstalk. https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/
+Belkhiri, A., Shahnejat Bushehri, A., Gohring de Magalhaes, F., & Nicolescu, G. (2023). Transparent trace annotation for performance debugging in microservice-oriented systems. Companion of the 2023 ACM/SPEC International Conference on Performance Engineering, 25–32. https://doi.org/10.1145/3578245.3584936
 
-BezKoder. (n.d.). Angular 17 + Spring Boot + MySQL: CRUD example. https://www.bezkoder.com/spring-boot-angular-17-mysql/
+Biel, B., Book, M., Gruhn, V., Peters, D., & Schäfer, C. (2004). Handling backtracking in web applications: A case study of a conference management system. Conference Proceedings of the 30th EUROMICRO Conference, 388–395. https://doi.org/10.1109/EURMIC.2004.1333394
 
-BezKoder. (n.d.). Spring Boot + Angular 13 + MySQL example: Build a CRUD app. https://www.bezkoder.com/spring-boot-angular-13-mysql/
+Camilli, M., Guerriero, A., Janes, A., Russo, B., & Russo, S. (2022). Microservices integrated performance and reliability testing. Proceedings of the 3rd ACM/IEEE International Conference on Automation of Software Test, 29–39. https://doi.org/10.1145/3524481.3527233
 
-Dev.to. (2025, November 5). Dockerize & deploy Spring Boot + Angular + MySQL. https://dev.to/smoothcode/dockerize-deploy-spring-boot-angular-mysql-full-guide-24fg
+Di Francesco, P., Lago, P., & Malavolta, I. (2019). Architecting microservices: A systematic mapping study. Journal of Systems and Software, 150, 77–97. https://doi.org/10.1016/j.jss.2019.01.001
 
-Docker, Inc. (n.d.). Docker documentation. https://docs.docker.com/
+Dragoni, N., Giallorenzo, S., Lafuente, A. L., Mazzara, M., Montesi, F., Mustafin, R., & Safina, L. (2017). Microservices: Yesterday, today, and tomorrow. Present and Ulterior Software Engineering, 195–216. https://doi.org/10.1007/978-3-319-67425-4_12
 
-Docker Forums. (2024). Spring Boot app can’t connect to MySQL database in Docker. https://forums.docker.com/t/spring-boot-app-cant-connect-to-mysql-database-in-docker/143007
+Eismann, S., Scheuner, J., Van Eyk, E., Kistowski, M., & Kounev, S. (2020). A review of serverless and microservices research. Proceedings of the ACM/SPEC International Conference on Performance Engineering, 165–176. https://doi.org/10.1145/3358960.3379123 
 
-GitHub. (n.d.). Spring Boot & Angular full stack microservices + MySQL + AWS example. https://github.com/developersCradle/spring-springboot-angular-microservices-mysql-java-persistence-hibernate-aws
+Grohmann, J., Straesser, M., Chalbani, A., Eismann, S., Arian, Y., Herbst, N., & Kounev, S. (2021). Suanming: Explainable prediction of performance degradations in microservice applications. Proceedings of the ACM/SPEC International Conference on Performance Engineering, 165–176. https://doi.org/10.1145/3427921.3450239
 
-GitHub. (n.d.). Spring Boot + Angular + MySQL CRUD and Docker demo. https://github.com/vscalcione/springboot-angular12-mysql-docker-crud-application-demo
+Hatma, S., Puji, J. D., & Aris, T. (2017). Design and development of backend application for public complaint systems using microservice Spring Boot. Procedia Computer Science, 124, 736–743. https://doi.org/10.1016/j.procs.2017.12.212
 
-Google LLC. (n.d.). Google Cloud documentation. https://docs.cloud.google.com/
+Kozak, M. (2023). Analysis of the Spring Boot and Spring Cloud in developing Java cloud applications. Journal of Computer Sciences Institute, 27, 112–120. https://doi.org/10.35784/jcsi.3130
 
-JavaChinna. (n.d.). Dockerize Angular with NGINX and Spring Boot with MySQL using Docker Compose. https://www.javachinna.com/angular-nginx-spring-boot-mysql-docker-compose/
+Memon, K. A., & Xiaoling, X. (2019). Deciphering and analyzing software requirements employing the techniques of natural language processing. ACM International Conference Proceeding Series, 153–156. https://doi.org/10.1145/3325730.3325757 
 
-LinkedIn. (2025). Deploying Angular, Java Spring Boot, MySQL with Docker Compose. https://www.linkedin.com/posts/manoj-kumar-selvaraj-b2089722a_github-manoj-kumar-selvarajdevopsjavaapp-activity-7323743697668386816-usnS
+Mishra, A., & Srivastava, D. (2023). Evolution of popularity and multiaspectual comparison of widely used web development frameworks. Electronics, 12(17), 3563. https://doi.org/10.3390/electronics12173563 
 
-Medium. (2019). Set up a complete basic ecosystem with Angular, Spring Boot, Docker, GCP, Git, and Jenkins. https://medium.com/@ansgar.nell/set-up-a-complete-basic-ecosystem-with-angular-spring-boot-docker-google-cloud-git-and-jenkins-b2e062e684e8
+Pahl, C. (2015). Containerization and the PaaS Cloud. IEEE Cloud Computing, 2(3), 24–31. https://doi.org/10.1109/MCC.2015.51 
 
-Medium. (2024). Spring Boot & Angular full stack application deployment with Docker, AWS EC2, and Jenkins. https://rabieouallaf.medium.com/springboot-angular-full-stack-application-deployment-with-docker-aws-ec2-amazon-rds-github-3404420d61e0
+Puranik, B. S., Sonawane, A., Rasal, R., Renakale, P., & Kakad, D. (2025). Containerization in web development: Docker and Kubernetes. Proceedings of the 3rd International Conference on Futuristic Technology, 2, 163–173.
 
-Oracle Corporation. (n.d.). MySQL documentation. https://dev.mysql.com/doc/
+Qu, C., Calheiros, R. N., & Buyya, R. (2018). Auto-scaling web applications in clouds: A taxonomy and survey. ACM Computing Surveys, 51(4), 1–33. https://doi.org/10.1145/3148149
 
-Pivotal Software. (n.d.). Spring Boot reference guide. https://spring.io/projects/spring-boot
+Rodzik, P. (2023). Comparative analysis of selected programming frameworks in terms of their suitability for user authentication and authorization. Journal of Computer Sciences Institute, 27, 104–111. https://doi.org/10.35784/jcsi.3129
 
-Spring.io. (n.d.). Accessing data with MySQL. https://spring.io/guides/gs/accessing-data-mysql/
+Salas-Zárate, M. P., Alor-Hernández, G., Paredes-Valverde, M. A., Rodriguez-Mazahua, L., Sanchez-Cervantes, J. L., & Gomez-Berbis, J. M. (2015). A systematic mapping study of ontologies for conference management. Journal of Systems and Software, 111, 235–248. https://doi.org/10.1016/j.jss.2015.08.051
 
-Spring.io. (n.d.). Spring Boot with Docker. https://spring.io/guides/gs/spring-boot-docker/
+Smith, J., & Johnson, A. (2018). Performance implications of inter-service communication in microservices architecture. Proceedings of the 9th ACM/SPEC International Conference on Performance Engineering, 120–125.
 
-Stack Overflow. (n.d.). How to upload Java/Spring Boot + MySQL + Angular project to AWS. https://stackoverflow.com/questions/58390569/how-to-upload-my-java-spring-boot-mysql-angular-project-to-aws
+Vögler, M., Schleicher, J. M., Inzinger, C., & Dustdar, S. (2016). DIANE: Dynamic IoT application deployment in edge and cloud environments. Proceedings of the 2016 IEEE International Conference on Mobile Service, 113–120. https://doi.org/10.1109/MobServ.2016.27
 
 ## Link for the YouTube Presentation
 
