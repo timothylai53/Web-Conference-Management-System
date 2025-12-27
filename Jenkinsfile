@@ -1,6 +1,14 @@
 pipeline {
     agent any
 
+    parameters {
+            string(
+                name: 'RELEASE_VERSION',
+                defaultValue: 'v1.0.0',
+                description: 'Semantic version for Docker images (e.g. v1.0.0, v1.1.0)'
+            )
+        }
+
     environment {
         DOCKER_HUB_USER = 'sinrou0410'
         // 确保这里的名字与你的 docker-compose.yml 中的服务名保持逻辑一致
@@ -73,7 +81,7 @@ pipeline {
                 }
             }
         }
-
+    }
 
     post {
         always {
