@@ -86,6 +86,13 @@ docker pull sinrou0410/confease-backend:v1.0.0
 ```
    
 ## Instructions on how to run Docker.
+
+Run all containers listed in docker-compose.yml
+```bash
+docker-compose up --build -d
+```
+or 
+
 Step 1: Pull Docker Images
 ```bash
 docker pull sinrou0410/confease-frontend
