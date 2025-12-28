@@ -79,6 +79,16 @@ https://hub.docker.com/r/sinrou0410/confease-frontend
 Backend Image:
 https://hub.docker.com/r/sinrou0410/confease-backend
 
+> ⚠️ Important Note on Docker Images
+>
+> The published Docker images are primarily designed for execution within our
+> Jenkins CI/CD environment, where specific networking configurations
+> (e.g. `host.docker.internal`) are available.
+>
+> Running these images directly on a local machine without Jenkins
+> may result in networking issues.
+
+
 **To run a specific version (e.g., v1.0.0):**
 ```bash
 docker pull sinrou0410/confease-frontend:v1.0.0
