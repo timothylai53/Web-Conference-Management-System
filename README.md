@@ -94,8 +94,25 @@ https://hub.docker.com/r/sinrou0410/confease-backend
 docker pull sinrou0410/confease-frontend:v1.0.0
 docker pull sinrou0410/confease-backend:v1.0.0
 ```
-   
-## Instructions on how to run Docker.
+
+## Local Development (Without Jenkins)
+
+For evaluators or developers who wish to run the system locally
+without setting up Jenkins, a dedicated branch is provided.
+
+- Branch name: `backup`
+- Purpose: Local execution using `localhost` configuration.This branch is intentionally separated to avoid affecting the CI/CD pipeline configuration in `main`.
+- Difference: Removes Jenkins-specific networking dependencies
+
+To run locally:
+```bash
+git checkout backup
+docker-compose up --build
+```
+
+## Docker Execution (CI/CD / Jenkins Environment)
+> ⚠️ The following steps assume execution inside a Jenkins or CI/CD environment.
+> For local execution, please refer to the "Local Development (Without Jenkins)" section above.
 
 Run all containers listed in docker-compose.yml
 ```bash
