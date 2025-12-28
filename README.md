@@ -40,22 +40,7 @@
       To develop a cloud-deployed, full-stack Conference Management System integrating Angular, Spring Boot, MySQL, and Docker, with complete CRUD functionality and component-based architecture.
       
    4. Methodology
-      
-      Requirement Analysis – Identified core features (user management, conference events, paper submission).
-
-      Database Design – MySQL schema created with normalized tables.
-
-      Backend Development – Developed Spring Boot REST APIs for CRUD operations using JPA and MySQL.
-
-      Frontend Development – Built Angular components, services, routing, and Bootstrap styling.
-
-      Integration – Connected frontend to backend APIs using Angular HttpClient.
-
-      Containerization – Created Dockerfiles for frontend and backend; used Docker Compose for a multi-container environment.
-
-      Cloud Deployment – Uploaded Docker images to Docker Hub and deployed via a cloud provider.
-
-      Documentation – Created README, references, and video demonstration.
+   The project began with requirement analysis to identify core features such as user management, conference events, and paper submission. A MySQL database schema was then designed using normalized tables to        ensure data integrity and efficiency. The backend was developed using Spring Boot, providing RESTful APIs that support CRUD operations through JPA and MySQL. On the frontend, Angular was used to build            components, services, routing, and responsive user interfaces styled with Bootstrap. Integration was achieved by connecting the frontend to backend APIs using Angular’s HttpClient. The application was            containerized by creating Dockerfiles for both frontend and backend services and orchestrated using Docker Compose in a multi-container environment. Finally, Docker images were uploaded to Docker Hub,            deployed using a cloud platform, and supported with complete documentation including a README, references, and a video demonstration.
       
    5. Result
        
