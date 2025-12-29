@@ -572,5 +572,5 @@ Vögler, M., et al. (2016). DIANE: Dynamic IoT application deployment in edge an
 Wettinger, J., et al. (2014). Integrating cloud application topologies with cloud machine images. Proceedings of the 2014 IEEE/ACM 7th International Conference on Utility and Cloud Computing, 148–155. https://doi.org/10.1109/UCC.2014.23 
 
 ## Link for the YouTube Presentation
-https://youtu.be/WaxjA6QSSKw
+https://youtu.be/k4AKBp7g1rQ
 
