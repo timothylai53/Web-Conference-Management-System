@@ -516,7 +516,26 @@ http://129.212.231.197
 <img width="1880" height="960" alt="image" src="https://github.com/user-attachments/assets/bc69a3e6-cd13-40f2-9b7b-51d0864344fd" />
 
 
-### Hosting Architecture
+## Demo Login Credentials
+
+| Role      | Email                     | Password    |
+|-----------|---------------------------|------------|
+| Admin     | admin@scholarsync.com     | admin123   |
+| Reviewer  | reviewer@scholarsync.com  | reviewer123|
+| Chair     | chair@scholarsync.com     | chair123   |
+| Author    | author@scholarsync.com    | author123  |
+
+> **Note:** These credentials are for demo purposes only. Please do not use them for production.
+
+## Usage
+
+- Admin can manage users and submissions.
+- Reviewer can review assigned papers.
+- Chair can approve/reject submissions.
+- Author can submit papers and view status.
+
+  
+## Hosting Architecture
 The application is deployed using a modern container-orchestration workflow:
 
 Cloud Provider: DigitalOcean (Ubuntu 22.04 LTS)
