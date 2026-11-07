@@ -6,10 +6,10 @@ A full-stack platform for running academic conferences. It covers paper submissi
 > 📺 [Video presentation](https://youtu.be/k4AKBp7g1rQ)
 
 <p align="center">
-  <img width="49%" src="https://github.com/user-attachments/assets/406d9519-6b73-4c03-ab1f-6ee4500f883c" alt="Admin dashboard" />
-  <img width="49%" src="https://github.com/user-attachments/assets/85a6f23d-fb14-4c65-960f-bf3a5ee6fd57" alt="Paper submission" />
-  <img width="49%" src="https://github.com/user-attachments/assets/a903ad1d-cfd7-4598-9bff-4a8e101fe1eb" alt="Reviewer dashboard" />
-  <img width="49%" src="https://github.com/user-attachments/assets/0b1d27de-03d3-42da-a745-dff78f2b5899" alt="Conference schedule" />
+  <img width="49%" src="docs/screenshots\406d9519-6b73-4c03-ab1f-6ee4500f883c.jpg" alt="Admin dashboard" />
+  <img width="49%" src="docs/screenshots\85a6f23d-fb14-4c65-960f-bf3a5ee6fd57.jpg" alt="Paper submission" />
+  <img width="49%" src="docs/screenshots\a903ad1d-cfd7-4598-9bff-4a8e101fe1eb.jpg" alt="Reviewer dashboard" />
+  <img width="49%" src="docs/screenshots\0b1d27de-03d3-42da-a745-dff78f2b5899.jpg" alt="Conference schedule" />
 </p>
 
 ## Features
@@ -39,7 +39,7 @@ The pipeline runs on every push to the `testing` branch.
 #### 1. Pipeline Stages (Build #93)
 
 
-<img width="1858" height="944" alt="image" src="https://github.com/user-attachments/assets/6f827891-8de3-49fb-bc6f-b4e5d187fc85" />
+<img width="1858" height="944" alt="image" src="docs/screenshots\6f827891-8de3-49fb-bc6f-b4e5d187fc85.jpg" />
 
 
 | Stage              | Action                                            | Result    |
@@ -62,7 +62,7 @@ We prioritize system-level reliability. Instead of basic unit tests, we use Play
 | Tooling          | Integrated with Allure Report for visual trend analysis and debugging |
 
 
-<img width="1872" height="946" alt="image" src="https://github.com/user-attachments/assets/2bcc6418-814f-4b76-b54d-4af521ba81dc" />
+<img width="1872" height="946" alt="image" src="docs/screenshots\2bcc6418-814f-4b76-b54d-4af521ba81dc.jpg" />
 
 
 #### 3. Docker Registry & Versioning
@@ -73,7 +73,7 @@ After passing all tests, the images are pushed to our Docker Hub repository with
 - Backend: `sinrou0410/confease-backend`
 
   
-<img width="1896" height="740" alt="image" src="https://github.com/user-attachments/assets/ddea21a7-f3ad-4845-8c11-b16899fe46c8" />
+<img width="1896" height="740" alt="image" src="docs/screenshots\ddea21a7-f3ad-4845-8c11-b16899fe46c8.jpg" />
 
 
 **Strategy:** Dual-tagging with `latest` and `v1.0.0` (or `build-93`) for full traceability.
@@ -165,35 +165,35 @@ docker rm confease-backend confease-frontend
 
 | No | Screenshot | Description |
 |----|------------|-------------|
-| 1  | <img width="700" src="https://github.com/user-attachments/assets/bdf753ec-7b6f-477d-81ce-3db0749d0258" /> |  Auth-user-profile(sign in)        |
-| 2  | <img width="700" src="https://github.com/user-attachments/assets/a8ece979-61c7-4499-97e2-6ab7976037b7" /> |  Auth-user-profile(create account) |
-| 3  | <img width="700" src="https://github.com/user-attachments/assets/8ca5871d-8d61-41cd-93c9-7597fc88ee3c" /> |  Auth-user-profile(view & update profile)        |
-| 4  | <img width="700" src="https://github.com/user-attachments/assets/406d9519-6b73-4c03-ab1f-6ee4500f883c" /> |  Admin-dashboard                       |
-| 5  | <img width="700" src="https://github.com/user-attachments/assets/70b2a971-3c05-4266-96b9-de39630bdf35" /> |  Conference(Main Page)                 |
-| 6  | <img width="700" src="https://github.com/user-attachments/assets/2741eef5-317f-4a86-a73f-d3286cbf8533" /> |  Conference(Explore events)        |
-| 7  | <img width="700" src="https://github.com/user-attachments/assets/978124a1-0e7d-4379-bfee-0587b304ff7d" /> |  Conference Information (Explore events)  |
-| 8  | <img width="700" src="https://github.com/user-attachments/assets/857f5637-d30b-43e5-8ca3-22d8fb61a7c4" /> |  Conference(Edit Conference)  |
-| 9  | <img width="700" src="https://github.com/user-attachments/assets/4bf834b1-b593-4dd9-b7a4-7bcf73f33ad5" /> |   Conference(Create New Conference)   | 
-| 10 | <img width="700" src="https://github.com/user-attachments/assets/40aa93bb-45f7-43fd-a805-8608ed90b0e8" /> |  Conference(View Tracks)           |
-| 11 | <img width="700" src="https://github.com/user-attachments/assets/18fff5bd-5c01-4930-af91-cb7f107c0b71" /> |  Conference(Edit Tracks)           |
-| 12 | <img width="700" src="https://github.com/user-attachments/assets/5dce2a66-14a8-4df1-ae06-b9f8e2d7d367" /> |  Conference (Create New Tracks)    |    
-| 13 | <img width="700" src="https://github.com/user-attachments/assets/1d277423-b8a4-4f02-9736-308a3a9d86f6" /> |  Conference Registration           |
-| 14 | <img width="700" src="https://github.com/user-attachments/assets/a35ede1a-2624-45ac-8fdc-ad19b2ff688a"/>  |  Conference Registration (Payment) |
-| 15 | <img width="700" src="https://github.com/user-attachments/assets/084cf685-6c6a-460f-bc8f-4259f9d3a8cf" /> |  Conference Registration (Payment-registration) |
-| 16 | <img width="700" src="https://github.com/user-attachments/assets/85a6f23d-fb14-4c65-960f-bf3a5ee6fd57" /> |  Paper-submission (main page)          |
-| 17 | <img width="700" src="https://github.com/user-attachments/assets/f285da32-8394-4d89-8cfc-8f42d8f6d7bf" /> |  Paper-submission (view paper details) |
-| 18 | <img width="700" src="https://github.com/user-attachments/assets/f0f440e1-ace7-4f9c-9e4c-7415fbcc12be" /> |  Paper-submission (submit new paper-select conference)   |
-| 19 | <img width="700" src="https://github.com/user-attachments/assets/68221a26-a2b3-488d-be4d-77523b9e373e" /> |  Paper-submission (submit new paper-paper infomation)   |
-| 20 | <img width="700" src="https://github.com/user-attachments/assets/542e6ad7-88b7-487d-9382-9734a0ff8341" /> |  Paper-submission (submit new paper-author details)   |
-| 21 | <img width="700" src="https://github.com/user-attachments/assets/839080a7-930f-4d40-adfc-f17bb1b8ea2b" /> |  Paper-submission (submit new paper-upload files)   |
-| 22 | <img width="700" src="https://github.com/user-attachments/assets/01ee2432-4a6e-4536-a82d-b4c4ff3ffea0" /> |  Paper-submission (submit new paper-keyword/tags)   |
-| 23 | <img width="700" src="https://github.com/user-attachments/assets/0b1d27de-03d3-42da-a745-dff78f2b5899" /> |  Conference Schedule  |
-| 24 | <img width="700" src="https://github.com/user-attachments/assets/7bfae0e6-f9a3-4a22-8620-fe82e6b3d0b7" /> |   Session Management  |
-| 25 | <img width="700" src="https://github.com/user-attachments/assets/325337d1-893c-4818-ad56-deab0f706fd3" /> |     Room Management                      |
-| 26 | <img width="700" src="https://github.com/user-attachments/assets/cd855bce-5a24-458a-b350-d886b37e3cde" /> |   Reviewer Dashboard(Before accepting) |
-| 27 | <img width="700" src="https://github.com/user-attachments/assets/640b159f-efa0-44e3-bb99-6d3ef6f22a8e" /> |   Review Paper |
-| 27 | <img width="700" src="https://github.com/user-attachments/assets/a903ad1d-cfd7-4598-9bff-4a8e101fe1eb" /> |    Reviewer Dashboard(Accepted)    |
-| 28 | <img width="700" src="https://github.com/user-attachments/assets/9c8a67d0-ec05-40e7-a4bd-04ec33130975" /> |  Review setup                          |
+| 1  | <img width="700" src="docs/screenshots\bdf753ec-7b6f-477d-81ce-3db0749d0258.jpg" /> |  Auth-user-profile(sign in)        |
+| 2  | <img width="700" src="docs/screenshots\a8ece979-61c7-4499-97e2-6ab7976037b7.jpg" /> |  Auth-user-profile(create account) |
+| 3  | <img width="700" src="docs/screenshots\8ca5871d-8d61-41cd-93c9-7597fc88ee3c.jpg" /> |  Auth-user-profile(view & update profile)        |
+| 4  | <img width="700" src="docs/screenshots\406d9519-6b73-4c03-ab1f-6ee4500f883c.jpg" /> |  Admin-dashboard                       |
+| 5  | <img width="700" src="docs/screenshots\70b2a971-3c05-4266-96b9-de39630bdf35.jpg" /> |  Conference(Main Page)                 |
+| 6  | <img width="700" src="docs/screenshots\2741eef5-317f-4a86-a73f-d3286cbf8533.jpg" /> |  Conference(Explore events)        |
+| 7  | <img width="700" src="docs/screenshots\978124a1-0e7d-4379-bfee-0587b304ff7d.jpg" /> |  Conference Information (Explore events)  |
+| 8  | <img width="700" src="docs/screenshots\857f5637-d30b-43e5-8ca3-22d8fb61a7c4.jpg" /> |  Conference(Edit Conference)  |
+| 9  | <img width="700" src="docs/screenshots\4bf834b1-b593-4dd9-b7a4-7bcf73f33ad5.jpg" /> |   Conference(Create New Conference)   | 
+| 10 | <img width="700" src="docs/screenshots\40aa93bb-45f7-43fd-a805-8608ed90b0e8.jpg" /> |  Conference(View Tracks)           |
+| 11 | <img width="700" src="docs/screenshots\18fff5bd-5c01-4930-af91-cb7f107c0b71.jpg" /> |  Conference(Edit Tracks)           |
+| 12 | <img width="700" src="docs/screenshots\5dce2a66-14a8-4df1-ae06-b9f8e2d7d367.jpg" /> |  Conference (Create New Tracks)    |    
+| 13 | <img width="700" src="docs/screenshots\1d277423-b8a4-4f02-9736-308a3a9d86f6.jpg" /> |  Conference Registration           |
+| 14 | <img width="700" src="docs/screenshots\a35ede1a-2624-45ac-8fdc-ad19b2ff688a.jpg"/>  |  Conference Registration (Payment) |
+| 15 | <img width="700" src="docs/screenshots\084cf685-6c6a-460f-bc8f-4259f9d3a8cf.jpg" /> |  Conference Registration (Payment-registration) |
+| 16 | <img width="700" src="docs/screenshots\85a6f23d-fb14-4c65-960f-bf3a5ee6fd57.jpg" /> |  Paper-submission (main page)          |
+| 17 | <img width="700" src="docs/screenshots\f285da32-8394-4d89-8cfc-8f42d8f6d7bf.jpg" /> |  Paper-submission (view paper details) |
+| 18 | <img width="700" src="docs/screenshots\f0f440e1-ace7-4f9c-9e4c-7415fbcc12be.jpg" /> |  Paper-submission (submit new paper-select conference)   |
+| 19 | <img width="700" src="docs/screenshots\68221a26-a2b3-488d-be4d-77523b9e373e.jpg" /> |  Paper-submission (submit new paper-paper infomation)   |
+| 20 | <img width="700" src="docs/screenshots\542e6ad7-88b7-487d-9382-9734a0ff8341.jpg" /> |  Paper-submission (submit new paper-author details)   |
+| 21 | <img width="700" src="docs/screenshots\839080a7-930f-4d40-adfc-f17bb1b8ea2b.jpg" /> |  Paper-submission (submit new paper-upload files)   |
+| 22 | <img width="700" src="docs/screenshots\01ee2432-4a6e-4536-a82d-b4c4ff3ffea0.jpg" /> |  Paper-submission (submit new paper-keyword/tags)   |
+| 23 | <img width="700" src="docs/screenshots\0b1d27de-03d3-42da-a745-dff78f2b5899.jpg" /> |  Conference Schedule  |
+| 24 | <img width="700" src="docs/screenshots\7bfae0e6-f9a3-4a22-8620-fe82e6b3d0b7.jpg" /> |   Session Management  |
+| 25 | <img width="700" src="docs/screenshots\325337d1-893c-4818-ad56-deab0f706fd3.jpg" /> |     Room Management                      |
+| 26 | <img width="700" src="docs/screenshots\cd855bce-5a24-458a-b350-d886b37e3cde.jpg" /> |   Reviewer Dashboard(Before accepting) |
+| 27 | <img width="700" src="docs/screenshots\640b159f-efa0-44e3-bb99-6d3ef6f22a8e.jpg" /> |   Review Paper |
+| 27 | <img width="700" src="docs/screenshots\a903ad1d-cfd7-4598-9bff-4a8e101fe1eb.jpg" /> |    Reviewer Dashboard(Accepted)    |
+| 28 | <img width="700" src="docs/screenshots\9c8a67d0-ec05-40e7-a4bd-04ec33130975.jpg" /> |  Review setup                          |
 
 </details>
 
@@ -204,7 +204,7 @@ The app was hosted on a DigitalOcean droplet (Ubuntu 22.04) with Docker Compose,
 <details>
 <summary>Deployment screenshots</summary>
 
-<img width="1896" height="857" alt="image" src="https://github.com/user-attachments/assets/08705e31-c7ef-494b-8c0d-85da677a20cb" />
+<img width="1896" height="857" alt="image" src="docs/screenshots\08705e31-c7ef-494b-8c0d-85da677a20cb.jpg" />
 
 </details>
 
